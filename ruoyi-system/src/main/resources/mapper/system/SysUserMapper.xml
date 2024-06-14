@@ -4,17 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ruoyi.system.mapper.SysUserMapper">
 
-    <resultMap type="com.ruoyi.common.core.domain.entity.SysUser" id="SysUserResult">
+    <resultMap type="com.ruoyi.system.domain.SysUser" id="SysUserResult">
         <id property="userId" column="user_id"/>
         <association property="dept" column="dept_id" resultMap="deptResult"/>
         <collection property="roles" javaType="java.util.List" resultMap="RoleResult"/>
     </resultMap>
 
-    <resultMap id="deptResult" type="com.ruoyi.common.core.domain.entity.SysDept">
+    <resultMap id="deptResult" type="com.ruoyi.system.domain.SysDept">
         <id property="deptId" column="dept_id"/>
     </resultMap>
 
-    <resultMap id="RoleResult" type="com.ruoyi.common.core.domain.entity.SysRole">
+    <resultMap id="RoleResult" type="com.ruoyi.system.domain.SysRole">
         <id property="roleId" column="role_id"/>
     </resultMap>
 
