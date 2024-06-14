@@ -1,4 +1,4 @@
-package com.ruoyi.system.system;
+package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
