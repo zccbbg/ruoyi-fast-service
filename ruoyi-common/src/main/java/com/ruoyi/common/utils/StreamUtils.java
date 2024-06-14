@@ -30,7 +30,7 @@ public class StreamUtils {
         if (CollUtil.isEmpty(collection)) {
             return CollUtil.newArrayList();
         }
-        return collection.stream().filter(function).collect(Collectors.toList());
+        return collection.stream().filter(function).toList();
     }
 
     /**

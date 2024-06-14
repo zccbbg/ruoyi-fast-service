@@ -88,12 +88,10 @@ public class PlusDataPermissionInterceptor extends JsqlParserSupport implements 
 
     @Override
     protected void processSelect(Select select, int index, String sql, Object obj) {
-        SelectBody selectBody = select.getSelectBody();
-        if (selectBody instanceof PlainSelect) {
-            this.setWhere((PlainSelect) selectBody, (String) obj);
-        } else if (selectBody instanceof SetOperationList) {
-            SetOperationList setOperationList = (SetOperationList) selectBody;
-            List<SelectBody> selectBodyList = setOperationList.getSelects();
+        if (select instanceof PlainSelect plainSelect) {
+            this.setWhere(plainSelect, (String) obj);
+        } else if (select instanceof SetOperationList setOperationList) {
+            List<Select> selectBodyList = setOperationList.getSelects();
             selectBodyList.forEach(s -> this.setWhere((PlainSelect) s, (String) obj));
         }
     }
