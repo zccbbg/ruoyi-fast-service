@@ -1,34 +1,15 @@
-<img src="https://foruda.gitee.com/images/1679673773341074847/178e8451_1766278.png" width="50%" height="50%">
-<div style="height: 10px; clear: both;"></div>
-
-- - -
-
-## 版本状态说明
-
-由于 springboot 2.X 与 vue 2.X 官方均宣布停止维护, 故而 框架 4.X 版本 进入维护状态(只处理问题不更新功能)
-
-停止维护时间预计: 2024年6-10月具体根据使用人数动态决定, 此版本已经相当稳定 即便不更新功能也不影响使用
-
-如果依旧选择使用 jdk8 或者 jdk11 可以放心使用此版本, 如果希望使用 jdk17 或者 jdk21 可以选择使用 5.X 分支
-
 ## 平台简介
 
-[![码云Gitee](https://gitee.com/dromara/RuoYi-Vue-Plus/badge/star.svg?theme=blue)](https://gitee.com/dromara/RuoYi-Vue-Plus)
-[![GitHub](https://img.shields.io/github/stars/JavaLionLi/RuoYi-Vue-Plus.svg?style=social&label=Stars)](https://github.com/dromara/RuoYi-Vue-Plus)
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/dromara/RuoYi-Vue-Plus/blob/master/LICENSE)
-[![使用IntelliJ IDEA开发维护](https://img.shields.io/badge/IntelliJ%20IDEA-提供支持-blue.svg)](https://www.jetbrains.com/?from=RuoYi-Vue-Plus)
-<br>
-[![RuoYi-Vue-Plus](https://img.shields.io/badge/RuoYi_Vue_Plus-4.8.2-success.svg)](https://gitee.com/dromara/RuoYi-Vue-Plus)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7-blue.svg)]()
 [![JDK-8+](https://img.shields.io/badge/JDK-8-green.svg)]()
 [![JDK-11](https://img.shields.io/badge/JDK-11-green.svg)]()
 
-> RuoYi-Vue-Plus 是重写 RuoYi-Vue 针对 `分布式集群` 场景全方位升级(不兼容原框架)
+> 本项目继承自ruoyi-vue-plus,由于ruoyi-vue-plus 4.x版本不再开发，而5.x过于庞大，增加了flowable和多租户，本项目在4.x基础上适当增加一些5.x比较好的功能。
+
 
 > 项目代码、文档 均开源免费可商用 遵循开源协议在项目中保留开源协议文件即可<br>
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
-
-> 系统演示: [传送门](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4836388&doc_id=1469725)
 
 # 本框架与RuoYi的功能差异
 
@@ -102,70 +83,6 @@
 | 在线构建器  | 拖动表单元素生成相应的HTML代码。                      | 支持  | 支持               |
 | 使用案例   | 系统的一些功能案例                               | 支持  | 不支持              |
 
-## 参考文档
-
-使用框架前请仔细阅读文档重点注意事项
-<br>
->[初始化项目 必看](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4164117&doc_id=1469725)
->>[https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4164117&doc_id=1469725](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4164117&doc_id=1469725)
->
->[专栏与视频 入门必看](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=5473272&doc_id=1469725)
->>[https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=5473272&doc_id=1469725](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=5473272&doc_id=1469725)
->
->[部署项目 必看](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4219382&doc_id=1469725)
->>[https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4219382&doc_id=1469725](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4219382&doc_id=1469725)
-> 
->[参考文档 Wiki](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages)
->>[https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages)
-
-## 软件架构图
-
-![Plus部署架构图](https://images.gitee.com/uploads/images/2021/1112/202137_673ac5d2_1766278.png "Plus部署架构图.png")
 ## 贡献代码
 
 欢迎各路英雄豪杰 `PR` 代码 请提交到 `dev` 开发分支 统一测试发版
-
-框架定位为 `通用后台管理系统(分布式集群强化)` 原则上不接受业务 `PR`
-
-### 其他
-
-* 同步升级 RuoYi-Vue
-* GitHub 地址 [RuoYi-Vue-Plus-github](https://github.com/dromara/RuoYi-Vue-Plus)
-* 单模块 分支 [RuoYi-Vue-Plus-fast](https://gitee.com/dromara/RuoYi-Vue-Plus/tree/fast/)
-* 微服务 分支 [RuoYi-Cloud-Plus](https://gitee.com/JavaLionLi/RuoYi-Cloud-Plus)
-* 用户扩展项目 [扩展项目列表](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/pages?sort_id=4478302&doc_id=1469725)
-
-## 加群与捐献
->[加群与捐献](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/加群与捐献?sort_id=4104598)
->>[https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/加群与捐献?sort_id=4104598](https://gitee.com/dromara/RuoYi-Vue-Plus/wikis/加群与捐献?sort_id=4104598)
-
-## 捐献作者
-作者为兼职做开源,平时还需要工作,如果帮到了您可以请作者吃个盒饭  
-<img src="https://images.gitee.com/uploads/images/2022/0218/213734_b1b8197f_1766278.jpeg" width="300px" height="450px" />
-<img src="https://images.gitee.com/uploads/images/2021/0525/101713_3d18b119_1766278.jpeg" width="300px" height="450px" />
-
-## 演示图例
-
-|                                                                                            |                                                                                            |
-|--------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------|
-| ![输入图片说明](https://foruda.gitee.com/images/1680077524361362822/270bb429_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680077619939771291/989bf9b6_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680077681751513929/1c27c5bd_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680077721559267315/74d63e23_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680077765638904515/1b75d4a6_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078026375951297/eded7a4b_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078237104531207/0eb1b6a7_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078254306078709/5931e22f_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078287971528493/0b9af60a_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078308138770249/8d3b6696_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078352553634393/db5ef880_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078378238393374/601e4357_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078414983206024/2aae27c1_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078446738419874/ecce7d59_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078475971341775/149e8634_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078491666717143/3fadece7_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078558863188826/fb8ced2a_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078574561685461/ae68a0b2_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078594932772013/9d8bfec6_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078626493093532/fcfe4ff6_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078643608812515/0295bd4f_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078685196286463/d7612c81_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078703877318597/56fce0bc_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078716586545643/b6dbd68f_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078734103217688/eb1e6aa6_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078759131415480/73c525d8_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078779416197879/75e3ed02_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078802329118061/77e10915_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078893627848351/34a1c342_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078928175016986/f126ec4a_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078941718318363/b68a0f72_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680078963175518631/3bb769a1_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680078982294090567/b31c343d_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680079000642440444/77ca82a9_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680079020995074177/03b7d52e_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680079039367822173/76811806_1766278.png "屏幕截图") |
-| ![输入图片说明](https://foruda.gitee.com/images/1680079274333484664/4dfdc7c0_1766278.png "屏幕截图") | ![输入图片说明](https://foruda.gitee.com/images/1680079290467458224/d6715fcf_1766278.png "屏幕截图") |
-
-

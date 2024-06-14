@@ -1,7 +1,7 @@
 # 项目相关配置
 ruoyi:
   # 名称
-  name: RuoYi-Vue-Plus
+  name: RuoYi-Vue-Plus-Service
   # 版本
   version: ${ruoyi-vue-plus.version}
   # 版权年份
