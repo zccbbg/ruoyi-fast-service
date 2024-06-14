@@ -8,5 +8,4 @@ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         SELECT * FROM test_demo ${ew.customSqlSegment}
     </select>
 
-
 </mapper>
