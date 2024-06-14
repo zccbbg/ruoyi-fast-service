@@ -17,7 +17,7 @@ import java.util.Date;
 @ExcelIgnoreUnannotated
 public class TestTreeVo {
 
-    private static final long serialVersionUID = 1L;
+    @Serialprivate static final long serialVersionUID = 1L;
 
     /**
      * 主键
