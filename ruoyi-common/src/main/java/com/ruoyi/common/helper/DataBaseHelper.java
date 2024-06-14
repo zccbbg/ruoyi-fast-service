@@ -8,7 +8,7 @@ import com.ruoyi.common.utils.spring.SpringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
-import jakarta.sql.DataSource;
+import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;

@@ -7,7 +7,6 @@ import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
-import org.springdoc.core.*;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;

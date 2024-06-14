@@ -1,7 +1,7 @@
 package com.ruoyi.common.utils;
 
 import cn.hutool.core.convert.Convert;
-import cn.hutool.extra.servlet.ServletUtil;
+import cn.hutool.extra.servlet.JakartaServletUtil;
 import cn.hutool.http.HttpStatus;
 import com.ruoyi.common.constant.Constants;
 import lombok.AccessLevel;
@@ -30,7 +30,7 @@ import java.util.Map;
  * @author ruoyi
  */
 @NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ServletUtils extends ServletUtil {
+public class ServletUtils extends JakartaServletUtil {
 
     /**
      * 获取String参数

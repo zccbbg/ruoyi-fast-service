@@ -4,6 +4,7 @@ import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;
 
+import java.io.Serial;
 import java.util.Date;
 
 
@@ -17,7 +18,7 @@ import java.util.Date;
 @ExcelIgnoreUnannotated
 public class TestTreeVo {
 
-    @Serialprivate static final long serialVersionUID = 1L;
+    private static final long serialVersionUID = 1L;
 
     /**
      * 主键
