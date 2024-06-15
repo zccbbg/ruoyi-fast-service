@@ -42,12 +42,12 @@ public class SysProfileController extends BaseController {
      */
     @GetMapping
     public R<Map<String, Object>> profile() {
-        SysUser user = userService.selectUserById(getUserId());
-        Map<String, Object> ajax = new HashMap<>();
-        ajax.put("user", user);
-        ajax.put("roleGroup", userService.selectUserRoleGroup(user.getUserName()));
-        ajax.put("postGroup", userService.selectUserPostGroup(user.getUserName()));
-        return R.ok(ajax);
+        SysUser user = userService.selectUserById(LoginHelper.getUserId());
+        return R.ok(Map.of(
+            "user", user,
+            "roleGroup", userService.selectUserRoleGroup(user.getUserName()),
+            "postGroup", userService.selectUserPostGroup(user.getUserName())
+        ));
     }
 
     /**
@@ -106,7 +106,6 @@ public class SysProfileController extends BaseController {
     @Log(title = "用户头像", businessType = BusinessType.UPDATE)
     @PostMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public R<Map<String, Object>> avatar(@RequestPart("avatarfile") MultipartFile avatarfile) {
-        Map<String, Object> ajax = new HashMap<>();
         if (!avatarfile.isEmpty()) {
             String extension = FileUtil.extName(avatarfile.getOriginalFilename());
             if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
@@ -114,9 +113,8 @@ public class SysProfileController extends BaseController {
             }
             SysOssVo oss = iSysOssService.upload(avatarfile);
             String avatar = oss.getUrl();
-            if (userService.updateUserAvatar(getUsername(), avatar)) {
-                ajax.put("imgUrl", avatar);
-                return R.ok(ajax);
+            if (userService.updateUserAvatar(LoginHelper.getUsername(), avatar)) {
+                return R.ok(Map.of("imgUrl", avatar));
             }
         }
         return R.fail("上传图片异常，请联系管理员");

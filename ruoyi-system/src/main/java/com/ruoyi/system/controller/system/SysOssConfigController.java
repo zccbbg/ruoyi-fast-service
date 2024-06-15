@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.*;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * 对象存储配置
@@ -90,7 +91,7 @@ public class SysOssConfigController extends BaseController {
     @DeleteMapping("/{ossConfigIds}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ossConfigIds) {
-        return toAjax(iSysOssConfigService.deleteWithValidByIds(Arrays.asList(ossConfigIds), true));
+        return toAjax(iSysOssConfigService.deleteWithValidByIds(List.of(ossConfigIds), true));
     }
 
     /**

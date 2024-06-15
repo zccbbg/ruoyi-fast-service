@@ -50,13 +50,7 @@ public class CacheController {
     @GetMapping()
     public R<Map<String, Object>> getInfo() throws Exception {
         RedisConnection connection = connectionFactory.getConnection();
-        Properties info = connection.commands().info();
         Properties commandStats = connection.commands().info("commandstats");
-        Long dbSize = connection.commands().dbSize();
-
-        Map<String, Object> result = new HashMap<>(3);
-        result.put("info", info);
-        result.put("dbSize", dbSize);
 
         List<Map<String, String>> pieList = new ArrayList<>();
         if (commandStats != null) {
@@ -68,8 +62,11 @@ public class CacheController {
                 pieList.add(data);
             });
         }
-        result.put("commandStats", pieList);
-        return R.ok(result);
+        return R.ok(Map.of(
+            "info", connection.commands().info(),
+            "dbSize", connection.commands().dbSize(),
+            "commandStats", pieList
+        ));
     }
 
     /**

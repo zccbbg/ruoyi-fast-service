@@ -6,6 +6,7 @@ import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.helper.LoginHelper;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.utils.StringUtils;
@@ -68,13 +69,12 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping(value = "/roleMenuTreeselect/{roleId}")
     public R<Map<String, Object>> roleMenuTreeselect(@PathVariable("roleId") Long roleId) {
-        List<SysMenu> menus = menuService.selectMenuList(getUserId());
-        Map<String, Object> ajax = new HashMap<>();
-        ajax.put("checkedKeys", menuService.selectMenuListByRoleId(roleId));
-        ajax.put("menus", menuService.buildMenuTreeSelect(menus));
-        return R.ok(ajax);
+        List<SysMenu> menus = menuService.selectMenuList(LoginHelper.getUserId());
+        return R.ok(Map.of(
+            "checkedKeys", menuService.selectMenuListByRoleId(roleId),
+            "menus", menuService.buildMenuTreeSelect(menus)
+        ));
     }
-
     /**
      * 新增菜单
      */

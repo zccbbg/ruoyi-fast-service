@@ -239,7 +239,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
      * @param size 字符串指定长度
      * @return 返回数字的字符串格式，该字符串为指定长度。
      */
-    public static String padl(final Number num, final int size) {
+    public static final String padl(final Number num, final int size) {
         return padl(num.toString(), size, '0');
     }
 
@@ -256,17 +256,13 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
         if (s != null) {
             final int len = s.length();
             if (s.length() <= size) {
-                for (int i = size - len; i > 0; i--) {
-                    sb.append(c);
-                }
+                sb.append(String.valueOf(c).repeat(size - len));
                 sb.append(s);
             } else {
                 return s.substring(len - size, len);
             }
         } else {
-            for (int i = size; i > 0; i--) {
-                sb.append(c);
-            }
+            sb.append(String.valueOf(c).repeat(Math.max(0, size)));
         }
         return sb.toString();
     }

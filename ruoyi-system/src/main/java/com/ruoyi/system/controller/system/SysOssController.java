@@ -10,6 +10,7 @@ import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.validate.QueryGroup;
 import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.system.domain.bo.SysOssBo;
 import com.ruoyi.system.domain.vo.SysOssVo;
 import com.ruoyi.system.service.ISysOssService;
@@ -72,14 +73,14 @@ public class SysOssController extends BaseController {
     @PostMapping(value = "/upload", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public R<Map<String, String>> upload(@RequestPart("file") MultipartFile file) {
         if (ObjectUtil.isNull(file)) {
-            return R.fail("上传文件不能为空");
+            throw new ServiceException("上传文件不能为空");
         }
         SysOssVo oss = iSysOssService.upload(file);
-        Map<String, String> map = new HashMap<>(2);
-        map.put("url", oss.getUrl());
-        map.put("fileName", oss.getOriginalName());
-        map.put("ossId", oss.getOssId().toString());
-        return R.ok(map);
+        return R.ok(Map.of(
+            "url", oss.getUrl(),
+            "fileName", oss.getOriginalName(),
+            "ossId", oss.getOssId().toString()
+        ));
     }
 
     /**
@@ -103,7 +104,7 @@ public class SysOssController extends BaseController {
     @DeleteMapping("/{ossIds}")
     public R<Void> remove(@NotEmpty(message = "主键不能为空")
                           @PathVariable Long[] ossIds) {
-        return toAjax(iSysOssService.deleteWithValidByIds(Arrays.asList(ossIds), true));
+        return toAjax(iSysOssService.deleteWithValidByIds(List.of(ossIds), true));
     }
 
 }
