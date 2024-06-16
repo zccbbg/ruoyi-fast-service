@@ -3,25 +3,19 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ruoyi-vue-plus</artifactId>
+        <artifactId>ruoyi-modules</artifactId>
         <groupId>com.ruoyi</groupId>
-        <version>5.0.0</version>
+        <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
-
-    <artifactId>ruoyi-generator</artifactId>
+    <packaging>jar</packaging>
+    <artifactId>ruoyi-job</artifactId>
 
     <description>
-        generator代码生成
+        任务调度
     </description>
 
     <dependencies>
-
-        <!--velocity代码生成使用模板 -->
-        <dependency>
-            <groupId>org.apache.velocity</groupId>
-            <artifactId>velocity-engine-core</artifactId>
-        </dependency>
 
         <!-- 通用工具-->
         <dependency>
@@ -29,6 +23,13 @@
             <artifactId>ruoyi-common</artifactId>
         </dependency>
 
+        <!-- xxl-job-core -->
+        <dependency>
+            <groupId>com.xuxueli</groupId>
+            <artifactId>xxl-job-core</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
+
