@@ -10,7 +10,6 @@ import org.springframework.stereotype.Component;
  * @author Lion Li
  */
 @Data
-@Component
 @ConfigurationProperties(prefix = "security")
 public class SecurityProperties {
 

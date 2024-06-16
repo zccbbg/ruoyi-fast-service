@@ -18,14 +18,11 @@ import java.util.Properties;
 @Configuration
 public class ValidatorConfig {
 
-    @Autowired
-    private MessageSource messageSource;
-
     /**
      * 配置校验框架 快速返回模式
      */
     @Bean
-    public Validator validator() {
+    public Validator validator(MessageSource messageSource) {
         LocalValidatorFactoryBean factoryBean = new LocalValidatorFactoryBean();
         // 国际化
         factoryBean.setValidationMessageSource(messageSource);

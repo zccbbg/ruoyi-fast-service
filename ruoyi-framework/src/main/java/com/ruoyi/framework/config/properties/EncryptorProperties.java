@@ -13,7 +13,6 @@ import org.springframework.stereotype.Component;
  * @version 4.6.0
  */
 @Data
-@Component
 @ConfigurationProperties(prefix = "mybatis-encryptor")
 public class EncryptorProperties {
 

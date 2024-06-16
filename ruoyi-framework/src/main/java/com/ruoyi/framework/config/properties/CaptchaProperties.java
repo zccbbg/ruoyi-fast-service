@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
  * @author Lion Li
  */
 @Data
-@Component
 @ConfigurationProperties(prefix = "captcha")
 public class CaptchaProperties {
 

@@ -14,6 +14,7 @@ import com.ruoyi.framework.satoken.dao.PlusSaTokenDao;
 import com.ruoyi.framework.satoken.service.SaPermissionImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
@@ -27,6 +28,7 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 @RequiredArgsConstructor
 @Slf4j
 @Configuration
+@EnableConfigurationProperties(SecurityProperties.class)
 public class SaTokenConfig implements WebMvcConfigurer {
 
     private final SecurityProperties securityProperties;

@@ -19,7 +19,6 @@ import java.util.List;
  * @author Lion Li
  */
 @Data
-@Component
 @ConfigurationProperties(prefix = "springdoc")
 public class SpringDocProperties {
 
