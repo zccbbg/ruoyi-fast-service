@@ -6,6 +6,7 @@ import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.CacheNames;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.utils.JsonUtils;
+import com.ruoyi.common.utils.StreamUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.redis.CacheUtils;
 import com.ruoyi.common.utils.redis.RedisUtils;
@@ -90,7 +91,7 @@ public class CacheController {
         if (isCacheNames(cacheName)) {
             Set<Object> keys = CacheUtils.keys(cacheName);
             if (CollUtil.isNotEmpty(keys)) {
-                cacheKeys = keys.stream().map(Object::toString).toList();
+                cacheKeys = StreamUtils.toList(keys, Object::toString);
             }
         } else {
             cacheKeys = RedisUtils.keys(cacheName + "*");
