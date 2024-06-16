@@ -3,12 +3,13 @@ package com.ruoyi.system.domain.bo;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
+import com.ruoyi.system.domain.SysOssConfig;
+import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 对象存储配置业务对象 sys_oss_config
@@ -20,6 +21,7 @@ import jakarta.validation.constraints.Size;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
+@AutoMapper(target = SysOssConfig.class, reverseConvertGenerate = false)
 public class SysOssConfigBo extends BaseEntity {
 
     /**

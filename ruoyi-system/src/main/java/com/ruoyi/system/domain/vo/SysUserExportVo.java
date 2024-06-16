@@ -3,6 +3,8 @@ package com.ruoyi.system.domain.vo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.annotation.ExcelDictFormat;
 import com.ruoyi.common.convert.ExcelDictConvert;
+import com.ruoyi.system.domain.SysUser;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +19,7 @@ import java.util.Date;
 
 @Data
 @NoArgsConstructor
+@AutoMapper(target = SysUser.class, convertGenerate = false)
 public class SysUserExportVo implements Serializable {
     private static final long serialVersionUID = 1L;
 

@@ -1,6 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -12,6 +11,7 @@ import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.core.service.OssService;
 import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.utils.MapstructUtils;
 import com.ruoyi.common.utils.StreamUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.file.FileUtils;
@@ -25,13 +25,13 @@ import com.ruoyi.system.domain.bo.SysOssBo;
 import com.ruoyi.system.domain.vo.SysOssVo;
 import com.ruoyi.system.mapper.SysOssMapper;
 import com.ruoyi.system.service.ISysOssService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -39,7 +39,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * 文件上传 服务层实现
@@ -165,7 +164,7 @@ public class SysOssServiceImpl implements ISysOssService, OssService {
         oss.setOriginalName(originalfileName);
         oss.setService(configKey);
         baseMapper.insert(oss);
-        SysOssVo sysOssVo = BeanUtil.toBean(oss, SysOssVo.class);
+        SysOssVo sysOssVo = MapstructUtils.convert(oss, SysOssVo.class);
         return this.matchingUrl(sysOssVo);
     }
 

@@ -12,10 +12,13 @@
 
     <resultMap id="deptResult" type="com.ruoyi.system.domain.SysDept">
         <id property="deptId" column="dept_id"/>
+        <id property="email" column="dept_email"/>
+        <id property="status" column="dept_status"/>
     </resultMap>
 
     <resultMap id="RoleResult" type="com.ruoyi.system.domain.SysRole">
         <id property="roleId" column="role_id"/>
+        <id property="status" column="role_status"/>
     </resultMap>
 
     <sql id="selectUserVo">

@@ -8,6 +8,7 @@ import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.annotation.ExcelDictFormat;
 import com.ruoyi.common.convert.ExcelDictConvert;
 import lombok.Data;
+import io.github.linpeilie.annotations.AutoMapper;
 import java.util.Date;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.io.Serializable;
  */
 @Data
 @ExcelIgnoreUnannotated
+@AutoMapper(target = ${ClassName}.class)
 public class ${ClassName}Vo implements Serializable {
 
     private static final long serialVersionUID = 1L;

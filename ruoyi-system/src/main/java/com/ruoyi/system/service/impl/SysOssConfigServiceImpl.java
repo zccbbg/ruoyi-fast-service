@@ -1,6 +1,5 @@
 package com.ruoyi.system.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -12,6 +11,7 @@ import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.exception.ServiceException;
 import com.ruoyi.common.utils.JsonUtils;
+import com.ruoyi.common.utils.MapstructUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.redis.CacheUtils;
 import com.ruoyi.common.utils.redis.RedisUtils;
@@ -82,7 +82,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
 
     @Override
     public Boolean insertByBo(SysOssConfigBo bo) {
-        SysOssConfig config = BeanUtil.toBean(bo, SysOssConfig.class);
+        SysOssConfig config = MapstructUtils.convert(bo, SysOssConfig.class);
         validEntityBeforeSave(config);
         boolean flag = baseMapper.insert(config) > 0;
         if (flag) {
@@ -93,7 +93,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
 
     @Override
     public Boolean updateByBo(SysOssConfigBo bo) {
-        SysOssConfig config = BeanUtil.toBean(bo, SysOssConfig.class);
+        SysOssConfig config = MapstructUtils.convert(bo, SysOssConfig.class);
         validEntityBeforeSave(config);
         LambdaUpdateWrapper<SysOssConfig> luw = new LambdaUpdateWrapper<>();
         luw.set(ObjectUtil.isNull(config.getPrefix()), SysOssConfig::getPrefix, "");
@@ -157,7 +157,7 @@ public class SysOssConfigServiceImpl implements ISysOssConfigService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int updateOssConfigStatus(SysOssConfigBo bo) {
-        SysOssConfig sysOssConfig = BeanUtil.toBean(bo, SysOssConfig.class);
+        SysOssConfig sysOssConfig = MapstructUtils.convert(bo, SysOssConfig.class);
         int row = baseMapper.update(null, new LambdaUpdateWrapper<SysOssConfig>()
             .set(SysOssConfig::getStatus, "1"));
         row += baseMapper.updateById(sysOssConfig);

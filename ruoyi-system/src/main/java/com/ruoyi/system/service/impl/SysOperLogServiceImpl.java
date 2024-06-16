@@ -1,12 +1,12 @@
 package com.ruoyi.system.service.impl;
 
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.util.ArrayUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.domain.event.OperLogEvent;
 import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.utils.MapstructUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.ip.AddressUtils;
 import com.ruoyi.system.domain.SysOperLog;
@@ -41,7 +41,7 @@ public class SysOperLogServiceImpl implements ISysOperLogService {
     @Async
     @EventListener
     public void recordOper(OperLogEvent operLogEvent) {
-        SysOperLog operLog = BeanUtil.toBean(operLogEvent, SysOperLog.class);
+        SysOperLog operLog = MapstructUtils.convert(operLogEvent, SysOperLog.class);
         // 远程查询操作地点
         operLog.setOperLocation(AddressUtils.getRealAddressByIP(operLog.getOperIp()));
         insertOperlog(operLog);

@@ -2,6 +2,8 @@ package com.ruoyi.demo.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
+import com.ruoyi.demo.domain.TestDemo;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.util.Date;
@@ -15,6 +17,7 @@ import java.util.Date;
  */
 @Data
 @ExcelIgnoreUnannotated
+@AutoMapper(target = TestDemo.class)
 public class TestDemoVo {
 
     private static final long serialVersionUID = 1L;

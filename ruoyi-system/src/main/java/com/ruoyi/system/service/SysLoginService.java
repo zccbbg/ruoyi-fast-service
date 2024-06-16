@@ -9,6 +9,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.constant.Constants;
 import com.ruoyi.common.core.domain.dto.RoleDTO;
+import com.ruoyi.common.utils.*;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.common.core.domain.event.LogininforEvent;
 import com.ruoyi.common.core.domain.model.LoginUser;
@@ -20,10 +21,6 @@ import com.ruoyi.common.exception.user.CaptchaException;
 import com.ruoyi.common.exception.user.CaptchaExpireException;
 import com.ruoyi.common.exception.user.UserException;
 import com.ruoyi.common.helper.LoginHelper;
-import com.ruoyi.common.utils.DateUtils;
-import com.ruoyi.common.utils.MessageUtils;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.redis.RedisUtils;
 import com.ruoyi.common.utils.spring.SpringUtils;
 import com.ruoyi.system.mapper.SysUserMapper;
@@ -282,7 +279,7 @@ public class SysLoginService {
         loginUser.setMenuPermission(permissionService.getMenuPermission(user));
         loginUser.setRolePermission(permissionService.getRolePermission(user));
         loginUser.setDeptName(ObjectUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
-        List<RoleDTO> roles = BeanUtil.copyToList(user.getRoles(), RoleDTO.class);
+        List<RoleDTO> roles = MapstructUtils.convert(user.getRoles(), RoleDTO.class);
         loginUser.setRoles(roles);
         return loginUser;
     }

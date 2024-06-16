@@ -1,6 +1,8 @@
 package com.ruoyi.system.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
+import com.ruoyi.system.domain.SysOssConfig;
+import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 
@@ -13,6 +15,7 @@ import lombok.Data;
  */
 @Data
 @ExcelIgnoreUnannotated
+@AutoMapper(target = SysOssConfig.class)
 public class SysOssConfigVo {
 
     private static final long serialVersionUID = 1L;

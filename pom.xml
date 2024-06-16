@@ -336,6 +336,12 @@
                 <version>${ruoyi-vue-plus.version}</version>
             </dependency>
 
+            <dependency>
+                <groupId>io.github.linpeilie</groupId>
+                <artifactId>mapstruct-plus-spring-boot-starter</artifactId>
+                <version>${mapstruct-plus.version}</version>
+            </dependency>
+
             <!-- demo模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>

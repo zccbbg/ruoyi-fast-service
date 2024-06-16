@@ -2,7 +2,6 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
-import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -11,17 +10,18 @@ import com.ruoyi.common.constant.UserConstants;
 import com.ruoyi.common.core.controller.BaseController;
 import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.system.domain.SysDept;
-import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
 import com.ruoyi.common.excel.ExcelResult;
 import com.ruoyi.common.helper.LoginHelper;
+import com.ruoyi.common.utils.MapstructUtils;
 import com.ruoyi.common.utils.StreamUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.domain.SysRole;
+import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.domain.vo.SysUserExportVo;
 import com.ruoyi.system.domain.vo.SysUserImportVo;
 import com.ruoyi.system.listener.SysUserImportListener;
@@ -29,13 +29,13 @@ import com.ruoyi.system.service.ISysDeptService;
 import com.ruoyi.system.service.ISysPostService;
 import com.ruoyi.system.service.ISysRoleService;
 import com.ruoyi.system.service.ISysUserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import jakarta.servlet.http.HttpServletResponse;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -74,7 +74,7 @@ public class SysUserController extends BaseController {
     @PostMapping("/export")
     public void export(SysUser user, HttpServletResponse response) {
         List<SysUser> list = userService.selectUserList(user);
-        List<SysUserExportVo> listVo = BeanUtil.copyToList(list, SysUserExportVo.class);
+        List<SysUserExportVo> listVo = MapstructUtils.convert(list, SysUserExportVo.class);
         for (int i = 0; i < list.size(); i++) {
             SysDept dept = list.get(i).getDept();
             SysUserExportVo vo = listVo.get(i);
