@@ -3,6 +3,7 @@ package com.ruoyi.system.controller.monitor;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.exception.NotLoginException;
 import cn.dev33.satoken.stp.StpUtil;
+import cn.hutool.core.bean.BeanUtil;
 import com.ruoyi.common.annotation.Log;
 import com.ruoyi.common.constant.CacheConstants;
 import com.ruoyi.common.core.controller.BaseController;
@@ -10,7 +11,6 @@ import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.domain.dto.UserOnlineDTO;
 import com.ruoyi.common.core.page.TableDataInfo;
 import com.ruoyi.common.enums.BusinessType;
-import com.ruoyi.common.utils.MapstructUtils;
 import com.ruoyi.common.utils.StreamUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.redis.RedisUtils;
@@ -68,7 +68,7 @@ public class SysUserOnlineController extends BaseController {
         }
         Collections.reverse(userOnlineDTOList);
         userOnlineDTOList.removeAll(Collections.singleton(null));
-        List<SysUserOnline> userOnlineList = MapstructUtils.convert(userOnlineDTOList, SysUserOnline.class);
+        List<SysUserOnline> userOnlineList = BeanUtil.copyToList(userOnlineDTOList, SysUserOnline.class);
         return TableDataInfo.build(userOnlineList);
     }
 
