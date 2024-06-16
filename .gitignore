@@ -45,3 +45,5 @@ nbdist/
 !*/build/*.html
 !*/build/*.xml
 application-local.yml
+
+.flattened-pom.xml
