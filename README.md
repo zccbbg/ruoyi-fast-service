@@ -1,9 +1,8 @@
 ## 平台简介
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/dromara/RuoYi-Vue-Plus/blob/master/LICENSE)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-2.7-blue.svg)]()
-[![JDK-8+](https://img.shields.io/badge/JDK-8-green.svg)]()
-[![JDK-11](https://img.shields.io/badge/JDK-11-green.svg)]()
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-blue.svg)]()
+[![JDK-17](https://img.shields.io/badge/JDK-17-green.svg)]()
 
 > 本项目继承自ruoyi-vue-plus,由于ruoyi-vue-plus 4.x版本不再开发，而5.x过于庞大，增加了flowable和多租户，本项目在4.x基础上适当增加一些5.x比较好的功能。
 
