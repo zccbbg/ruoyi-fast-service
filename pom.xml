@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi-vue-plus</artifactId>
+    <artifactId>ruoyi-fast-service</artifactId>
     <version>${revision}</version>
 
-    <name>RuoYi-Vue-Plus</name>
+    <name>ruoyi-fast-service</name>
     <url>https://gitee.com/zccbbg/ruoyi-vue-plus-service</url>
-    <description>RuoYi-Vue-Plus后台管理系统</description>
+    <description>ruoyi-fast-service后台管理系统</description>
 
     <properties>
         <revision>5.0.0</revision>
