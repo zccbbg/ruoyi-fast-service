@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.excel;
+package com.ruoyi.common.excel.core;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ArrayUtil;
@@ -11,12 +11,13 @@ import com.alibaba.excel.util.ClassUtils;
 import com.alibaba.excel.write.handler.SheetWriteHandler;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
-import com.ruoyi.common.core.annotation.ExcelDictFormat;
-import com.ruoyi.common.core.annotation.ExcelEnumFormat;
 import com.ruoyi.common.core.core.service.DictService;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.StreamUtils;
+import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.excel.annotation.ExcelDictFormat;
+import com.ruoyi.common.excel.annotation.ExcelEnumFormat;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.ss.util.CellRangeAddressList;
@@ -99,15 +100,16 @@ public class ExcelDownHandler implements SheetWriteHandler {
                 ExcelDictFormat format = field.getDeclaredAnnotation(ExcelDictFormat.class);
                 String dictType = format.dictType();
                 String converterExp = format.readConverterExp();
-                if (StrUtil.isNotBlank(dictType)) {
+                if (StringUtils.isNotBlank(dictType)) {
                     // 如果传递了字典名，则依据字典建立下拉
                     Collection<String> values = Optional.ofNullable(dictService.getAllDictByDictType(dictType))
                         .orElseThrow(() -> new ServiceException(String.format("字典 %s 不存在", dictType)))
                         .values();
                     options = new ArrayList<>(values);
-                } else if (StrUtil.isNotBlank(converterExp)) {
+                } else if (StringUtils.isNotBlank(converterExp)) {
                     // 如果指定了确切的值，则直接解析确切的值
-                    options = StrUtil.split(converterExp, format.separator(), true, true);
+                    List<String> strList = StringUtils.splitList(converterExp, format.separator());
+                    options = StreamUtils.toList(strList, s -> StringUtils.split(s, "=")[1]);
                 }
             } else if (field.isAnnotationPresent(ExcelEnumFormat.class)) {
                 // 否则如果指定了@ExcelEnumFormat，则使用枚举的逻辑

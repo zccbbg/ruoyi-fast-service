@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.excel.annotation;
 
 import java.lang.annotation.*;
 

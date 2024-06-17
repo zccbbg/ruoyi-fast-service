@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.convert;
+package com.ruoyi.common.excel.convert;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.convert.Convert;
@@ -9,8 +9,8 @@ import com.alibaba.excel.metadata.GlobalConfiguration;
 import com.alibaba.excel.metadata.data.ReadCellData;
 import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
-import com.ruoyi.common.core.annotation.ExcelEnumFormat;
 import com.ruoyi.common.core.utils.reflect.ReflectUtils;
+import com.ruoyi.common.excel.annotation.ExcelEnumFormat;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;
@@ -39,22 +39,12 @@ public class ExcelEnumConvert implements Converter<Object> {
     public Object convertToJavaData(ReadCellData<?> cellData, ExcelContentProperty contentProperty, GlobalConfiguration globalConfiguration) {
         cellData.checkEmpty();
         // Excel中填入的是枚举中指定的描述
-        Object textValue = null;
-        switch (cellData.getType()) {
-            case STRING:
-            case DIRECT_STRING:
-            case RICH_TEXT_STRING:
-                textValue = cellData.getStringValue();
-                break;
-            case NUMBER:
-                textValue = cellData.getNumberValue();
-                break;
-            case BOOLEAN:
-                textValue = cellData.getBooleanValue();
-                break;
-            default:
-                throw new IllegalArgumentException("单元格类型异常!");
-        }
+        Object textValue = switch (cellData.getType()) {
+            case STRING, DIRECT_STRING, RICH_TEXT_STRING -> cellData.getStringValue();
+            case NUMBER -> cellData.getNumberValue();
+            case BOOLEAN -> cellData.getBooleanValue();
+            default -> throw new IllegalArgumentException("单元格类型异常!");
+        };
         // 如果是空值
         if (ObjectUtil.isNull(textValue)) {
             return null;

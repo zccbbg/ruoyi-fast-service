@@ -28,6 +28,11 @@
             <artifactId>ruoyi-common-sms</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-excel</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

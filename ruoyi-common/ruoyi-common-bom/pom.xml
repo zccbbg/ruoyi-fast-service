@@ -47,6 +47,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- excel -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-common-excel</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

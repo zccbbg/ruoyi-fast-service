@@ -1,6 +1,6 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.excel.annotation;
 
-import com.ruoyi.common.core.excel.CellMergeStrategy;
+import com.ruoyi.common.excel.core.CellMergeStrategy;
 
 import java.lang.annotation.*;
 
@@ -20,5 +20,10 @@ public @interface CellMerge {
 	 * col index
 	 */
 	int index() default -1;
+
+    /**
+     * 合并需要依赖的其他字段名称
+     */
+    String[] mergeBy() default {};
 
 }

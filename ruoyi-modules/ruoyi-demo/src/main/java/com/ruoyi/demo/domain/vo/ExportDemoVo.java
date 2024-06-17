@@ -2,19 +2,18 @@ package com.ruoyi.demo.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.common.core.annotation.ExcelDictFormat;
-import com.ruoyi.common.core.annotation.ExcelEnumFormat;
-import com.ruoyi.common.core.convert.ExcelDictConvert;
-import com.ruoyi.common.core.convert.ExcelEnumConvert;
 import com.ruoyi.common.core.core.validate.AddGroup;
 import com.ruoyi.common.core.core.validate.EditGroup;
 import com.ruoyi.common.core.enums.UserStatus;
+import com.ruoyi.common.excel.annotation.ExcelDictFormat;
+import com.ruoyi.common.excel.annotation.ExcelEnumFormat;
+import com.ruoyi.common.excel.convert.ExcelDictConvert;
+import com.ruoyi.common.excel.convert.ExcelEnumConvert;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 /**
  * 带有下拉选的Excel导出

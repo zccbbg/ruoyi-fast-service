@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.excel;
+package com.ruoyi.common.excel.core;
 
 import java.util.List;
 

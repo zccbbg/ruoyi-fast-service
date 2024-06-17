@@ -3,26 +3,28 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
-        <artifactId>ruoyi-fast-service</artifactId>
         <groupId>com.ruoyi</groupId>
+        <artifactId>ruoyi-common</artifactId>
         <version>${revision}</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <modules>
-        <module>ruoyi-common-bom</module>
-        <module>ruoyi-common-core</module>
-        <module>ruoyi-common-oss</module>
-        <module>ruoyi-common-sms</module>
-        <module>ruoyi-common-json</module>
-        <module>ruoyi-common-excel</module>
-    </modules>
-
-    <artifactId>ruoyi-common</artifactId>
-    <packaging>pom</packaging>
+    <artifactId>ruoyi-common-excel</artifactId>
 
     <description>
-        common 通用模块
+        ruoyi-common-excel
     </description>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-json</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+        </dependency>
+    </dependencies>
 
 </project>
