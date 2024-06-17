@@ -4,7 +4,6 @@ import cn.dev33.satoken.secure.BCrypt;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.domain.event.LogininforEvent;
-import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.common.core.domain.model.RegisterBody;
 import com.ruoyi.common.core.enums.UserType;
 import com.ruoyi.common.core.exception.user.CaptchaException;
@@ -12,9 +11,11 @@ import com.ruoyi.common.core.exception.user.CaptchaExpireException;
 import com.ruoyi.common.core.exception.user.UserException;
 import com.ruoyi.common.core.utils.MessageUtils;
 import com.ruoyi.common.core.utils.ServletUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.redis.utils.RedisUtils;
-import com.ruoyi.common.core.utils.SpringUtils;
+import com.ruoyi.common.web.config.properties.CaptchaProperties;
+import com.ruoyi.system.domain.SysUser;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -28,7 +29,7 @@ import org.springframework.stereotype.Service;
 public class SysRegisterService {
 
     private final ISysUserService userService;
-    private final ISysConfigService configService;
+    private final CaptchaProperties captchaProperties;
 
     /**
      * 注册
@@ -39,7 +40,7 @@ public class SysRegisterService {
         // 校验用户类型是否存在
         String userType = UserType.getUserType(registerBody.getUserType()).getUserType();
 
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
+        boolean captchaEnabled = captchaProperties.getEnable();
         // 验证码开关
         if (captchaEnabled) {
             validateCaptcha(username, registerBody.getCode(), registerBody.getUuid());

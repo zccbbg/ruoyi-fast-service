@@ -18,9 +18,10 @@ import com.ruoyi.common.core.enums.UserStatus;
 import com.ruoyi.common.core.exception.user.CaptchaException;
 import com.ruoyi.common.core.exception.user.CaptchaExpireException;
 import com.ruoyi.common.core.exception.user.UserException;
-import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.core.utils.*;
 import com.ruoyi.common.redis.utils.RedisUtils;
+import com.ruoyi.common.web.config.properties.CaptchaProperties;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
@@ -43,7 +44,7 @@ import java.util.function.Supplier;
 public class SysLoginService {
 
     private final SysUserMapper userMapper;
-    private final ISysConfigService configService;
+    private final CaptchaProperties captchaProperties;
     private final SysPermissionService permissionService;
 
     @Value("${user.password.maxRetryCount}")
@@ -62,7 +63,7 @@ public class SysLoginService {
      * @return 结果
      */
     public String login(String username, String password, String code, String uuid) {
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
+        boolean captchaEnabled = captchaProperties.getEnable();
         // 验证码开关
         if (captchaEnabled) {
             validateCaptcha(username, code, uuid);

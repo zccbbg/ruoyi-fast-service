@@ -3,7 +3,7 @@ package com.ruoyi.system.controller.monitor;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ruoyi.common.core.annotation.Log;
 import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.core.controller.BaseController;
+import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.core.page.TableDataInfo;

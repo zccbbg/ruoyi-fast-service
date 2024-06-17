@@ -4,12 +4,12 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.lang.tree.Tree;
 import com.ruoyi.common.core.annotation.Log;
 import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.core.controller.BaseController;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.helper.LoginHelper;
-import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.common.core.enums.BusinessType;
 import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.satoken.utils.LoginHelper;
+import com.ruoyi.common.web.core.BaseController;
+import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.service.ISysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -37,7 +37,7 @@ public class SysMenuController extends BaseController {
     @SaCheckPermission("system:menu:list")
     @GetMapping("/list")
     public R<List<SysMenu>> list(SysMenu menu) {
-        List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
+        List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId());
         return R.ok(menus);
     }
 
@@ -57,7 +57,7 @@ public class SysMenuController extends BaseController {
      */
     @GetMapping("/treeselect")
     public R<List<Tree<Long>>> treeselect(SysMenu menu) {
-        List<SysMenu> menus = menuService.selectMenuList(menu, getUserId());
+        List<SysMenu> menus = menuService.selectMenuList(menu, LoginHelper.getUserId());
         return R.ok(menuService.buildMenuTreeSelect(menus));
     }
 

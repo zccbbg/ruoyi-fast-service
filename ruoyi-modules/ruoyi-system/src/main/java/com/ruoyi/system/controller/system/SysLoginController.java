@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.model.EmailLoginBody;
 import com.ruoyi.common.core.domain.model.LoginBody;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.domain.model.SmsLoginBody;
-import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.system.domain.vo.RouterVo;
 import com.ruoyi.system.service.ISysMenuService;
 import com.ruoyi.system.service.ISysUserService;

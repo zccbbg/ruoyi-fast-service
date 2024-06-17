@@ -5,7 +5,7 @@ import cn.hutool.core.util.ObjectUtil;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.event.AnalysisEventListener;
 import com.ruoyi.common.core.exception.ServiceException;
-import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.ValidatorUtils;
 import com.ruoyi.common.core.utils.SpringUtils;

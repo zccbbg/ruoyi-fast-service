@@ -7,12 +7,12 @@ import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.annotation.Log;
 import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.core.controller.BaseController;
+import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.core.page.TableDataInfo;
 import com.ruoyi.common.core.enums.BusinessType;
-import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;
@@ -182,7 +182,7 @@ public class SysUserController extends BaseController {
     @Log(title = "用户管理", businessType = BusinessType.DELETE)
     @DeleteMapping("/{userIds}")
     public R<Void> remove(@PathVariable Long[] userIds) {
-        if (ArrayUtil.contains(userIds, getUserId())) {
+        if (ArrayUtil.contains(userIds, LoginHelper.getUserId())) {
             return R.fail("当前用户不能删除");
         }
         return toAjax(userService.deleteUserByIds(userIds));

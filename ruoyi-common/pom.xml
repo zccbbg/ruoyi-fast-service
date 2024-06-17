@@ -18,6 +18,8 @@
         <module>ruoyi-common-excel</module>
         <module>ruoyi-common-redis</module>
         <module>ruoyi-common-satoken</module>
+        <module>ruoyi-common-web</module>
+        <module>ruoyi-common-security</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>

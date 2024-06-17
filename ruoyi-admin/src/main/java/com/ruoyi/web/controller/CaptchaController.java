@@ -8,15 +8,15 @@ import cn.hutool.core.util.RandomUtil;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.enums.CaptchaType;
+import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.email.MailUtils;
-import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.common.core.utils.reflect.ReflectUtils;
-import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.framework.config.properties.CaptchaProperties;
+import com.ruoyi.common.redis.utils.RedisUtils;
+import com.ruoyi.common.web.config.properties.CaptchaProperties;
+import com.ruoyi.common.web.enums.CaptchaType;
 import com.ruoyi.framework.config.properties.MailProperties;
-import com.ruoyi.system.service.ISysConfigService;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.sms4j.api.SmsBlend;
@@ -30,7 +30,6 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.constraints.NotBlank;
 import java.time.Duration;
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -48,7 +47,6 @@ import java.util.Map;
 public class CaptchaController {
 
     private final CaptchaProperties captchaProperties;
-    private final ISysConfigService configService;
     private final MailProperties mailProperties;
 
     /**
@@ -101,7 +99,7 @@ public class CaptchaController {
      */
     @GetMapping("/captchaImage")
     public R<Map<String, Object>> getCode() {
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
+        boolean captchaEnabled = captchaProperties.getEnable();
         if (!captchaEnabled) {
             return R.ok(Map.of("captchaEnabled", captchaEnabled));
         }

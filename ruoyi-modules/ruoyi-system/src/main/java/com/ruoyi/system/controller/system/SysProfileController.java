@@ -3,11 +3,11 @@ package com.ruoyi.system.controller.system;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.io.FileUtil;
 import com.ruoyi.common.core.annotation.Log;
-import com.ruoyi.common.core.core.controller.BaseController;
+import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.common.core.enums.BusinessType;
-import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.file.MimeTypeUtils;
 import com.ruoyi.system.domain.vo.SysOssVo;
@@ -61,7 +61,7 @@ public class SysProfileController extends BaseController {
         if (StringUtils.isNotEmpty(user.getEmail()) && !userService.checkEmailUnique(user)) {
             return R.fail("修改用户'" + user.getUserName() + "'失败，邮箱账号已存在");
         }
-        user.setUserId(getUserId());
+        user.setUserId(LoginHelper.getUserId());
         user.setUserName(null);
         user.setPassword(null);
         user.setAvatar(null);

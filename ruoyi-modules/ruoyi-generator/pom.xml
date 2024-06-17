@@ -29,6 +29,15 @@
             <artifactId>ruoyi-common-core</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-satoken</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>
