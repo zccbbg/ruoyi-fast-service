@@ -1,4 +1,4 @@
-package com.ruoyi.oss.constant;
+package com.ruoyi.common.oss.constant;
 
 import java.util.Arrays;
 import java.util.List;

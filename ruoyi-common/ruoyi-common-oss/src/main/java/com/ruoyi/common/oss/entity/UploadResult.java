@@ -1,4 +1,4 @@
-package com.ruoyi.oss.entity;
+package com.ruoyi.common.oss.entity;
 
 import lombok.Builder;
 import lombok.Data;

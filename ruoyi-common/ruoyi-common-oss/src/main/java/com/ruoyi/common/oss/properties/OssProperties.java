@@ -1,4 +1,4 @@
-package com.ruoyi.oss.properties;
+package com.ruoyi.common.oss.properties;
 
 import lombok.Data;
 

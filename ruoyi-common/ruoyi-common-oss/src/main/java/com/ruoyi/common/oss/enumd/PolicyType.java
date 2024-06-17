@@ -1,4 +1,4 @@
-package com.ruoyi.oss.enumd;
+package com.ruoyi.common.oss.enumd;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

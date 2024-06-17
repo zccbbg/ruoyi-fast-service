@@ -1,4 +1,4 @@
-package com.ruoyi.oss.exception;
+package com.ruoyi.common.oss.exception;
 
 /**
  * OSS异常类

@@ -15,7 +15,7 @@ import com.ruoyi.common.utils.MapstructUtils;
 import com.ruoyi.common.utils.StringUtils;
 import com.ruoyi.common.utils.redis.CacheUtils;
 import com.ruoyi.common.utils.redis.RedisUtils;
-import com.ruoyi.oss.constant.OssConstant;
+import com.ruoyi.common.oss.constant.OssConstant;
 import com.ruoyi.system.domain.SysOssConfig;
 import com.ruoyi.system.domain.bo.SysOssConfigBo;
 import com.ruoyi.system.domain.vo.SysOssConfigVo;

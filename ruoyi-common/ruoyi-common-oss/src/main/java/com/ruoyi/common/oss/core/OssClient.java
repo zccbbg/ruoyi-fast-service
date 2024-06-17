@@ -1,4 +1,4 @@
-package com.ruoyi.oss.core;
+package com.ruoyi.common.oss.core;
 
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.util.IdUtil;
@@ -16,12 +16,12 @@ import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import com.amazonaws.services.s3.model.*;
 import com.ruoyi.common.utils.DateUtils;
 import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.oss.constant.OssConstant;
-import com.ruoyi.oss.entity.UploadResult;
-import com.ruoyi.oss.enumd.AccessPolicyType;
-import com.ruoyi.oss.enumd.PolicyType;
-import com.ruoyi.oss.exception.OssException;
-import com.ruoyi.oss.properties.OssProperties;
+import com.ruoyi.common.oss.constant.OssConstant;
+import com.ruoyi.common.oss.entity.UploadResult;
+import com.ruoyi.common.oss.enumd.AccessPolicyType;
+import com.ruoyi.common.oss.enumd.PolicyType;
+import com.ruoyi.common.oss.exception.OssException;
+import com.ruoyi.common.oss.properties.OssProperties;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
