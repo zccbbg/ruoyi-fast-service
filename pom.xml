@@ -324,20 +324,6 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- 通用工具-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <!-- OSS对象存储模块 -->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-oss</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
             <!-- SMS短信模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -367,7 +353,6 @@
         <module>ruoyi-common</module>
         <module>ruoyi-extend</module>
         <module>ruoyi-modules</module>
-        <module>ruoyi-oss</module>
         <module>ruoyi-sms</module>
     </modules>
     <packaging>pom</packaging>

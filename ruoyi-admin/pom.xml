@@ -63,7 +63,7 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-oss</artifactId>
+            <artifactId>ruoyi-common-oss</artifactId>
         </dependency>
 
         <!-- 代码生成-->
