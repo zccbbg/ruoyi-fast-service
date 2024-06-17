@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.utils.email;
+package com.ruoyi.common.mail.utils;
 
 import jakarta.mail.Authenticator;
 import jakarta.mail.PasswordAuthentication;

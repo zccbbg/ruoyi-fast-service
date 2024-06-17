@@ -1,18 +1,17 @@
-package com.ruoyi.common.core.utils.email;
+package com.ruoyi.common.mail.utils;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.io.IoUtil;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.CharUtil;
 import cn.hutool.core.util.StrUtil;
-import cn.hutool.extra.mail.*;
-import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import lombok.AccessLevel;
-import lombok.NoArgsConstructor;
-
 import jakarta.mail.Authenticator;
 import jakarta.mail.Session;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
+import com.ruoyi.common.core.utils.SpringUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+
 import java.io.File;
 import java.io.InputStream;
 import java.util.Collection;
