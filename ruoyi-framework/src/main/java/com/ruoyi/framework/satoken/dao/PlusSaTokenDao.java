@@ -2,7 +2,7 @@ package com.ruoyi.framework.satoken.dao;
 
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.util.SaFoxUtil;
-import com.ruoyi.common.utils.redis.RedisUtils;
+import com.ruoyi.common.core.utils.redis.RedisUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;

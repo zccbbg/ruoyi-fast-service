@@ -1,14 +1,14 @@
 package com.ruoyi.framework.aspectj;
 
 import cn.hutool.core.util.ArrayUtil;
-import com.ruoyi.common.annotation.RateLimiter;
-import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.enums.LimitType;
-import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.common.utils.MessageUtils;
-import com.ruoyi.common.utils.ServletUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.redis.RedisUtils;
+import com.ruoyi.common.core.annotation.RateLimiter;
+import com.ruoyi.common.core.constant.CacheConstants;
+import com.ruoyi.common.core.enums.LimitType;
+import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.common.core.utils.MessageUtils;
+import com.ruoyi.common.core.utils.ServletUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.core.utils.redis.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;

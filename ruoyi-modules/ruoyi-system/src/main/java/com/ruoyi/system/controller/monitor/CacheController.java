@@ -2,14 +2,14 @@ package com.ruoyi.system.controller.monitor;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.hutool.core.collection.CollUtil;
-import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.constant.CacheNames;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.utils.JsonUtils;
-import com.ruoyi.common.utils.StreamUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.redis.CacheUtils;
-import com.ruoyi.common.utils.redis.RedisUtils;
+import com.ruoyi.common.core.constant.CacheConstants;
+import com.ruoyi.common.core.constant.CacheNames;
+import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.utils.JsonUtils;
+import com.ruoyi.common.core.utils.StreamUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.core.utils.redis.CacheUtils;
+import com.ruoyi.common.core.utils.redis.RedisUtils;
 import com.ruoyi.system.domain.SysCache;
 import lombok.RequiredArgsConstructor;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
@@ -17,7 +17,6 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 /**
  * 缓存监控

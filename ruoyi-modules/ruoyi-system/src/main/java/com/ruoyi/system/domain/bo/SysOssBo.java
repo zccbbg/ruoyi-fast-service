@@ -1,6 +1,6 @@
 package com.ruoyi.system.domain.bo;
 
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.core.domain.BaseEntity;
 import com.ruoyi.system.domain.SysOss;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;

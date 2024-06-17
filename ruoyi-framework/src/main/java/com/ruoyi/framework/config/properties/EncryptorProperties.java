@@ -1,10 +1,9 @@
 package com.ruoyi.framework.config.properties;
 
-import com.ruoyi.common.enums.AlgorithmType;
-import com.ruoyi.common.enums.EncodeType;
+import com.ruoyi.common.core.enums.AlgorithmType;
+import com.ruoyi.common.core.enums.EncodeType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * 加解密属性配置类

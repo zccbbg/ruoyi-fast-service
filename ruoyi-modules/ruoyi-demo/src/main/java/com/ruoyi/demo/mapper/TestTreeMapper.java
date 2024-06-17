@@ -1,8 +1,8 @@
 package com.ruoyi.demo.mapper;
 
-import com.ruoyi.common.annotation.DataColumn;
-import com.ruoyi.common.annotation.DataPermission;
-import com.ruoyi.common.core.mapper.BaseMapperPlus;
+import com.ruoyi.common.core.annotation.DataColumn;
+import com.ruoyi.common.core.annotation.DataPermission;
+import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
 import com.ruoyi.demo.domain.TestTree;
 import com.ruoyi.demo.domain.vo.TestTreeVo;
 

@@ -3,11 +3,11 @@ package com.ruoyi.framework.handler;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.common.helper.LoginHelper;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.core.domain.BaseEntity;
+import com.ruoyi.common.core.core.domain.model.LoginUser;
+import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.core.utils.StringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 

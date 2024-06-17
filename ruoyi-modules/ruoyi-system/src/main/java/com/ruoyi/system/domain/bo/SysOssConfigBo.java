@@ -1,8 +1,8 @@
 package com.ruoyi.system.domain.bo;
 
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.common.core.validate.AddGroup;
-import com.ruoyi.common.core.validate.EditGroup;
+import com.ruoyi.common.core.core.domain.BaseEntity;
+import com.ruoyi.common.core.core.validate.AddGroup;
+import com.ruoyi.common.core.core.validate.EditGroup;
 import com.ruoyi.system.domain.SysOssConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;

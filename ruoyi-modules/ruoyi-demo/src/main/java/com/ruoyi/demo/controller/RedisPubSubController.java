@@ -1,7 +1,7 @@
 package com.ruoyi.demo.controller;
 
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.utils.redis.RedisUtils;
+import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.utils.redis.RedisUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

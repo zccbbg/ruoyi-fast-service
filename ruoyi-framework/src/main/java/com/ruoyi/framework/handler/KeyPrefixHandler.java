@@ -1,6 +1,6 @@
 package com.ruoyi.framework.handler;
 
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.utils.StringUtils;
 import org.redisson.api.NameMapper;
 
 /**

@@ -1,9 +1,9 @@
 package com.ruoyi.generator.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.ruoyi.common.constant.GenConstants;
-import com.ruoyi.common.core.domain.BaseEntity;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.constant.GenConstants;
+import com.ruoyi.common.core.core.domain.BaseEntity;
+import com.ruoyi.common.core.utils.StringUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.ArrayUtils;

@@ -2,8 +2,8 @@ package com.ruoyi.demo.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.ruoyi.common.utils.MapstructUtils;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.utils.MapstructUtils;
+import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.demo.domain.TestTree;
 import com.ruoyi.demo.domain.bo.TestTreeBo;
 import com.ruoyi.demo.domain.vo.TestTreeVo;

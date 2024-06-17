@@ -1,9 +1,9 @@
 package com.ruoyi.framework.manager;
 
 import cn.hutool.core.util.ReflectUtil;
-import com.ruoyi.common.annotation.EncryptField;
-import com.ruoyi.common.encrypt.EncryptContext;
-import com.ruoyi.common.encrypt.IEncryptor;
+import com.ruoyi.common.core.annotation.EncryptField;
+import com.ruoyi.common.core.encrypt.EncryptContext;
+import com.ruoyi.common.core.encrypt.IEncryptor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.lang.reflect.Field;

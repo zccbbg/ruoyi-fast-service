@@ -1,10 +1,9 @@
 package com.ruoyi.framework.config.properties;
 
-import com.ruoyi.common.enums.CaptchaCategory;
-import com.ruoyi.common.enums.CaptchaType;
+import com.ruoyi.common.core.enums.CaptchaCategory;
+import com.ruoyi.common.core.enums.CaptchaType;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
-import org.springframework.stereotype.Component;
 
 /**
  * 验证码 配置属性

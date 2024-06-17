@@ -1,9 +1,9 @@
 package com.ruoyi.system.service;
 
-import com.ruoyi.common.core.domain.PageQuery;
+import com.ruoyi.common.core.core.domain.PageQuery;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysDictType;
-import com.ruoyi.common.core.page.TableDataInfo;
+import com.ruoyi.common.core.core.page.TableDataInfo;
 
 import java.util.List;
 

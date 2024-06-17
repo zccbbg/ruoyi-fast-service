@@ -2,7 +2,7 @@ package com.ruoyi.system.domain;
 
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ruoyi.common.core.domain.BaseEntity;
+import com.ruoyi.common.core.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

@@ -1,9 +1,9 @@
 package com.ruoyi.framework.satoken.service;
 
 import cn.dev33.satoken.stp.StpInterface;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.enums.UserType;
-import com.ruoyi.common.helper.LoginHelper;
+import com.ruoyi.common.core.core.domain.model.LoginUser;
+import com.ruoyi.common.core.enums.UserType;
+import com.ruoyi.common.core.helper.LoginHelper;
 
 import java.util.ArrayList;
 import java.util.List;

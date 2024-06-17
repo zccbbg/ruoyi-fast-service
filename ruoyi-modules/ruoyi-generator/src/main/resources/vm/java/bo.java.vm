@@ -1,20 +1,15 @@
 package ${packageName}.domain.bo;
 
-import com.ruoyi.common.core.validate.AddGroup;
-import com.ruoyi.common.core.validate.EditGroup;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import jakarta.validation.constraints.*;
 import io.github.linpeilie.annotations.AutoMapper;
-import java.util.Date;
 
 #foreach ($import in $importList)
 import ${import};
 #end
 #if($table.crud || $table.sub)
-import com.ruoyi.common.core.domain.BaseEntity;
 #elseif($table.tree)
-import com.ruoyi.common.core.domain.TreeEntity;
 #end
 
 /**

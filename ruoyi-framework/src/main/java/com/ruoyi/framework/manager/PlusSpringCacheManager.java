@@ -15,7 +15,7 @@
  */
 package com.ruoyi.framework.manager;
 
-import com.ruoyi.common.utils.redis.RedisUtils;
+import com.ruoyi.common.core.utils.redis.RedisUtils;
 import org.redisson.api.RMap;
 import org.redisson.api.RMapCache;
 import org.redisson.spring.cache.CacheConfig;

@@ -1,6 +1,6 @@
 package com.ruoyi.demo.controller;
 
-import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.core.domain.R;
 import lombok.RequiredArgsConstructor;
 import org.dromara.sms4j.api.SmsBlend;
 import org.dromara.sms4j.api.entity.SmsResponse;

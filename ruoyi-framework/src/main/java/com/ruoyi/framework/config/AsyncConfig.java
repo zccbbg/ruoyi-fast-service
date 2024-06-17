@@ -1,7 +1,7 @@
 package com.ruoyi.framework.config;
 
 import cn.hutool.core.util.ArrayUtil;
-import com.ruoyi.common.exception.ServiceException;
+import com.ruoyi.common.core.exception.ServiceException;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

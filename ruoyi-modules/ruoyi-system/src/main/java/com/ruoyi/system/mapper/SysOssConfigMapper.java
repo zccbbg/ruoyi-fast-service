@@ -1,6 +1,6 @@
 package com.ruoyi.system.mapper;
 
-import com.ruoyi.common.core.mapper.BaseMapperPlus;
+import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
 import com.ruoyi.system.domain.SysOssConfig;
 import com.ruoyi.system.domain.vo.SysOssConfigVo;
 

@@ -1,10 +1,10 @@
 package com.ruoyi.framework.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ruoyi.common.annotation.TranslationType;
-import com.ruoyi.common.translation.TranslationInterface;
-import com.ruoyi.common.translation.handler.TranslationBeanSerializerModifier;
-import com.ruoyi.common.translation.handler.TranslationHandler;
+import com.ruoyi.common.core.annotation.TranslationType;
+import com.ruoyi.common.core.translation.TranslationInterface;
+import com.ruoyi.common.core.translation.handler.TranslationBeanSerializerModifier;
+import com.ruoyi.common.core.translation.handler.TranslationHandler;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;

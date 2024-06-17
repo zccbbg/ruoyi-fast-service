@@ -1,6 +1,6 @@
 package com.ruoyi.framework.manager;
 
-import com.ruoyi.common.utils.Threads;
+import com.ruoyi.common.core.utils.Threads;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

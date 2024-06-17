@@ -1,12 +1,12 @@
 package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ruoyi.common.annotation.Log;
-import com.ruoyi.common.core.controller.BaseController;
-import com.ruoyi.common.core.domain.PageQuery;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.page.TableDataInfo;
-import com.ruoyi.common.enums.BusinessType;
+import com.ruoyi.common.core.annotation.Log;
+import com.ruoyi.common.core.core.controller.BaseController;
+import com.ruoyi.common.core.core.domain.PageQuery;
+import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.core.page.TableDataInfo;
+import com.ruoyi.common.core.enums.BusinessType;
 import com.ruoyi.system.domain.SysNotice;
 import com.ruoyi.system.service.ISysNoticeService;
 import lombok.RequiredArgsConstructor;

@@ -1,10 +1,9 @@
 package com.ruoyi.framework.config;
 
-import com.ruoyi.common.filter.RepeatableFilter;
-import com.ruoyi.common.filter.XssFilter;
-import com.ruoyi.common.utils.StringUtils;
+import com.ruoyi.common.core.filter.RepeatableFilter;
+import com.ruoyi.common.core.filter.XssFilter;
+import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.framework.config.properties.XssProperties;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;

@@ -1,8 +1,8 @@
 package com.ruoyi.demo.controller;
 
 import cn.hutool.core.collection.CollUtil;
-import com.ruoyi.common.excel.ExcelResult;
-import com.ruoyi.common.utils.poi.ExcelUtil;
+import com.ruoyi.common.core.excel.ExcelResult;
+import com.ruoyi.common.core.utils.poi.ExcelUtil;
 import com.ruoyi.demo.domain.vo.ExportDemoVo;
 import com.ruoyi.demo.listener.ExportDemoListener;
 import com.ruoyi.demo.service.IExportExcelService;

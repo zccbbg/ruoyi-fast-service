@@ -4,17 +4,17 @@ import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.common.annotation.DataColumn;
-import com.ruoyi.common.annotation.DataPermission;
-import com.ruoyi.common.core.domain.dto.RoleDTO;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.enums.DataScopeType;
-import com.ruoyi.common.exception.ServiceException;
-import com.ruoyi.common.helper.DataPermissionHelper;
-import com.ruoyi.common.helper.LoginHelper;
-import com.ruoyi.common.utils.StreamUtils;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.spring.SpringUtils;
+import com.ruoyi.common.core.annotation.DataColumn;
+import com.ruoyi.common.core.annotation.DataPermission;
+import com.ruoyi.common.core.core.domain.dto.RoleDTO;
+import com.ruoyi.common.core.core.domain.model.LoginUser;
+import com.ruoyi.common.core.enums.DataScopeType;
+import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.common.core.helper.DataPermissionHelper;
+import com.ruoyi.common.core.helper.LoginHelper;
+import com.ruoyi.common.core.utils.StreamUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.core.utils.spring.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
@@ -33,7 +33,6 @@ import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
-import java.util.stream.Collectors;
 
 /**
  * 数据权限过滤
