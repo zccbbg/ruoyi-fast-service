@@ -1,27 +1,29 @@
-package com.ruoyi.framework.aspectj;
+package com.ruoyi.common.log.aspect;
 
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.map.MapUtil;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.common.core.annotation.Log;
-import com.ruoyi.common.core.domain.event.OperLogEvent;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.core.enums.BusinessStatus;
-import com.ruoyi.common.core.enums.HttpMethod;
-import com.ruoyi.common.core.utils.JsonUtils;
-import com.ruoyi.common.core.utils.ServletUtils;
-import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.satoken.utils.LoginHelper;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.lang3.time.StopWatch;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
-import org.springframework.stereotype.Component;
+import org.aspectj.lang.annotation.Before;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.utils.ServletUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.json.utils.JsonUtils;
+import com.ruoyi.common.log.annotation.Log;
+import com.ruoyi.common.log.enums.BusinessStatus;
+import com.ruoyi.common.log.event.OperLogEvent;
+import com.ruoyi.common.satoken.utils.LoginHelper;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.http.HttpMethod;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -36,13 +38,29 @@ import java.util.StringJoiner;
  */
 @Slf4j
 @Aspect
-@Component
+@AutoConfiguration
 public class LogAspect {
 
     /**
      * 排除敏感属性字段
      */
     public static final String[] EXCLUDE_PROPERTIES = { "password", "oldPassword", "newPassword", "confirmPassword" };
+
+
+    /**
+     * 计时 key
+     */
+    private static final ThreadLocal<StopWatch> KEY_CACHE = new ThreadLocal<>();
+
+    /**
+     * 处理请求前执行
+     */
+    @Before(value = "@annotation(controllerLog)")
+    public void boBefore(JoinPoint joinPoint, Log controllerLog) {
+        StopWatch stopWatch = new StopWatch();
+        KEY_CACHE.set(stopWatch);
+        stopWatch.start();
+    }
 
     /**
      * 处理完请求后执行
@@ -91,12 +109,18 @@ public class LogAspect {
             operLog.setRequestMethod(ServletUtils.getRequest().getMethod());
             // 处理设置注解上的参数
             getControllerMethodDescription(joinPoint, controllerLog, operLog, jsonResult);
+            // 设置消耗时间
+            StopWatch stopWatch = KEY_CACHE.get();
+            stopWatch.stop();
+            operLog.setCostTime(stopWatch.getTime());
             // 发布事件保存数据库
             SpringUtils.context().publishEvent(operLog);
         } catch (Exception exp) {
             // 记录本地异常日志
             log.error("异常信息:{}", exp.getMessage());
             exp.printStackTrace();
+        } finally {
+            KEY_CACHE.remove();
         }
     }
 
@@ -135,7 +159,7 @@ public class LogAspect {
         Map<String, String> paramsMap = ServletUtils.getParamMap(ServletUtils.getRequest());
         String requestMethod = operLog.getRequestMethod();
         if (MapUtil.isEmpty(paramsMap)
-            && HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
+                && HttpMethod.PUT.name().equals(requestMethod) || HttpMethod.POST.name().equals(requestMethod)) {
             String params = argsArrayToString(joinPoint.getArgs(), excludeParamNames);
             operLog.setOperParam(StringUtils.substring(params, 0, 2000));
         } else {
@@ -178,7 +202,7 @@ public class LogAspect {
     public boolean isFilterObject(final Object o) {
         Class<?> clazz = o.getClass();
         if (clazz.isArray()) {
-            return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
+            return MultipartFile.class.isAssignableFrom(clazz.getComponentType());
         } else if (Collection.class.isAssignableFrom(clazz)) {
             Collection collection = (Collection) o;
             for (Object value : collection) {
@@ -191,6 +215,6 @@ public class LogAspect {
             }
         }
         return o instanceof MultipartFile || o instanceof HttpServletRequest || o instanceof HttpServletResponse
-            || o instanceof BindingResult;
+               || o instanceof BindingResult;
     }
 }

@@ -1,7 +1,8 @@
-package com.ruoyi.common.core.domain.event;
+package com.ruoyi.common.log.event;
 
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 
@@ -14,6 +15,7 @@ import java.util.Date;
 @Data
 public class OperLogEvent implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -101,4 +103,8 @@ public class OperLogEvent implements Serializable {
      */
     private Date operTime;
 
+    /**
+     * 消耗时间
+     */
+    private Long costTime;
 }

@@ -22,6 +22,7 @@
         <module>ruoyi-common-security</module>
         <module>ruoyi-common-mybatis</module>
         <module>ruoyi-common-mail</module>
+        <module>ruoyi-common-log</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>

@@ -1,8 +1,10 @@
-package com.ruoyi.common.core.domain.event;
+package com.ruoyi.common.log.event;
 
 import lombok.Data;
 
 import jakarta.servlet.http.HttpServletRequest;
+
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -14,7 +16,13 @@ import java.io.Serializable;
 @Data
 public class LogininforEvent implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
+
+    /**
+     * 租户ID
+     */
+    private String tenantId;
 
     /**
      * 用户账号
