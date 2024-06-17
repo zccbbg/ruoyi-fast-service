@@ -1,8 +1,6 @@
 package com.ruoyi.common.core.enums;
 
 import com.ruoyi.common.core.encrypt.encryptor.*;
-import com.ruoyi.common.encrypt.encryptor.*;
-import com.ruoyi.core.encrypt.encryptor.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
