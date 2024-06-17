@@ -17,6 +17,7 @@
         <module>ruoyi-common-json</module>
         <module>ruoyi-common-excel</module>
         <module>ruoyi-common-redis</module>
+        <module>ruoyi-common-satoken</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>

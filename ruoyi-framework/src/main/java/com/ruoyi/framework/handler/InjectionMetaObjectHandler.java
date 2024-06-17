@@ -6,8 +6,8 @@ import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
 import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.exception.ServiceException;
-import com.ruoyi.common.core.helper.LoginHelper;
 import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.satoken.utils.LoginHelper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.reflection.MetaObject;
 
@@ -20,7 +20,7 @@ import java.util.Date;
  * @date 2021/4/25
  */
 @Slf4j
-public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
+public class InjectionMetaObjectHandler implements MetaObjectHandler {
 
     @Override
     public void insertFill(MetaObject metaObject) {
@@ -30,12 +30,14 @@ public class CreateAndUpdateMetaObjectHandler implements MetaObjectHandler {
                     ? baseEntity.getCreateTime() : new Date();
                 baseEntity.setCreateTime(current);
                 baseEntity.setUpdateTime(current);
-                String username = StringUtils.isNotBlank(baseEntity.getCreateBy())
-                    ? baseEntity.getCreateBy() : getLoginUsername();
-                // 当前已登录 且 创建人为空 则填充
-                baseEntity.setCreateBy(username);
-                // 当前已登录 且 更新人为空 则填充
-                baseEntity.setUpdateBy(username);
+                if (ObjectUtil.isNull(baseEntity.getCreateBy())) {
+                    String username = StringUtils.isNotBlank(baseEntity.getCreateBy())
+                        ? baseEntity.getCreateBy() : getLoginUsername();
+                    // 当前已登录 且 创建人为空 则填充
+                    baseEntity.setCreateBy(username);
+                    // 当前已登录 且 更新人为空 则填充
+                    baseEntity.setUpdateBy(username);
+                }
             }
         } catch (Exception e) {
             throw new ServiceException("自动注入异常 => " + e.getMessage(), HttpStatus.HTTP_UNAUTHORIZED);

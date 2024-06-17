@@ -61,6 +61,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- satoken -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-common-satoken</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

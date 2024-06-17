@@ -1,27 +1,42 @@
-package com.ruoyi.framework.satoken.dao;
+package com.ruoyi.common.satoken.core.dao;
 
 import cn.dev33.satoken.dao.SaTokenDao;
 import cn.dev33.satoken.util.SaFoxUtil;
+import com.github.benmanes.caffeine.cache.Cache;
+import com.github.benmanes.caffeine.cache.Caffeine;
 import com.ruoyi.common.redis.utils.RedisUtils;
 
 import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Sa-Token持久层接口(使用框架自带RedisUtils实现 协议统一)
+ * <p>
+ * 采用 caffeine + redis 多级缓存 优化并发查询效率
  *
  * @author Lion Li
  */
 public class PlusSaTokenDao implements SaTokenDao {
+
+    private static final Cache<String, Object> CAFFEINE = Caffeine.newBuilder()
+        // 设置最后一次写入或访问后经过固定时间过期
+        .expireAfterWrite(5, TimeUnit.SECONDS)
+        // 初始的缓存空间大小
+        .initialCapacity(100)
+        // 缓存的最大条数
+        .maximumSize(1000)
+        .build();
 
     /**
      * 获取Value，如无返空
      */
     @Override
     public String get(String key) {
-        return RedisUtils.getCacheObject(key);
+        Object o = CAFFEINE.get(key, k -> RedisUtils.getCacheObject(key));
+        return (String) o;
     }
 
     /**
@@ -29,15 +44,16 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public void set(String key, String value, long timeout) {
-        if (timeout == 0 || timeout <= SaTokenDao.NOT_VALUE_EXPIRE) {
+        if (timeout == 0 || timeout <= NOT_VALUE_EXPIRE) {
             return;
         }
         // 判断是否为永不过期
-        if (timeout == SaTokenDao.NEVER_EXPIRE) {
+        if (timeout == NEVER_EXPIRE) {
             RedisUtils.setCacheObject(key, value);
         } else {
             RedisUtils.setCacheObject(key, value, Duration.ofSeconds(timeout));
         }
+        CAFFEINE.invalidate(key);
     }
 
     /**
@@ -45,12 +61,10 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public void update(String key, String value) {
-        long expire = getTimeout(key);
-        // -2 = 无此键
-        if (expire == SaTokenDao.NOT_VALUE_EXPIRE) {
-            return;
+        if (RedisUtils.hasKey(key)) {
+            RedisUtils.setCacheObject(key, value, true);
+            CAFFEINE.invalidate(key);
         }
-        this.set(key, value, expire);
     }
 
     /**
@@ -75,17 +89,6 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public void updateTimeout(String key, long timeout) {
-        // 判断是否想要设置为永久
-        if (timeout == SaTokenDao.NEVER_EXPIRE) {
-            long expire = getTimeout(key);
-            if (expire == SaTokenDao.NEVER_EXPIRE) {
-                // 如果其已经被设置为永久，则不作任何处理
-            } else {
-                // 如果尚未被设置为永久，那么再次set一次
-                this.set(key, this.get(key), timeout);
-            }
-            return;
-        }
         RedisUtils.expire(key, Duration.ofSeconds(timeout));
     }
 
@@ -95,7 +98,8 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public Object getObject(String key) {
-        return RedisUtils.getCacheObject(key);
+        Object o = CAFFEINE.get(key, k -> RedisUtils.getCacheObject(key));
+        return o;
     }
 
     /**
@@ -103,15 +107,16 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public void setObject(String key, Object object, long timeout) {
-        if (timeout == 0 || timeout <= SaTokenDao.NOT_VALUE_EXPIRE) {
+        if (timeout == 0 || timeout <= NOT_VALUE_EXPIRE) {
             return;
         }
         // 判断是否为永不过期
-        if (timeout == SaTokenDao.NEVER_EXPIRE) {
+        if (timeout == NEVER_EXPIRE) {
             RedisUtils.setCacheObject(key, object);
         } else {
             RedisUtils.setCacheObject(key, object, Duration.ofSeconds(timeout));
         }
+        CAFFEINE.invalidate(key);
     }
 
     /**
@@ -119,12 +124,10 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public void updateObject(String key, Object object) {
-        long expire = getObjectTimeout(key);
-        // -2 = 无此键
-        if (expire == SaTokenDao.NOT_VALUE_EXPIRE) {
-            return;
+        if (RedisUtils.hasKey(key)) {
+            RedisUtils.setCacheObject(key, object, true);
+            CAFFEINE.invalidate(key);
         }
-        this.setObject(key, object, expire);
     }
 
     /**
@@ -149,17 +152,6 @@ public class PlusSaTokenDao implements SaTokenDao {
      */
     @Override
     public void updateObjectTimeout(String key, long timeout) {
-        // 判断是否想要设置为永久
-        if (timeout == SaTokenDao.NEVER_EXPIRE) {
-            long expire = getObjectTimeout(key);
-            if (expire == SaTokenDao.NEVER_EXPIRE) {
-                // 如果其已经被设置为永久，则不作任何处理
-            } else {
-                // 如果尚未被设置为永久，那么再次set一次
-                this.setObject(key, this.getObject(key), timeout);
-            }
-            return;
-        }
         RedisUtils.expire(key, Duration.ofSeconds(timeout));
     }
 
@@ -167,10 +159,14 @@ public class PlusSaTokenDao implements SaTokenDao {
     /**
      * 搜索数据
      */
+    @SuppressWarnings("unchecked")
     @Override
     public List<String> searchData(String prefix, String keyword, int start, int size, boolean sortType) {
-        Collection<String> keys = RedisUtils.keys(prefix + "*" + keyword + "*");
-        List<String> list = new ArrayList<>(keys);
-        return SaFoxUtil.searchList(list, start, size, sortType);
+        String keyStr = prefix + "*" + keyword + "*";
+        return (List<String>) CAFFEINE.get(keyStr, k -> {
+            Collection<String> keys = RedisUtils.keys(keyStr);
+            List<String> list = new ArrayList<>(keys);
+            return SaFoxUtil.searchList(list, start, size, sortType);
+        });
     }
 }
