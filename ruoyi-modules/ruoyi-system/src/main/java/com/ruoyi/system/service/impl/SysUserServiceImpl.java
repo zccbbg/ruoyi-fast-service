@@ -16,7 +16,7 @@ import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.system.domain.SysRole;
 import com.ruoyi.system.domain.SysUser;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.common.core.core.service.UserService;
+import com.ruoyi.common.core.service.UserService;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.rouyi.common.mybatis.helper.DataBaseHelper;
 import com.ruoyi.common.satoken.utils.LoginHelper;

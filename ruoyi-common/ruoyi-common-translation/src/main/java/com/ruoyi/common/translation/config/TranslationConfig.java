@@ -1,15 +1,15 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.common.translation.config;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.ruoyi.common.core.annotation.TranslationType;
-import com.ruoyi.common.core.translation.TranslationInterface;
-import com.ruoyi.common.core.translation.handler.TranslationBeanSerializerModifier;
-import com.ruoyi.common.core.translation.handler.TranslationHandler;
+import com.ruoyi.common.translation.annotation.TranslationType;
+import com.ruoyi.common.translation.core.TranslationInterface;
+import com.ruoyi.common.translation.core.handler.TranslationBeanSerializerModifier;
+import com.ruoyi.common.translation.core.handler.TranslationHandler;
+import jakarta.annotation.PostConstruct;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 
-import jakarta.annotation.PostConstruct;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,7 +20,7 @@ import java.util.Map;
  * @author Lion Li
  */
 @Slf4j
-@Configuration
+@AutoConfiguration
 public class TranslationConfig {
 
     @Autowired

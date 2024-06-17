@@ -11,7 +11,7 @@ import com.alibaba.excel.util.ClassUtils;
 import com.alibaba.excel.write.handler.SheetWriteHandler;
 import com.alibaba.excel.write.metadata.holder.WriteSheetHolder;
 import com.alibaba.excel.write.metadata.holder.WriteWorkbookHolder;
-import com.ruoyi.common.core.core.service.DictService;
+import com.ruoyi.common.core.service.DictService;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;

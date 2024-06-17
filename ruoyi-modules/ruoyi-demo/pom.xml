@@ -68,6 +68,11 @@
             <artifactId>ruoyi-common-ratelimiter</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-translation</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

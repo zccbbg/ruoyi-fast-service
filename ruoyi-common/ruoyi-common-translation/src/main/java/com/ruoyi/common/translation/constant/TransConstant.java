@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.constant;
+package com.ruoyi.common.translation.constant;
 
 /**
  * 翻译常量
@@ -11,6 +11,11 @@ public interface TransConstant {
      * 用户id转账号
      */
     String USER_ID_TO_NAME = "user_id_to_name";
+
+    /**
+     * 用户id转用户名称
+     */
+    String USER_ID_TO_NICKNAME = "user_id_to_nickname";
 
     /**
      * 部门id转名称

@@ -1,6 +1,6 @@
 package com.ruoyi.system.service.impl;
 
-import com.ruoyi.common.core.core.service.SensitiveService;
+import com.ruoyi.common.core.service.SensitiveService;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import org.springframework.stereotype.Service;
 

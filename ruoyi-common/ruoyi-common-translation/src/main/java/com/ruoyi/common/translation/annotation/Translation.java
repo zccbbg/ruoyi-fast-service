@@ -1,8 +1,8 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.translation.annotation;
 
 import com.fasterxml.jackson.annotation.JacksonAnnotationsInside;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
-import com.ruoyi.common.core.translation.handler.TranslationHandler;
+import com.ruoyi.common.translation.core.handler.TranslationHandler;
 
 import java.lang.annotation.*;
 

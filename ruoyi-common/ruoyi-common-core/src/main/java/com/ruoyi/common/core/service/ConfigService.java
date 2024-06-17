@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.core.service;
+package com.ruoyi.common.core.service;
 
 /**
  * 通用 参数配置服务

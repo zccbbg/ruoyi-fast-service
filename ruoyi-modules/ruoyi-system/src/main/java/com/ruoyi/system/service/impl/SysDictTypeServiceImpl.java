@@ -13,7 +13,7 @@ import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.system.domain.SysDictData;
 import com.ruoyi.system.domain.SysDictType;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.common.core.core.service.DictService;
+import com.ruoyi.common.core.service.DictService;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;

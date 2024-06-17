@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.core.service;
+package com.ruoyi.common.core.service;
 
 import java.util.Map;
 

@@ -1,6 +1,6 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.translation.annotation;
 
-import com.ruoyi.common.core.translation.TranslationInterface;
+import com.ruoyi.common.translation.core.TranslationInterface;
 
 import java.lang.annotation.*;
 

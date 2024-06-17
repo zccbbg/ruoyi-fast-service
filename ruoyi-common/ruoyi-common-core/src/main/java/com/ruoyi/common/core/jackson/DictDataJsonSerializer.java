@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.JsonSerializer;
 import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.ruoyi.common.core.annotation.DictDataMapper;
-import com.ruoyi.common.core.core.service.DictService;
+import com.ruoyi.common.core.service.DictService;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;

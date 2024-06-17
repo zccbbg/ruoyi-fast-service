@@ -9,7 +9,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.constant.CacheNames;
 import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.common.core.core.service.OssService;
+import com.ruoyi.common.core.service.OssService;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StreamUtils;

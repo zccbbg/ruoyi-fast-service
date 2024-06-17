@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.translation.handler;
+package com.ruoyi.common.translation.core.handler;
 
 import com.fasterxml.jackson.databind.BeanDescription;
 import com.fasterxml.jackson.databind.SerializationConfig;
@@ -19,8 +19,8 @@ public class TranslationBeanSerializerModifier extends BeanSerializerModifier {
                                                      List<BeanPropertyWriter> beanProperties) {
         for (BeanPropertyWriter writer : beanProperties) {
             // 如果序列化器为 TranslationHandler 的话 将 Null 值也交给他处理
-            if (writer.getSerializer() instanceof TranslationHandler) {
-                writer.assignNullSerializer(writer.getSerializer());
+            if (writer.getSerializer() instanceof TranslationHandler serializer) {
+                writer.assignNullSerializer(serializer);
             }
         }
         return beanProperties;
