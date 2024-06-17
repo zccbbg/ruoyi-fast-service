@@ -1,15 +1,14 @@
 package com.ruoyi.demo.domain.bo;
 
-import com.ruoyi.common.core.domain.TreeEntity;
+import com.rouyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.core.core.validate.AddGroup;
 import com.ruoyi.common.core.core.validate.EditGroup;
 import com.ruoyi.demo.domain.TestTree;
 import io.github.linpeilie.annotations.AutoMapper;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * 测试树表业务对象 test_tree
@@ -21,13 +20,18 @@ import jakarta.validation.constraints.NotNull;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @AutoMapper(target = TestTree.class)
-public class TestTreeBo extends TreeEntity<TestTreeBo> {
+public class TestTreeBo extends BaseEntity {
 
     /**
      * 主键
      */
     @NotNull(message = "主键不能为空", groups = {EditGroup.class})
     private Long id;
+
+    /**
+     * 父ID
+     */
+    private Long parentId;
 
     /**
      * 部门id

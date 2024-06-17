@@ -9,7 +9,7 @@ import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.domain.dto.UserOnlineDTO;
-import com.ruoyi.common.core.core.page.TableDataInfo;
+import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.core.enums.BusinessType;
 import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;

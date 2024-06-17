@@ -1,36 +1,46 @@
-package com.ruoyi.framework.handler;
+package com.rouyi.common.mybatis.handler;
 
 import cn.hutool.core.annotation.AnnotationUtil;
 import cn.hutool.core.collection.CollUtil;
-import cn.hutool.core.util.ClassUtil;
 import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.common.core.annotation.DataColumn;
-import com.ruoyi.common.core.annotation.DataPermission;
-import com.ruoyi.common.core.domain.dto.RoleDTO;
-import com.ruoyi.common.core.domain.model.LoginUser;
-import com.ruoyi.common.core.enums.DataScopeType;
-import com.ruoyi.common.core.exception.ServiceException;
-import com.ruoyi.common.core.helper.DataPermissionHelper;
-import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.common.core.utils.StreamUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.satoken.utils.LoginHelper;
+import com.rouyi.common.mybatis.annotation.DataColumn;
+import com.rouyi.common.mybatis.annotation.DataPermission;
 import lombok.extern.slf4j.Slf4j;
 import net.sf.jsqlparser.JSQLParserException;
 import net.sf.jsqlparser.expression.Expression;
 import net.sf.jsqlparser.expression.Parenthesis;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
+import org.apache.ibatis.io.Resources;
+import com.ruoyi.common.core.domain.dto.RoleDTO;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.common.core.utils.SpringUtils;
+import com.ruoyi.common.core.utils.StreamUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.rouyi.common.mybatis.enums.DataScopeType;
+import com.rouyi.common.mybatis.helper.DataPermissionHelper;
+import com.ruoyi.common.satoken.utils.LoginHelper;
+import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.expression.BeanFactoryResolver;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
+import org.springframework.core.io.support.ResourcePatternResolver;
+import org.springframework.core.type.ClassMetadata;
+import org.springframework.core.type.classreading.CachingMetadataReaderFactory;
 import org.springframework.expression.BeanResolver;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.ParserContext;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
 import org.springframework.expression.spel.support.StandardEvaluationContext;
+import org.springframework.util.ClassUtils;
 
 import java.lang.reflect.Method;
-import java.util.*;
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.function.Function;
 
@@ -58,19 +68,23 @@ public class PlusDataPermissionHandler {
      */
     private final BeanResolver beanResolver = new BeanFactoryResolver(SpringUtils.getBeanFactory());
 
+    public PlusDataPermissionHandler(String mapperPackage) {
+        scanMapperClasses(mapperPackage);
+    }
+
 
     public Expression getSqlSegment(Expression where, String mappedStatementId, boolean isSelect) {
-        DataColumn[] dataColumns = findAnnotation(mappedStatementId);
+        DataPermission dataPermission = getDataPermission(mappedStatementId);
         LoginUser currentUser = DataPermissionHelper.getVariable("user");
         if (ObjectUtil.isNull(currentUser)) {
             currentUser = LoginHelper.getLoginUser();
             DataPermissionHelper.setVariable("user", currentUser);
         }
-        // 如果是超级管理员，则不过滤数据
+        // 如果是超级管理员或租户管理员，则不过滤数据
         if (LoginHelper.isAdmin()) {
             return where;
         }
-        String dataFilterSql = buildDataFilter(dataColumns, isSelect);
+        String dataFilterSql = buildDataFilter(dataPermission.value(), isSelect);
         if (StringUtils.isBlank(dataFilterSql)) {
             return where;
         }
@@ -144,38 +158,64 @@ public class PlusDataPermissionHandler {
         return "";
     }
 
-    public DataColumn[] findAnnotation(String mappedStatementId) {
-        StringBuilder sb = new StringBuilder(mappedStatementId);
-        int index = sb.lastIndexOf(".");
-        String clazzName = sb.substring(0, index);
-        String methodName = sb.substring(index + 1, sb.length());
-        Class<?> clazz = ClassUtil.loadClass(clazzName);
-        List<Method> methods = Arrays.stream(ClassUtil.getDeclaredMethods(clazz))
-            .filter(method -> method.getName().equals(methodName)).toList();
+    /**
+     * 通过 mapperPackage 设置的扫描包 扫描缓存有注解的方法与类
+     */
+    private void scanMapperClasses(String mapperPackage) {
+        PathMatchingResourcePatternResolver resolver = new PathMatchingResourcePatternResolver();
+        CachingMetadataReaderFactory factory = new CachingMetadataReaderFactory();
+        String[] packagePatternArray = StringUtils.splitPreserveAllTokens(mapperPackage, ConfigurableApplicationContext.CONFIG_LOCATION_DELIMITERS);
+        String classpath = ResourcePatternResolver.CLASSPATH_ALL_URL_PREFIX;
+        try {
+            for (String packagePattern : packagePatternArray) {
+                String path = ClassUtils.convertClassNameToResourcePath(packagePattern);
+                Resource[] resources = resolver.getResources(classpath + path + "/*.class");
+                for (Resource resource : resources) {
+                    ClassMetadata classMetadata = factory.getMetadataReader(resource).getClassMetadata();
+                    Class<?> clazz = Resources.classForName(classMetadata.getClassName());
+                    findAnnotation(clazz);
+                }
+            }
+        } catch (Exception e) {
+            log.error("初始化数据安全缓存时出错:{}", e.getMessage());
+        }
+    }
+
+    private void findAnnotation(Class<?> clazz) {
         DataPermission dataPermission;
         // 获取方法注解
-        for (Method method : methods) {
-            dataPermission = dataPermissionCacheMap.get(mappedStatementId);
-            if (ObjectUtil.isNotNull(dataPermission)) {
-                return dataPermission.value();
+        for (Method method : clazz.getMethods()) {
+            if (method.isDefault() || method.isVarArgs()) {
+                continue;
             }
+            String mappedStatementId = clazz.getName() + "." + method.getName();
             if (AnnotationUtil.hasAnnotation(method, DataPermission.class)) {
                 dataPermission = AnnotationUtil.getAnnotation(method, DataPermission.class);
                 dataPermissionCacheMap.put(mappedStatementId, dataPermission);
-                return dataPermission.value();
             }
-        }
-        dataPermission = dataPermissionCacheMap.get(clazz.getName());
-        if (ObjectUtil.isNotNull(dataPermission)) {
-            return dataPermission.value();
         }
         // 获取类注解
         if (AnnotationUtil.hasAnnotation(clazz, DataPermission.class)) {
             dataPermission = AnnotationUtil.getAnnotation(clazz, DataPermission.class);
             dataPermissionCacheMap.put(clazz.getName(), dataPermission);
-            return dataPermission.value();
+        }
+    }
+
+    public DataPermission getDataPermission(String mapperId) {
+        if (dataPermissionCacheMap.containsKey(mapperId)) {
+            return dataPermissionCacheMap.get(mapperId);
+        }
+        String clazzName = mapperId.substring(0, mapperId.lastIndexOf("."));
+        if (dataPermissionCacheMap.containsKey(clazzName)) {
+            return dataPermissionCacheMap.get(clazzName);
         }
         return null;
     }
 
+    /**
+     * 是否无效
+     */
+    public boolean invalid(String mapperId) {
+        return getDataPermission(mapperId) == null;
+    }
 }

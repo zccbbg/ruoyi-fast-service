@@ -1,16 +1,19 @@
 package com.ruoyi.system.domain;
 
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ruoyi.common.core.domain.TreeEntity;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-
+import com.rouyi.common.mybatis.core.domain.BaseEntity;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 部门表 sys_dept
@@ -21,7 +24,7 @@ import jakarta.validation.constraints.Size;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @TableName("sys_dept")
-public class SysDept extends TreeEntity<SysDept> {
+public class SysDept extends BaseEntity {
     private static final long serialVersionUID = 1L;
 
     /**
@@ -76,5 +79,22 @@ public class SysDept extends TreeEntity<SysDept> {
      * 祖级列表
      */
     private String ancestors;
+
+    /**
+     * 父菜单名称
+     */
+    @TableField(exist = false)
+    private String parentName;
+
+    /**
+     * 父菜单ID
+     */
+    private Long parentId;
+
+    /**
+     * 子部门
+     */
+    @TableField(exist = false)
+    private List<SysDept> children = new ArrayList<>();
 
 }

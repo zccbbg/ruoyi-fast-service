@@ -1,7 +1,7 @@
 package com.ruoyi.generator.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.generator.domain.GenTableColumn;
 
 import java.util.List;
@@ -12,7 +12,7 @@ import java.util.List;
  * @author Lion Li
  */
 @InterceptorIgnore(dataPermission = "true")
-public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumnMapper, GenTableColumn, GenTableColumn> {
+public interface GenTableColumnMapper extends BaseMapperPlus<GenTableColumn, GenTableColumn> {
     /**
      * 根据表名称查询列信息
      *

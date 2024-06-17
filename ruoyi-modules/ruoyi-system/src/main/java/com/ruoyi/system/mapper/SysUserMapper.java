@@ -3,10 +3,10 @@ package com.ruoyi.system.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ruoyi.common.core.annotation.DataColumn;
-import com.ruoyi.common.core.annotation.DataPermission;
+import com.rouyi.common.mybatis.annotation.DataColumn;
+import com.rouyi.common.mybatis.annotation.DataPermission;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -16,7 +16,7 @@ import java.util.List;
  *
  * @author Lion Li
  */
-public interface SysUserMapper extends BaseMapperPlus<SysUserMapper, SysUser, SysUser> {
+public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUser> {
 
     @DataPermission({
         @DataColumn(key = "deptName", value = "d.dept_id"),

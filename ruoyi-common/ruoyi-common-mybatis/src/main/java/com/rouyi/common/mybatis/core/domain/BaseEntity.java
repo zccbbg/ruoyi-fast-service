@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.domain;
+package com.rouyi.common.mybatis.core.domain;
 
 import com.baomidou.mybatisplus.annotation.FieldFill;
 import com.baomidou.mybatisplus.annotation.TableField;

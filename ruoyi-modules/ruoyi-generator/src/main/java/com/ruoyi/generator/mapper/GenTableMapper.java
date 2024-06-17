@@ -2,7 +2,7 @@ package com.ruoyi.generator.mapper;
 
 import com.baomidou.mybatisplus.annotation.InterceptorIgnore;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.generator.domain.GenTable;
 import org.apache.ibatis.annotations.Param;
 
@@ -14,7 +14,7 @@ import java.util.List;
  * @author Lion Li
  */
 @InterceptorIgnore(dataPermission = "true")
-public interface GenTableMapper extends BaseMapperPlus<GenTableMapper, GenTable, GenTable> {
+public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
 
     /**
      * 查询据库列表

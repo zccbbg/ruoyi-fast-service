@@ -1,10 +1,10 @@
-package com.ruoyi.common.core.helper;
+package com.rouyi.common.mybatis.helper;
 
 import cn.hutool.core.convert.Convert;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
-import com.ruoyi.common.core.enums.DataBaseType;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.SpringUtils;
+import com.rouyi.common.mybatis.enums.DataBaseType;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 
@@ -12,6 +12,8 @@ import javax.sql.DataSource;
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 数据库助手
@@ -67,6 +69,13 @@ public class DataBaseHelper {
             return "instr(','||%s||',' , ',%s,') <> 0".formatted(var2, var);
         }
         // find_in_set(100 , '0,100,101')
-        return "find_in_set(%s , %s) <> 0".formatted(var, var2);
+        return "find_in_set('%s' , %s) <> 0".formatted(var, var2);
+    }
+
+    /**
+     * 获取当前加载的数据库名
+     */
+    public static List<String> getDataSourceNameList() {
+        return new ArrayList<>(DS.getDataSources().keySet());
     }
 }

@@ -5,7 +5,7 @@ import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.constant.GenConstants;
-import com.ruoyi.common.core.helper.DataBaseHelper;
+import com.rouyi.common.mybatis.helper.DataBaseHelper;
 import com.ruoyi.common.core.utils.DateUtils;
 import com.ruoyi.common.core.utils.JsonUtils;
 import com.ruoyi.common.core.utils.StringUtils;

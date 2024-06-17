@@ -3,9 +3,9 @@ package com.ruoyi.system.mapper;
 import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.common.core.constant.UserConstants;
 import com.ruoyi.system.domain.SysMenu;
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  *
  * @author Lion Li
  */
-public interface SysMenuMapper extends BaseMapperPlus<SysMenuMapper, SysMenu, SysMenu> {
+public interface SysMenuMapper extends BaseMapperPlus<SysMenu, SysMenu> {
 
     /**
      * 根据用户所有权限

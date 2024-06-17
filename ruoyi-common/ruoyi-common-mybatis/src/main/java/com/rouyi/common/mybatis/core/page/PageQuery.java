@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.domain;
+package com.rouyi.common.mybatis.core.page;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -9,6 +9,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.sql.SqlUtil;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,7 @@ import java.util.List;
 @Data
 public class PageQuery implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
@@ -107,6 +109,10 @@ public class PageQuery implements Serializable {
             }
         }
         return list;
+    }
+
+    public Integer getFirstNum() {
+        return (pageNum - 1) * pageSize;
     }
 
 }

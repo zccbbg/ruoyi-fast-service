@@ -35,7 +35,7 @@
         </dependency>
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common-satoken</artifactId>
+            <artifactId>ruoyi-common-mybatis</artifactId>
         </dependency>
 
     </dependencies>

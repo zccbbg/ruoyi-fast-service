@@ -4,9 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ruoyi.common.core.annotation.DataColumn;
-import com.ruoyi.common.core.annotation.DataPermission;
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
+import com.rouyi.common.mybatis.annotation.DataColumn;
+import com.rouyi.common.mybatis.annotation.DataPermission;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.demo.domain.TestDemo;
 import com.ruoyi.demo.domain.vo.TestDemoVo;
 import org.apache.ibatis.annotations.Param;
@@ -20,7 +20,7 @@ import java.util.List;
  * @author Lion Li
  * @date 2021-07-26
  */
-public interface TestDemoMapper extends BaseMapperPlus<TestDemoMapper, TestDemo, TestDemoVo> {
+public interface TestDemoMapper extends BaseMapperPlus<TestDemo, TestDemoVo> {
 
     @DataPermission({
         @DataColumn(key = "deptName", value = "dept_id"),

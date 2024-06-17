@@ -1,6 +1,6 @@
 package com.ruoyi.system.mapper;
 
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.system.domain.SysOssConfig;
 import com.ruoyi.system.domain.vo.SysOssConfigVo;
 
@@ -11,6 +11,6 @@ import com.ruoyi.system.domain.vo.SysOssConfigVo;
  * @author 孤舟烟雨
  * @date 2021-08-13
  */
-public interface SysOssConfigMapper extends BaseMapperPlus<SysOssConfigMapper, SysOssConfig, SysOssConfigVo> {
+public interface SysOssConfigMapper extends BaseMapperPlus<SysOssConfig, SysOssConfigVo> {
 
 }

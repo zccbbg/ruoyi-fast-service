@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.core.mapper;
+package com.rouyi.common.mybatis.core.mapper;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.util.ObjectUtil;
@@ -6,42 +6,40 @@ import com.baomidou.mybatisplus.core.conditions.Wrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
-import com.baomidou.mybatisplus.core.toolkit.*;
+import com.baomidou.mybatisplus.core.toolkit.reflect.GenericTypeUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.toolkit.Db;
-import com.ruoyi.common.core.utils.MapstructUtils;
 import org.apache.ibatis.logging.Log;
 import org.apache.ibatis.logging.LogFactory;
+import com.ruoyi.common.core.utils.MapstructUtils;
 
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * 自定义 Mapper 接口, 实现 自定义扩展
  *
- * @param <M> mapper 泛型
  * @param <T> table 泛型
  * @param <V> vo 泛型
  * @author Lion Li
  * @since 2021-05-13
  */
 @SuppressWarnings("unchecked")
-public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
+public interface BaseMapperPlus<T, V> extends BaseMapper<T> {
 
     Log log = LogFactory.getLog(BaseMapperPlus.class);
 
     default Class<V> currentVoClass() {
-        return (Class<V>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseMapperPlus.class, 2);
+        return (Class<V>) GenericTypeUtils.resolveTypeArguments(this.getClass(), BaseMapperPlus.class)[1];
     }
 
     default Class<T> currentModelClass() {
-        return (Class<T>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseMapperPlus.class, 1);
-    }
-
-    default Class<M> currentMapperClass() {
-        return (Class<M>) ReflectionKit.getSuperClassGenericType(this.getClass(), BaseMapperPlus.class, 0);
+        return (Class<T>) GenericTypeUtils.resolveTypeArguments(this.getClass(), BaseMapperPlus.class)[0];
     }
 
     default List<T> selectList() {
@@ -146,15 +144,30 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         return selectVoOne(wrapper, this.currentVoClass());
     }
 
+    default V selectVoOne(Wrapper<T> wrapper, boolean throwEx) {
+        return selectVoOne(wrapper, this.currentVoClass(), throwEx);
+    }
+
     /**
      * 根据 entity 条件，查询一条记录
      */
     default <C> C selectVoOne(Wrapper<T> wrapper, Class<C> voClass) {
-        T obj = this.selectOne(wrapper);
+        return selectVoOne(wrapper, voClass, true);
+    }
+
+    /**
+     * 根据 entity 条件，查询一条记录
+     */
+    default <C> C selectVoOne(Wrapper<T> wrapper, Class<C> voClass, boolean throwEx) {
+        T obj = this.selectOne(wrapper, throwEx);
         if (ObjectUtil.isNull(obj)) {
             return null;
         }
         return MapstructUtils.convert(obj, voClass);
+    }
+
+    default List<V> selectVoList() {
+        return selectVoList(new QueryWrapper<>(), this.currentVoClass());
     }
 
     default List<V> selectVoList(Wrapper<T> wrapper) {
@@ -187,6 +200,10 @@ public interface BaseMapperPlus<M, T, V> extends BaseMapper<T> {
         }
         voPage.setRecords(MapstructUtils.convert(list, voClass));
         return (P) voPage;
+    }
+
+    default <C> List<C> selectObjs(Wrapper<T> wrapper, Function<? super Object, C> mapper) {
+        return this.selectObjs(wrapper).stream().filter(Objects::nonNull).map(mapper).collect(Collectors.toList());
     }
 
 }

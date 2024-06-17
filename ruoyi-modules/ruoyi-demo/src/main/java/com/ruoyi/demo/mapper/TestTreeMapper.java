@@ -1,8 +1,8 @@
 package com.ruoyi.demo.mapper;
 
-import com.ruoyi.common.core.annotation.DataColumn;
-import com.ruoyi.common.core.annotation.DataPermission;
-import com.ruoyi.common.core.core.mapper.BaseMapperPlus;
+import com.rouyi.common.mybatis.annotation.DataColumn;
+import com.rouyi.common.mybatis.annotation.DataPermission;
+import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.demo.domain.TestTree;
 import com.ruoyi.demo.domain.vo.TestTreeVo;
 
@@ -16,6 +16,6 @@ import com.ruoyi.demo.domain.vo.TestTreeVo;
     @DataColumn(key = "deptName", value = "dept_id"),
     @DataColumn(key = "userName", value = "user_id")
 })
-public interface TestTreeMapper extends BaseMapperPlus<TestTreeMapper, TestTree, TestTreeVo> {
+public interface TestTreeMapper extends BaseMapperPlus<TestTree, TestTreeVo> {
 
 }
