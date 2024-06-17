@@ -1,4 +1,4 @@
-package com.ruoyi.sms.config;
+package com.ruoyi.common.sms.config;
 
 /**
  * 短信配置类

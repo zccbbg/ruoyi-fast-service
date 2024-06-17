@@ -25,7 +25,7 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-sms</artifactId>
+            <artifactId>ruoyi-common-sms</artifactId>
         </dependency>
 
     </dependencies>

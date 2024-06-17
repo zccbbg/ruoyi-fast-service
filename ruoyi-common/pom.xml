@@ -13,6 +13,7 @@
         <module>ruoyi-common-bom</module>
         <module>ruoyi-common-core</module>
         <module>ruoyi-common-oss</module>
+        <module>ruoyi-common-sms</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>
