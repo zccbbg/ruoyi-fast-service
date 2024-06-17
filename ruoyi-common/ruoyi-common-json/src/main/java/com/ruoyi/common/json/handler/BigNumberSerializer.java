@@ -1,4 +1,4 @@
-package com.ruoyi.framework.jackson;
+package com.ruoyi.common.json.handler;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.SerializerProvider;

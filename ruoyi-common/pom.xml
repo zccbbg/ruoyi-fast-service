@@ -14,6 +14,7 @@
         <module>ruoyi-common-core</module>
         <module>ruoyi-common-oss</module>
         <module>ruoyi-common-sms</module>
+        <module>ruoyi-common-json</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>
