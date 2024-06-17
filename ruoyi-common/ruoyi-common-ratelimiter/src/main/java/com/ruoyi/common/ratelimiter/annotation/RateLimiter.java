@@ -1,6 +1,6 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.ratelimiter.annotation;
 
-import com.ruoyi.common.core.enums.LimitType;
+import com.ruoyi.common.ratelimiter.enums.LimitType;
 
 import java.lang.annotation.*;
 

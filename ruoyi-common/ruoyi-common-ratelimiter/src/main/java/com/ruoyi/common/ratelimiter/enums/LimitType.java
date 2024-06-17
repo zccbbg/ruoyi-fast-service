@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.enums;
+package com.ruoyi.common.ratelimiter.enums;
 
 /**
  * 限流类型

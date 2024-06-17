@@ -1,13 +1,13 @@
-package com.ruoyi.framework.aspectj;
+package com.ruoyi.common.ratelimiter.aspectj;
 
-import cn.hutool.core.util.ArrayUtil;
-import com.ruoyi.common.core.annotation.RateLimiter;
-import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.enums.LimitType;
+import com.ruoyi.common.core.constant.GlobalConstants;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.MessageUtils;
 import com.ruoyi.common.core.utils.ServletUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.ratelimiter.annotation.RateLimiter;
+import com.ruoyi.common.ratelimiter.enums.LimitType;
 import com.ruoyi.common.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.aspectj.lang.JoinPoint;
@@ -15,16 +15,15 @@ import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.reflect.MethodSignature;
 import org.redisson.api.RateType;
+import org.springframework.context.expression.BeanFactoryResolver;
+import org.springframework.context.expression.MethodBasedEvaluationContext;
 import org.springframework.core.DefaultParameterNameDiscoverer;
 import org.springframework.core.ParameterNameDiscoverer;
-import org.springframework.expression.EvaluationContext;
 import org.springframework.expression.Expression;
 import org.springframework.expression.ExpressionParser;
 import org.springframework.expression.ParserContext;
 import org.springframework.expression.common.TemplateParserContext;
 import org.springframework.expression.spel.standard.SpelExpressionParser;
-import org.springframework.expression.spel.support.StandardEvaluationContext;
-import org.springframework.stereotype.Component;
 
 import java.lang.reflect.Method;
 
@@ -35,7 +34,6 @@ import java.lang.reflect.Method;
  */
 @Slf4j
 @Aspect
-@Component
 public class RateLimiterAspect {
 
     /**
@@ -47,20 +45,17 @@ public class RateLimiterAspect {
      */
     private final ParserContext parserContext = new TemplateParserContext();
     /**
-     * 定义spel上下文对象进行解析
-     */
-    private final EvaluationContext context = new StandardEvaluationContext();
-    /**
      * 方法参数解析器
      */
     private final ParameterNameDiscoverer pnd = new DefaultParameterNameDiscoverer();
 
+
     @Before("@annotation(rateLimiter)")
-    public void doBefore(JoinPoint point, RateLimiter rateLimiter) throws Throwable {
+    public void doBefore(JoinPoint point, RateLimiter rateLimiter) {
         int time = rateLimiter.time();
         int count = rateLimiter.count();
-        String combineKey = getCombineKey(rateLimiter, point);
         try {
+            String combineKey = getCombineKey(rateLimiter, point);
             RateType rateType = RateType.OVERALL;
             if (rateLimiter.limitType() == LimitType.CLUSTER) {
                 rateType = RateType.PER_CLIENT;
@@ -78,44 +73,31 @@ public class RateLimiterAspect {
             if (e instanceof ServiceException) {
                 throw e;
             } else {
-                throw new RuntimeException("服务器限流异常，请稍候再试");
+                throw new RuntimeException("服务器限流异常，请稍候再试", e);
             }
         }
     }
 
-    public String getCombineKey(RateLimiter rateLimiter, JoinPoint point) {
+    private String getCombineKey(RateLimiter rateLimiter, JoinPoint point) {
         String key = rateLimiter.key();
-        // 获取方法(通过方法签名来获取)
-        MethodSignature signature = (MethodSignature) point.getSignature();
-        Method method = signature.getMethod();
-        Class<?> targetClass = method.getDeclaringClass();
-        // 判断是否是spel格式
-        if (StringUtils.containsAny(key, "#")) {
-            // 获取参数值
+        if (StringUtils.isNotBlank(key)) {
+            MethodSignature signature = (MethodSignature) point.getSignature();
+            Method targetMethod = signature.getMethod();
             Object[] args = point.getArgs();
-            // 获取方法上参数的名称
-            String[] parameterNames = pnd.getParameterNames(method);
-            if (ArrayUtil.isEmpty(parameterNames)) {
-                throw new ServiceException("限流key解析异常!请联系管理员!");
+            //noinspection DataFlowIssue
+            MethodBasedEvaluationContext context =
+                new MethodBasedEvaluationContext(null, targetMethod, args, pnd);
+            context.setBeanResolver(new BeanFactoryResolver(SpringUtils.getBeanFactory()));
+            Expression expression;
+            if (StringUtils.startsWith(key, parserContext.getExpressionPrefix())
+                && StringUtils.endsWith(key, parserContext.getExpressionSuffix())) {
+                expression = parser.parseExpression(key, parserContext);
+            } else {
+                expression = parser.parseExpression(key);
             }
-            for (int i = 0; i < parameterNames.length; i++) {
-                context.setVariable(parameterNames[i], args[i]);
-            }
-            // 解析返回给key
-            try {
-                Expression expression;
-                if (StringUtils.startsWith(key, parserContext.getExpressionPrefix())
-                    && StringUtils.endsWith(key, parserContext.getExpressionSuffix())) {
-                    expression = parser.parseExpression(key, parserContext);
-                } else {
-                    expression = parser.parseExpression(key);
-                }
-                key = expression.getValue(context, String.class) + ":";
-            } catch (Exception e) {
-                throw new ServiceException("限流key解析异常!请联系管理员!");
-            }
+            key = expression.getValue(context, String.class);
         }
-        StringBuilder stringBuffer = new StringBuilder(CacheConstants.RATE_LIMIT_KEY);
+        StringBuilder stringBuffer = new StringBuilder(GlobalConstants.RATE_LIMIT_KEY);
         stringBuffer.append(ServletUtils.getRequest().getRequestURI()).append(":");
         if (rateLimiter.limitType() == LimitType.IP) {
             // 获取请求ip
