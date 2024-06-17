@@ -15,7 +15,7 @@ import com.ruoyi.common.core.core.service.DictService;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.annotation.ExcelEnumFormat;
 import lombok.extern.slf4j.Slf4j;

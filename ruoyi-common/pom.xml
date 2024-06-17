@@ -16,6 +16,7 @@
         <module>ruoyi-common-sms</module>
         <module>ruoyi-common-json</module>
         <module>ruoyi-common-excel</module>
+        <module>ruoyi-common-redis</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>

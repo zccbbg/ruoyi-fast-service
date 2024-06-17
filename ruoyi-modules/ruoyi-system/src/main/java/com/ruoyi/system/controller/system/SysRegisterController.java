@@ -2,8 +2,8 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.ruoyi.common.core.core.controller.BaseController;
-import com.ruoyi.common.core.core.domain.R;
-import com.ruoyi.common.core.core.domain.model.RegisterBody;
+import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.domain.model.RegisterBody;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.SysRegisterService;
 import lombok.RequiredArgsConstructor;

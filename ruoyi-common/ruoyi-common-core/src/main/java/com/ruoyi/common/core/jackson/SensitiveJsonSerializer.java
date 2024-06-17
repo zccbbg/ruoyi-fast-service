@@ -10,7 +10,7 @@ import com.fasterxml.jackson.databind.ser.ContextualSerializer;
 import com.ruoyi.common.core.annotation.Sensitive;
 import com.ruoyi.common.core.core.service.SensitiveService;
 import com.ruoyi.common.core.enums.SensitiveStrategy;
-import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeansException;
 

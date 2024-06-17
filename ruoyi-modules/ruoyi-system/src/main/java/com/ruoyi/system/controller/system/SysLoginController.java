@@ -2,13 +2,13 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.system.domain.SysMenu;
 import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.common.core.core.domain.model.EmailLoginBody;
-import com.ruoyi.common.core.core.domain.model.LoginBody;
-import com.ruoyi.common.core.core.domain.model.LoginUser;
-import com.ruoyi.common.core.core.domain.model.SmsLoginBody;
+import com.ruoyi.common.core.domain.model.EmailLoginBody;
+import com.ruoyi.common.core.domain.model.LoginBody;
+import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.model.SmsLoginBody;
 import com.ruoyi.common.core.helper.LoginHelper;
 import com.ruoyi.system.domain.vo.RouterVo;
 import com.ruoyi.system.service.ISysMenuService;

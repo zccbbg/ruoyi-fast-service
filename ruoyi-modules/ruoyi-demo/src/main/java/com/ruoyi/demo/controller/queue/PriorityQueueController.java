@@ -1,8 +1,8 @@
 package com.ruoyi.demo.controller.queue;
 
 import cn.hutool.core.util.RandomUtil;
-import com.ruoyi.common.core.core.domain.R;
-import com.ruoyi.common.core.utils.redis.QueueUtils;
+import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.redis.utils.QueueUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;

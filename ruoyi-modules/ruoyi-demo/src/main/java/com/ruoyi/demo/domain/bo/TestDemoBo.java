@@ -1,6 +1,6 @@
 package com.ruoyi.demo.domain.bo;
 
-import com.ruoyi.common.core.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.BaseEntity;
 import com.ruoyi.common.core.core.validate.AddGroup;
 import com.ruoyi.common.core.core.validate.EditGroup;
 import com.ruoyi.demo.domain.TestDemo;

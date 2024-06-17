@@ -4,7 +4,7 @@ import cn.hutool.core.convert.Convert;
 import com.baomidou.dynamic.datasource.DynamicRoutingDataSource;
 import com.ruoyi.common.core.enums.DataBaseType;
 import com.ruoyi.common.core.exception.ServiceException;
-import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
 

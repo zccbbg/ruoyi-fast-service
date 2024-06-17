@@ -1,6 +1,6 @@
 package com.ruoyi.generator.service;
 
-import com.ruoyi.common.core.core.domain.PageQuery;
+import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.core.page.TableDataInfo;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;

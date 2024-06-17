@@ -8,7 +8,7 @@ import cn.dev33.satoken.stp.StpUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
 import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.common.core.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.enums.DeviceType;
 import com.ruoyi.common.core.enums.UserType;
 import lombok.AccessLevel;

@@ -1,6 +1,6 @@
 package com.ruoyi.demo.controller;
 
-import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.utils.email.MailUtils;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

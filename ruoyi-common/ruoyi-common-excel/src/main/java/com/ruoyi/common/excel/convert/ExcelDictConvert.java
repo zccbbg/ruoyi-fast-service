@@ -11,7 +11,7 @@ import com.alibaba.excel.metadata.data.WriteCellData;
 import com.alibaba.excel.metadata.property.ExcelContentProperty;
 import com.ruoyi.common.core.core.service.DictService;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.utils.ExcelUtil;
 import lombok.extern.slf4j.Slf4j;

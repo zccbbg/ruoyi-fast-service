@@ -4,7 +4,7 @@ import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.io.FileUtil;
 import com.ruoyi.common.core.annotation.Log;
 import com.ruoyi.common.core.core.controller.BaseController;
-import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.system.domain.SysUser;
 import com.ruoyi.common.core.enums.BusinessType;
 import com.ruoyi.common.core.helper.LoginHelper;

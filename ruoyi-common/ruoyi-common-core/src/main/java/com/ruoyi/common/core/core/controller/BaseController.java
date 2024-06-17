@@ -1,7 +1,7 @@
 package com.ruoyi.common.core.core.controller;
 
-import com.ruoyi.common.core.core.domain.R;
-import com.ruoyi.common.core.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.domain.model.LoginUser;
 import com.ruoyi.common.core.helper.LoginHelper;
 import com.ruoyi.common.core.utils.StringUtils;
 

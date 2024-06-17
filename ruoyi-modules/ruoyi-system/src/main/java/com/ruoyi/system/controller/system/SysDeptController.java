@@ -5,7 +5,7 @@ import cn.hutool.core.convert.Convert;
 import com.ruoyi.common.core.annotation.Log;
 import com.ruoyi.common.core.constant.UserConstants;
 import com.ruoyi.common.core.core.controller.BaseController;
-import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.system.domain.SysDept;
 import com.ruoyi.common.core.enums.BusinessType;
 import com.ruoyi.common.core.utils.StringUtils;

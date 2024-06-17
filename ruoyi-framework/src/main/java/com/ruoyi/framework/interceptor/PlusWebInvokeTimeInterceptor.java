@@ -6,7 +6,7 @@ import com.alibaba.ttl.TransmittableThreadLocal;
 import com.ruoyi.common.core.filter.RepeatedlyRequestWrapper;
 import com.ruoyi.common.core.utils.JsonUtils;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.time.StopWatch;
 import org.springframework.http.MediaType;

@@ -4,7 +4,7 @@ import cn.dev33.satoken.annotation.SaCheckPermission;
 import com.ruoyi.common.core.annotation.Log;
 import com.ruoyi.common.core.annotation.RepeatSubmit;
 import com.ruoyi.common.core.core.controller.BaseController;
-import com.ruoyi.common.core.core.domain.R;
+import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.core.validate.AddGroup;
 import com.ruoyi.common.core.core.validate.EditGroup;
 import com.ruoyi.common.core.core.validate.QueryGroup;

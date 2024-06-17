@@ -54,6 +54,13 @@
                 <version>${revision}</version>
             </dependency>
 
+            <!-- redis -->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-common-redis</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
         </dependencies>
     </dependencyManagement>
 

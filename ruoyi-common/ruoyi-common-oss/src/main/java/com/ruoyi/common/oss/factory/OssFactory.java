@@ -1,14 +1,14 @@
 package com.ruoyi.common.oss.factory;
 
 import com.ruoyi.common.core.constant.CacheNames;
+import com.ruoyi.common.core.utils.JsonUtils;
+import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.oss.constant.OssConstant;
 import com.ruoyi.common.oss.core.OssClient;
 import com.ruoyi.common.oss.exception.OssException;
 import com.ruoyi.common.oss.properties.OssProperties;
-import com.ruoyi.common.core.utils.JsonUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.redis.CacheUtils;
-import com.ruoyi.common.core.utils.redis.RedisUtils;
+import com.ruoyi.common.redis.utils.CacheUtils;
+import com.ruoyi.common.redis.utils.RedisUtils;
 import lombok.extern.slf4j.Slf4j;
 
 import java.util.Map;

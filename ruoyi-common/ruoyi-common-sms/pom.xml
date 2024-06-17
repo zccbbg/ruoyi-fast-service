@@ -23,6 +23,12 @@
             <artifactId>ruoyi-common-core</artifactId>
         </dependency>
 
+        <!-- redis-->
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-redis</artifactId>
+        </dependency>
+
         <dependency>
             <groupId>org.dromara.sms4j</groupId>
             <artifactId>sms4j-spring-boot-starter</artifactId>

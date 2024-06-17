@@ -7,7 +7,7 @@ import cn.dev33.satoken.router.SaRouter;
 import cn.dev33.satoken.stp.StpInterface;
 import cn.dev33.satoken.stp.StpLogic;
 import cn.dev33.satoken.stp.StpUtil;
-import com.ruoyi.common.core.utils.spring.SpringUtils;
+import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.framework.config.properties.SecurityProperties;
 import com.ruoyi.framework.handler.AllUrlHandler;
 import com.ruoyi.framework.satoken.dao.PlusSaTokenDao;

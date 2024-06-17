@@ -1,7 +1,7 @@
 package com.ruoyi.demo.domain;
 
 import com.baomidou.mybatisplus.annotation.*;
-import com.ruoyi.common.core.core.domain.BaseEntity;
+import com.ruoyi.common.core.domain.BaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

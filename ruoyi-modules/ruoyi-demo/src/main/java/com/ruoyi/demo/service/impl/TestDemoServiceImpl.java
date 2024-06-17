@@ -3,7 +3,7 @@ package com.ruoyi.demo.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ruoyi.common.core.core.domain.PageQuery;
+import com.ruoyi.common.core.domain.PageQuery;
 import com.ruoyi.common.core.core.page.TableDataInfo;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StringUtils;
