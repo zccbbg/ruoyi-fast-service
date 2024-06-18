@@ -149,4 +149,7 @@ public class LoginHelper {
         return isAdmin(getUserId());
     }
 
+    public static boolean isLogin() {
+        return getLoginUser() != null;
+    }
 }

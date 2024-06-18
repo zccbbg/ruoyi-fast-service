@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.service;
+package com.ruoyi.common.sensitive.core;
 
 /**
  * 脱敏服务
@@ -13,6 +13,6 @@ public interface SensitiveService {
     /**
      * 是否脱敏
      */
-    boolean isSensitive();
+    boolean isSensitive(String roleKey, String perms);
 
 }

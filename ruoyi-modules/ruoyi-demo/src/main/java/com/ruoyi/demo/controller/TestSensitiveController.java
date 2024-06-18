@@ -1,9 +1,9 @@
 package com.ruoyi.demo.controller;
 
-import com.ruoyi.common.core.annotation.Sensitive;
-import com.ruoyi.common.core.service.SensitiveService;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.enums.SensitiveStrategy;
+import com.ruoyi.common.sensitive.annotation.Sensitive;
+import com.ruoyi.common.sensitive.core.SensitiveService;
+import com.ruoyi.common.sensitive.core.SensitiveStrategy;
 import com.ruoyi.common.web.core.BaseController;
 import lombok.Data;
 import org.springframework.web.bind.annotation.GetMapping;
