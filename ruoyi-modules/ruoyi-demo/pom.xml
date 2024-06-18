@@ -88,6 +88,11 @@
             <artifactId>ruoyi-common-idempotent</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-doc</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,4 +1,4 @@
-package com.ruoyi.framework.config.properties;
+package com.ruoyi.common.doc.config.properties;
 
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.ExternalDocumentation;
@@ -9,7 +9,6 @@ import io.swagger.v3.oas.models.tags.Tag;
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.NestedConfigurationProperty;
-import org.springframework.stereotype.Component;
 
 import java.util.List;
 

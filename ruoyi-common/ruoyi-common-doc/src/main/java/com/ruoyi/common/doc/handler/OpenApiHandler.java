@@ -1,4 +1,4 @@
-package org.dromara.common.doc.handler;
+package com.ruoyi.common.doc.handler;
 
 import cn.hutool.core.io.IoUtil;
 import io.swagger.v3.core.jackson.TypeNameResolver;

@@ -1,12 +1,13 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.common.doc.config;
 
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.framework.config.properties.SpringDocProperties;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.Paths;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.doc.config.properties.SpringDocProperties;
+import com.ruoyi.common.doc.handler.OpenApiHandler;
 import org.springdoc.core.configuration.SpringDocConfiguration;
 import org.springdoc.core.customizers.OpenApiBuilderCustomizer;
 import org.springdoc.core.customizers.OpenApiCustomizer;
@@ -83,7 +84,7 @@ public class SpringDocConfig {
                                          SpringDocConfigProperties springDocConfigProperties, PropertyResolverUtils propertyResolverUtils,
                                          Optional<List<OpenApiBuilderCustomizer>> openApiBuilderCustomisers,
                                          Optional<List<ServerBaseUrlCustomizer>> serverBaseUrlCustomisers, Optional<JavadocProvider> javadocProvider) {
-        return new org.dromara.common.doc.handler.OpenApiHandler(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
+        return new OpenApiHandler(openAPI, securityParser, springDocConfigProperties, propertyResolverUtils, openApiBuilderCustomisers, serverBaseUrlCustomisers, javadocProvider);
     }
 
     /**

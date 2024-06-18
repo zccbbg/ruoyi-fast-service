@@ -17,6 +17,11 @@
 
     <dependencies>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-doc</artifactId>
+        </dependency>
+
         <!--velocity代码生成使用模板 -->
         <dependency>
             <groupId>org.apache.velocity</groupId>
