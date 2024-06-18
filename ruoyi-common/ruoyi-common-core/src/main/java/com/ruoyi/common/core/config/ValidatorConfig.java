@@ -1,4 +1,4 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.common.core.config;
 
 import org.hibernate.validator.HibernateValidator;
 import org.springframework.beans.factory.annotation.Autowired;

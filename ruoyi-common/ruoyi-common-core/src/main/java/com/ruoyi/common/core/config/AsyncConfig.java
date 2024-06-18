@@ -1,37 +1,33 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.common.core.config;
 
 import cn.hutool.core.util.ArrayUtil;
 import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.common.core.utils.SpringUtils;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Configuration;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.core.task.VirtualThreadTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
-import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.Arrays;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ScheduledExecutorService;
 
 /**
  * 异步配置
  *
  * @author Lion Li
  */
-@EnableAsync(proxyTargetClass = true)
-@Configuration
+@AutoConfiguration
 public class AsyncConfig implements AsyncConfigurer {
-
-    @Autowired
-    @Qualifier("scheduledExecutorService")
-    private ScheduledExecutorService scheduledExecutorService;
 
     /**
      * 自定义 @Async 注解使用系统线程池
      */
     @Override
     public Executor getAsyncExecutor() {
-        return scheduledExecutorService;
+        if(SpringUtils.isVirtual()) {
+            return new VirtualThreadTaskExecutor("async-");
+        }
+        return SpringUtils.getBean("scheduledExecutorService");
     }
 
     /**

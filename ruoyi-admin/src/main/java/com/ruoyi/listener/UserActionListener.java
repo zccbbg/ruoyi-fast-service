@@ -1,4 +1,4 @@
-package com.ruoyi.framework.listener;
+package com.ruoyi.listener;
 
 import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.listener.SaTokenListener;

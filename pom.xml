@@ -320,13 +320,6 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- 核心模块-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
             <!-- 系统模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -352,7 +345,6 @@
 
     <modules>
         <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
         <module>ruoyi-common</module>
         <module>ruoyi-extend</module>
         <module>ruoyi-modules</module>

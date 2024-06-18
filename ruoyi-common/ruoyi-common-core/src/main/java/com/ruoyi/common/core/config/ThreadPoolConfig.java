@@ -1,12 +1,14 @@
-package com.ruoyi.framework.config;
+package com.ruoyi.common.core.config;
 
+import com.ruoyi.common.core.config.properties.ThreadPoolProperties;
 import com.ruoyi.common.core.utils.Threads;
-import com.ruoyi.framework.config.properties.ThreadPoolProperties;
+import jakarta.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.concurrent.BasicThreadFactory;
+import org.springframework.boot.autoconfigure.AutoConfiguration;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.concurrent.ScheduledExecutorService;
@@ -18,7 +20,8 @@ import java.util.concurrent.ThreadPoolExecutor;
  *
  * @author Lion Li
  **/
-@Configuration
+@Slf4j
+@AutoConfiguration
 @EnableConfigurationProperties(ThreadPoolProperties.class)
 public class ThreadPoolConfig {
 
@@ -26,6 +29,8 @@ public class ThreadPoolConfig {
      * 核心线程数 = cpu 核心数 + 1
      */
     private final int core = Runtime.getRuntime().availableProcessors() + 1;
+
+    private ScheduledExecutorService scheduledExecutorService;
 
     @Bean(name = "threadPoolTaskExecutor")
     @ConditionalOnProperty(prefix = "thread-pool", name = "enabled", havingValue = "true")
@@ -44,7 +49,7 @@ public class ThreadPoolConfig {
      */
     @Bean(name = "scheduledExecutorService")
     protected ScheduledExecutorService scheduledExecutorService() {
-        return new ScheduledThreadPoolExecutor(core,
+        ScheduledThreadPoolExecutor scheduledThreadPoolExecutor = new ScheduledThreadPoolExecutor(core,
             new BasicThreadFactory.Builder().namingPattern("schedule-pool-%d").daemon(true).build(),
             new ThreadPoolExecutor.CallerRunsPolicy()) {
             @Override
@@ -53,5 +58,21 @@ public class ThreadPoolConfig {
                 Threads.printException(r, t);
             }
         };
+        this.scheduledExecutorService = scheduledThreadPoolExecutor;
+        return scheduledThreadPoolExecutor;
     }
+
+    /**
+     * 销毁事件
+     */
+    @PreDestroy
+    public void destroy() {
+        try {
+            log.info("====关闭后台任务任务线程池====");
+            Threads.shutdownAndAwaitTermination(scheduledExecutorService);
+        } catch (Exception e) {
+            log.error(e.getMessage(), e);
+        }
+    }
+
 }
