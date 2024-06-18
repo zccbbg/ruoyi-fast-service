@@ -1,7 +1,7 @@
-package com.ruoyi.common.core.encrypt.encryptor;
+package com.ruoyi.common.encrypt.core.encryptor;
 
-import com.ruoyi.common.core.encrypt.EncryptContext;
-import com.ruoyi.common.core.encrypt.IEncryptor;
+import com.ruoyi.common.encrypt.core.EncryptContext;
+import com.ruoyi.common.encrypt.core.IEncryptor;
 
 /**
  * 所有加密执行者的基类

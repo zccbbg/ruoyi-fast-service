@@ -112,6 +112,12 @@
 
             <dependency>
                 <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-common-encrypt</artifactId>
+                <version>${revision}</version>
+            </dependency>
+
+            <dependency>
+                <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-sensitive</artifactId>
                 <version>${revision}</version>
             </dependency>

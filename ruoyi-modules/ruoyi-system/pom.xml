@@ -76,6 +76,11 @@
             <artifactId>ruoyi-common-mybatis</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-encrypt</artifactId>
+        </dependency>
+
     </dependencies>
 
 </project>

@@ -1,7 +1,7 @@
-package com.ruoyi.common.core.encrypt;
+package com.ruoyi.common.encrypt.core;
 
-import com.ruoyi.common.core.enums.AlgorithmType;
-import com.ruoyi.common.core.enums.EncodeType;
+import com.ruoyi.common.encrypt.enumd.AlgorithmType;
+import com.ruoyi.common.encrypt.enumd.EncodeType;
 
 /**
  * 加解者

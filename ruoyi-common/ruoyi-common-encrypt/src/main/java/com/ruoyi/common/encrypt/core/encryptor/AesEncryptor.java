@@ -1,21 +1,21 @@
-package com.ruoyi.common.core.encrypt.encryptor;
+package com.ruoyi.common.encrypt.core.encryptor;
 
-import com.ruoyi.common.core.enums.AlgorithmType;
-import com.ruoyi.common.core.enums.EncodeType;
-import com.ruoyi.common.core.encrypt.EncryptContext;
-import com.ruoyi.common.core.utils.EncryptUtils;
+import com.ruoyi.common.encrypt.core.EncryptContext;
+import com.ruoyi.common.encrypt.enumd.AlgorithmType;
+import com.ruoyi.common.encrypt.enumd.EncodeType;
+import com.ruoyi.common.encrypt.utils.EncryptUtils;
 
 /**
- * sm4算法实现
+ * AES算法实现
  *
  * @author 老马
  * @version 4.6.0
  */
-public class Sm4Encryptor extends AbstractEncryptor {
+public class AesEncryptor extends AbstractEncryptor {
 
     private final EncryptContext context;
 
-    public Sm4Encryptor(EncryptContext context) {
+    public AesEncryptor(EncryptContext context) {
         super(context);
         this.context = context;
     }
@@ -25,7 +25,7 @@ public class Sm4Encryptor extends AbstractEncryptor {
      */
     @Override
     public AlgorithmType algorithm() {
-        return AlgorithmType.SM4;
+        return AlgorithmType.AES;
     }
 
     /**
@@ -37,9 +37,9 @@ public class Sm4Encryptor extends AbstractEncryptor {
     @Override
     public String encrypt(String value, EncodeType encodeType) {
         if (encodeType == EncodeType.HEX) {
-            return EncryptUtils.encryptBySm4Hex(value, context.getPassword());
+            return EncryptUtils.encryptByAesHex(value, context.getPassword());
         } else {
-            return EncryptUtils.encryptBySm4(value, context.getPassword());
+            return EncryptUtils.encryptByAes(value, context.getPassword());
         }
     }
 
@@ -50,6 +50,6 @@ public class Sm4Encryptor extends AbstractEncryptor {
      */
     @Override
     public String decrypt(String value) {
-        return EncryptUtils.decryptBySm4(value, context.getPassword());
+        return EncryptUtils.decryptByAes(value, context.getPassword());
     }
 }

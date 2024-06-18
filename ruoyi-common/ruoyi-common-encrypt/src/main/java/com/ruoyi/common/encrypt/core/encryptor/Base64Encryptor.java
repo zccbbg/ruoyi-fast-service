@@ -1,9 +1,9 @@
-package com.ruoyi.common.core.encrypt.encryptor;
+package com.ruoyi.common.encrypt.core.encryptor;
 
-import com.ruoyi.common.core.enums.AlgorithmType;
-import com.ruoyi.common.core.enums.EncodeType;
-import com.ruoyi.common.core.encrypt.EncryptContext;
-import com.ruoyi.common.core.utils.EncryptUtils;
+import com.ruoyi.common.encrypt.core.EncryptContext;
+import com.ruoyi.common.encrypt.enumd.AlgorithmType;
+import com.ruoyi.common.encrypt.enumd.EncodeType;
+import com.ruoyi.common.encrypt.utils.EncryptUtils;
 
 /**
  * Base64算法实现

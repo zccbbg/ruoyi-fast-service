@@ -1,7 +1,7 @@
 package com.ruoyi.demo.controller;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ruoyi.common.core.annotation.Log;
+import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.core.annotation.RepeatSubmit;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.core.validate.AddGroup;
@@ -9,7 +9,7 @@ import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.core.validate.QueryGroup;
 import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.enums.BusinessType;
+import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.ValidatorUtils;
 import com.ruoyi.common.excel.core.ExcelResult;

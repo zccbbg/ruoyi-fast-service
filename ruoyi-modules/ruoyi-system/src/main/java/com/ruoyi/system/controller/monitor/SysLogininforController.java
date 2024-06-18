@@ -1,13 +1,13 @@
 package com.ruoyi.system.controller.monitor;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ruoyi.common.core.annotation.Log;
+import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.web.core.BaseController;
 import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.core.domain.R;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.common.core.enums.BusinessType;
+import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.common.excel.utils.ExcelUtil;
 import com.ruoyi.system.domain.SysLogininfor;

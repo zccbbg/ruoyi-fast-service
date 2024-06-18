@@ -1,7 +1,7 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.encrypt.annotation;
 
-import com.ruoyi.common.core.enums.AlgorithmType;
-import com.ruoyi.common.core.enums.EncodeType;
+import com.ruoyi.common.encrypt.enumd.AlgorithmType;
+import com.ruoyi.common.encrypt.enumd.EncodeType;
 
 import java.lang.annotation.*;
 

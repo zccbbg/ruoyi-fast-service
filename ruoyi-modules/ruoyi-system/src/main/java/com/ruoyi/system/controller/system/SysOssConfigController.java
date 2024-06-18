@@ -1,7 +1,7 @@
 package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
-import com.ruoyi.common.core.annotation.Log;
+import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.core.annotation.RepeatSubmit;
 import com.ruoyi.common.web.core.BaseController;
 import com.rouyi.common.mybatis.core.page.PageQuery;
@@ -10,7 +10,7 @@ import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.core.validate.QueryGroup;
-import com.ruoyi.common.core.enums.BusinessType;
+import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.system.domain.bo.SysOssConfigBo;
 import com.ruoyi.system.domain.vo.SysOssConfigVo;
 import com.ruoyi.system.service.ISysOssConfigService;

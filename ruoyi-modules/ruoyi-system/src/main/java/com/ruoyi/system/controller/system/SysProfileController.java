@@ -2,11 +2,11 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.io.FileUtil;
-import com.ruoyi.common.core.annotation.Log;
+import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.system.domain.SysUser;
-import com.ruoyi.common.core.enums.BusinessType;
+import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.file.MimeTypeUtils;

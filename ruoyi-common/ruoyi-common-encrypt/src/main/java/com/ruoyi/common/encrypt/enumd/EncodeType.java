@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.enums;
+package com.ruoyi.common.encrypt.enumd;
 
 /**
  * 编码类型

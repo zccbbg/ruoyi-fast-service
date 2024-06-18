@@ -1,96 +1,89 @@
-package com.ruoyi.framework.encrypt;
+package com.ruoyi.common.encrypt.interceptor;
 
 import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.common.core.annotation.EncryptField;
-import com.ruoyi.common.core.encrypt.EncryptContext;
-import com.ruoyi.common.core.enums.AlgorithmType;
-import com.ruoyi.common.core.enums.EncodeType;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.framework.config.properties.EncryptorProperties;
-import com.ruoyi.framework.manager.EncryptorManager;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.executor.parameter.ParameterHandler;
-import org.apache.ibatis.plugin.Interceptor;
-import org.apache.ibatis.plugin.Intercepts;
-import org.apache.ibatis.plugin.Invocation;
-import org.apache.ibatis.plugin.Signature;
+import org.apache.ibatis.executor.resultset.ResultSetHandler;
+import org.apache.ibatis.plugin.*;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.encrypt.annotation.EncryptField;
+import com.ruoyi.common.encrypt.core.EncryptContext;
+import com.ruoyi.common.encrypt.core.EncryptorManager;
+import com.ruoyi.common.encrypt.enumd.AlgorithmType;
+import com.ruoyi.common.encrypt.enumd.EncodeType;
+import com.ruoyi.common.encrypt.properties.EncryptorProperties;
 
 import java.lang.reflect.Field;
-import java.sql.PreparedStatement;
+import java.sql.Statement;
 import java.util.*;
 
 /**
- * 入参加密拦截器
+ * 出参解密拦截器
  *
  * @author 老马
  * @version 4.6.0
  */
 @Slf4j
 @Intercepts({@Signature(
-    type = ParameterHandler.class,
-    method = "setParameters",
-    args = {PreparedStatement.class})
+    type = ResultSetHandler.class,
+    method = "handleResultSets",
+    args = {Statement.class})
 })
 @AllArgsConstructor
-public class MybatisEncryptInterceptor implements Interceptor {
+public class MybatisDecryptInterceptor implements Interceptor {
 
     private final EncryptorManager encryptorManager;
     private final EncryptorProperties defaultProperties;
 
     @Override
     public Object intercept(Invocation invocation) throws Throwable {
-        return invocation;
-    }
-
-    @Override
-    public Object plugin(Object target) {
-        if (target instanceof ParameterHandler) {
-            // 进行加密操作
-            ParameterHandler parameterHandler = (ParameterHandler) target;
-            Object parameterObject = parameterHandler.getParameterObject();
-            if (ObjectUtil.isNotNull(parameterObject) && !(parameterObject instanceof String)) {
-                this.encryptHandler(parameterObject);
-            }
+        // 获取执行mysql执行结果
+        Object result = invocation.proceed();
+        if (result == null) {
+            return null;
         }
-        return target;
+        decryptHandler(result);
+        return result;
     }
 
     /**
-     * 加密对象
+     * 解密对象
      *
      * @param sourceObject 待加密对象
      */
-    private void encryptHandler(Object sourceObject) {
+    private void decryptHandler(Object sourceObject) {
         if (ObjectUtil.isNull(sourceObject)) {
             return;
         }
-        if (sourceObject instanceof Map<?, ?>) {
-            new HashSet<>(((Map<?, ?>) sourceObject).values()).forEach(this::encryptHandler);
+        if (sourceObject instanceof Map<?, ?> map) {
+            new HashSet<>(map.values()).forEach(this::decryptHandler);
             return;
         }
-        if (sourceObject instanceof List<?>) {
-            List<?> sourceList = (List<?>) sourceObject;
-            if(CollUtil.isEmpty(sourceList)) {
+        if (sourceObject instanceof List<?> list) {
+            if(CollUtil.isEmpty(list)) {
                 return;
             }
             // 判断第一个元素是否含有注解。如果没有直接返回，提高效率
-            Object firstItem = sourceList.get(0);
+            Object firstItem = list.get(0);
             if (ObjectUtil.isNull(firstItem) || CollUtil.isEmpty(encryptorManager.getFieldCache(firstItem.getClass()))) {
                 return;
             }
-            ((List<?>) sourceObject).forEach(this::encryptHandler);
+            list.forEach(this::decryptHandler);
             return;
         }
+        // 不在缓存中的类,就是没有加密注解的类(当然也有可能是typeAliasesPackage写错)
         Set<Field> fields = encryptorManager.getFieldCache(sourceObject.getClass());
+        if(ObjectUtil.isNull(fields)){
+            return;
+        }
         try {
             for (Field field : fields) {
-                field.set(sourceObject, this.encryptField(Convert.toStr(field.get(sourceObject)), field));
+                field.set(sourceObject, this.decryptField(Convert.toStr(field.get(sourceObject)), field));
             }
         } catch (Exception e) {
-            log.error("处理加密字段时出错", e);
+            log.error("处理解密字段时出错", e);
         }
     }
 
@@ -101,7 +94,7 @@ public class MybatisEncryptInterceptor implements Interceptor {
      * @param field 待加密字段
      * @return 加密后结果
      */
-    private String encryptField(String value, Field field) {
+    private String decryptField(String value, Field field) {
         if (ObjectUtil.isNull(value)) {
             return null;
         }
@@ -112,11 +105,16 @@ public class MybatisEncryptInterceptor implements Interceptor {
         encryptContext.setPassword(StringUtils.isBlank(encryptField.password()) ? defaultProperties.getPassword() : encryptField.password());
         encryptContext.setPrivateKey(StringUtils.isBlank(encryptField.privateKey()) ? defaultProperties.getPrivateKey() : encryptField.privateKey());
         encryptContext.setPublicKey(StringUtils.isBlank(encryptField.publicKey()) ? defaultProperties.getPublicKey() : encryptField.publicKey());
-        return this.encryptorManager.encrypt(value, encryptContext);
+        return this.encryptorManager.decrypt(value, encryptContext);
     }
 
+    @Override
+    public Object plugin(Object target) {
+        return Plugin.wrap(target, this);
+    }
 
     @Override
     public void setProperties(Properties properties) {
+
     }
 }

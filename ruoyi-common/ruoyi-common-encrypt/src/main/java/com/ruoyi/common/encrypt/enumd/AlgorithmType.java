@@ -1,8 +1,8 @@
-package com.ruoyi.common.core.enums;
+package com.ruoyi.common.encrypt.enumd;
 
-import com.ruoyi.common.core.encrypt.encryptor.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import com.ruoyi.common.encrypt.core.encryptor.*;
 
 /**
  * 算法名称

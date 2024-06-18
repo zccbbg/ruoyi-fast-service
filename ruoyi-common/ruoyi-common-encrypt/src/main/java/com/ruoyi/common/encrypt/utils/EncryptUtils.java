@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.utils;
+package com.ruoyi.common.encrypt.utils;
 
 import cn.hutool.core.codec.Base64;
 import cn.hutool.core.util.ArrayUtil;

@@ -1,8 +1,8 @@
 package com.ruoyi.demo.domain;
 
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.ruoyi.common.core.annotation.EncryptField;
-import com.ruoyi.common.core.enums.AlgorithmType;
+import com.ruoyi.common.encrypt.annotation.EncryptField;
+import com.ruoyi.common.encrypt.enumd.AlgorithmType;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
