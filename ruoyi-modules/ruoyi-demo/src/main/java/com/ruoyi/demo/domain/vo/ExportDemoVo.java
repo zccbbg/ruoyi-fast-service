@@ -2,8 +2,8 @@ package com.ruoyi.demo.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
-import com.ruoyi.common.core.core.validate.AddGroup;
-import com.ruoyi.common.core.core.validate.EditGroup;
+import com.ruoyi.common.core.validate.AddGroup;
+import com.ruoyi.common.core.validate.EditGroup;
 import com.ruoyi.common.core.enums.UserStatus;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.annotation.ExcelEnumFormat;
