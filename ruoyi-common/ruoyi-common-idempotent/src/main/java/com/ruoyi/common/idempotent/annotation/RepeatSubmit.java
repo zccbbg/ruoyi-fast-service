@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.annotation;
+package com.ruoyi.common.idempotent.annotation;
 
 import java.lang.annotation.*;
 import java.util.concurrent.TimeUnit;

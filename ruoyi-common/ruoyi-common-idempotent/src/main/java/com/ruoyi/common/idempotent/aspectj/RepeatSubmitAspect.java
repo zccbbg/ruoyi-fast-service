@@ -1,18 +1,9 @@
-package com.ruoyi.framework.aspectj;
+package com.ruoyi.common.idempotent.aspectj;
 
 import cn.dev33.satoken.SaManager;
 import cn.hutool.core.util.ArrayUtil;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.crypto.SecureUtil;
-import com.ruoyi.common.core.annotation.RepeatSubmit;
-import com.ruoyi.common.core.constant.CacheConstants;
-import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.exception.ServiceException;
-import com.ruoyi.common.core.utils.JsonUtils;
-import com.ruoyi.common.core.utils.MessageUtils;
-import com.ruoyi.common.core.utils.ServletUtils;
-import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.redis.utils.RedisUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.aspectj.lang.JoinPoint;
@@ -20,7 +11,15 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import org.springframework.stereotype.Component;
+import com.ruoyi.common.core.constant.GlobalConstants;
+import com.ruoyi.common.core.domain.R;
+import com.ruoyi.common.core.exception.ServiceException;
+import com.ruoyi.common.core.utils.MessageUtils;
+import com.ruoyi.common.core.utils.ServletUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.idempotent.annotation.RepeatSubmit;
+import com.ruoyi.common.json.utils.JsonUtils;
+import com.ruoyi.common.redis.utils.RedisUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -35,7 +34,6 @@ import java.util.StringJoiner;
  * @author Lion Li
  */
 @Aspect
-@Component
 public class RepeatSubmitAspect {
 
     private static final ThreadLocal<String> KEY_CACHE = new ThreadLocal<>();
@@ -59,7 +57,7 @@ public class RepeatSubmitAspect {
 
         submitKey = SecureUtil.md5(submitKey + ":" + nowParams);
         // 唯一标识（指定key + url + 消息头）
-        String cacheRepeatKey = CacheConstants.REPEAT_SUBMIT_KEY + url + submitKey;
+        String cacheRepeatKey = GlobalConstants.REPEAT_SUBMIT_KEY + url + submitKey;
         if (RedisUtils.setObjectIfAbsent(cacheRepeatKey, "", Duration.ofMillis(interval))) {
             KEY_CACHE.set(cacheRepeatKey);
         } else {
@@ -78,7 +76,7 @@ public class RepeatSubmitAspect {
      */
     @AfterReturning(pointcut = "@annotation(repeatSubmit)", returning = "jsonResult")
     public void doAfterReturning(JoinPoint joinPoint, RepeatSubmit repeatSubmit, Object jsonResult) {
-        if (jsonResult instanceof R r) {
+        if (jsonResult instanceof R<?> r) {
             try {
                 // 成功则不删除redis数据 保证在有效时间内无法重复提交
                 if (r.getCode() == R.SUCCESS) {
@@ -129,7 +127,7 @@ public class RepeatSubmitAspect {
     public boolean isFilterObject(final Object o) {
         Class<?> clazz = o.getClass();
         if (clazz.isArray()) {
-            return clazz.getComponentType().isAssignableFrom(MultipartFile.class);
+            return MultipartFile.class.isAssignableFrom(clazz.getComponentType());
         } else if (Collection.class.isAssignableFrom(clazz)) {
             Collection collection = (Collection) o;
             for (Object value : collection) {
@@ -142,7 +140,7 @@ public class RepeatSubmitAspect {
             }
         }
         return o instanceof MultipartFile || o instanceof HttpServletRequest || o instanceof HttpServletResponse
-            || o instanceof BindingResult;
+               || o instanceof BindingResult;
     }
 
 }
