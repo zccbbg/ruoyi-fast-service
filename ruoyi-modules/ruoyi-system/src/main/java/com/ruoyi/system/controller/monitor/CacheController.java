@@ -5,9 +5,9 @@ import cn.hutool.core.collection.CollUtil;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.CacheNames;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.utils.JsonUtils;
 import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.json.utils.JsonUtils;
 import com.ruoyi.common.redis.utils.CacheUtils;
 import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.system.domain.SysCache;
@@ -17,6 +17,8 @@ import org.springframework.data.redis.connection.RedisConnection;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+
+;
 
 /**
  * 缓存监控

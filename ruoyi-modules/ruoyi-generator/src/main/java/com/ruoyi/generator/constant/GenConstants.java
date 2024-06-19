@@ -1,4 +1,4 @@
-package com.ruoyi.common.core.constant;
+package com.ruoyi.generator.constant;
 
 /**
  * 代码生成通用常量
