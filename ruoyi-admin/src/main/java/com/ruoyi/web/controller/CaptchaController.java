@@ -5,18 +5,18 @@ import cn.hutool.captcha.AbstractCaptcha;
 import cn.hutool.captcha.generator.CodeGenerator;
 import cn.hutool.core.util.IdUtil;
 import cn.hutool.core.util.RandomUtil;
-import com.ruoyi.common.constant.CacheConstants;
-import com.ruoyi.common.constant.Constants;
+import com.ruoyi.common.core.constant.CacheConstants;
+import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.enums.CaptchaType;
-import com.ruoyi.common.utils.StringUtils;
-import com.ruoyi.common.utils.email.MailUtils;
-import com.ruoyi.common.utils.redis.RedisUtils;
-import com.ruoyi.common.utils.reflect.ReflectUtils;
-import com.ruoyi.common.utils.spring.SpringUtils;
-import com.ruoyi.framework.config.properties.CaptchaProperties;
-import com.ruoyi.framework.config.properties.MailProperties;
-import com.ruoyi.system.service.ISysConfigService;
+import com.ruoyi.common.core.utils.SpringUtils;
+import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.core.utils.reflect.ReflectUtils;
+import com.ruoyi.common.mail.config.properties.MailProperties;
+import com.ruoyi.common.mail.utils.MailUtils;
+import com.ruoyi.common.redis.utils.RedisUtils;
+import com.ruoyi.common.web.config.properties.CaptchaProperties;
+import com.ruoyi.common.web.enums.CaptchaType;
+import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.dromara.sms4j.api.SmsBlend;
@@ -30,9 +30,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import jakarta.validation.constraints.NotBlank;
 import java.time.Duration;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -49,7 +47,6 @@ import java.util.Map;
 public class CaptchaController {
 
     private final CaptchaProperties captchaProperties;
-    private final ISysConfigService configService;
     private final MailProperties mailProperties;
 
     /**
@@ -102,7 +99,7 @@ public class CaptchaController {
      */
     @GetMapping("/captchaImage")
     public R<Map<String, Object>> getCode() {
-        boolean captchaEnabled = configService.selectCaptchaEnabled();
+        boolean captchaEnabled = captchaProperties.getEnable();
         if (!captchaEnabled) {
             return R.ok(Map.of("captchaEnabled", captchaEnabled));
         }

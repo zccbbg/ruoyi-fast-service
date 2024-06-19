@@ -5,15 +5,15 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi-vue-plus</artifactId>
-    <version>5.0.0</version>
+    <artifactId>ruoyi-fast-service</artifactId>
+    <version>${revision}</version>
 
-    <name>RuoYi-Vue-Plus</name>
+    <name>ruoyi-fast-service</name>
     <url>https://gitee.com/zccbbg/ruoyi-vue-plus-service</url>
-    <description>RuoYi-Vue-Plus后台管理系统</description>
+    <description>ruoyi-fast-service后台管理系统</description>
 
     <properties>
-        <ruoyi-vue-plus.version>5.0.0</ruoyi-vue-plus.version>
+        <revision>5.0.0</revision>
         <spring-boot.version>3.2.6</spring-boot.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -22,6 +22,7 @@
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
         <springdoc.version>2.5.0</springdoc.version>
         <therapi-javadoc.version>0.15.0</therapi-javadoc.version>
+        <snailjob.version>1.0.0-beta3</snailjob.version>
         <poi.version>5.2.3</poi.version>
         <easyexcel.version>3.3.4</easyexcel.version>
         <velocity.version>2.3</velocity.version>
@@ -37,7 +38,6 @@
         <mapstruct-plus.version>1.3.6</mapstruct-plus.version>
         <mapstruct-plus.lombok.version>0.2.0</mapstruct-plus.lombok.version>
         <lombok.version>1.18.32</lombok.version>
-        <xxl-job.version>2.4.0</xxl-job.version>
         <lombok.version>1.18.30</lombok.version>
         <bouncycastle.version>1.72</bouncycastle.version>
         <!-- 离线IP地址定位库 -->
@@ -89,6 +89,15 @@
     <!-- 依赖声明 -->
     <dependencyManagement>
         <dependencies>
+
+            <!-- common 的依赖配置-->
+            <dependency>
+                <groupId>com.ruoyi</groupId>
+                <artifactId>ruoyi-common-bom</artifactId>
+                <version>${revision}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
 
             <!-- SpringBoot的依赖配置-->
             <dependency>
@@ -172,6 +181,23 @@
                         <artifactId>hutool-all</artifactId>
                     </exclusion>
                 </exclusions>
+            </dependency>
+            <dependency>
+                <groupId>cn.dev33</groupId>
+                <artifactId>sa-token-core</artifactId>
+                <version>${satoken.version}</version>
+            </dependency>
+
+            <!-- SnailJob Client -->
+            <dependency>
+                <groupId>com.aizuda</groupId>
+                <artifactId>snail-job-client-starter</artifactId>
+                <version>${snailjob.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.aizuda</groupId>
+                <artifactId>snail-job-client-job-core</artifactId>
+                <version>${snailjob.version}</version>
             </dependency>
 
             <!-- dynamic-datasource 多数据源-->
@@ -260,13 +286,6 @@
                 <version>${lock4j.version}</version>
             </dependency>
 
-            <!-- xxl-job-core -->
-            <dependency>
-                <groupId>com.xuxueli</groupId>
-                <artifactId>xxl-job-core</artifactId>
-                <version>${xxl-job.version}</version>
-            </dependency>
-
             <dependency>
                 <groupId>com.alibaba</groupId>
                 <artifactId>transmittable-thread-local</artifactId>
@@ -291,49 +310,21 @@
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-job</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <version>${revision}</version>
             </dependency>
 
             <!-- 代码生成-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-generator</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
-            </dependency>
-
-            <!-- 核心模块-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-framework</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <version>${revision}</version>
             </dependency>
 
             <!-- 系统模块-->
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-system</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
-            </dependency>
-
-            <!-- 通用工具-->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
-            </dependency>
-
-            <!-- OSS对象存储模块 -->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-oss</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
-            </dependency>
-
-            <!-- SMS短信模块 -->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-sms</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <version>${revision}</version>
             </dependency>
 
             <dependency>
@@ -346,7 +337,7 @@
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-demo</artifactId>
-                <version>${ruoyi-vue-plus.version}</version>
+                <version>${revision}</version>
             </dependency>
 
         </dependencies>
@@ -354,15 +345,9 @@
 
     <modules>
         <module>ruoyi-admin</module>
-        <module>ruoyi-framework</module>
-        <module>ruoyi-system</module>
-        <module>ruoyi-job</module>
-        <module>ruoyi-generator</module>
         <module>ruoyi-common</module>
-        <module>ruoyi-demo</module>
         <module>ruoyi-extend</module>
-        <module>ruoyi-oss</module>
-        <module>ruoyi-sms</module>
+        <module>ruoyi-modules</module>
     </modules>
     <packaging>pom</packaging>
 
