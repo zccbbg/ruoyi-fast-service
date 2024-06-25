@@ -10,6 +10,9 @@
 > 项目代码、文档 均开源免费可商用 遵循开源协议在项目中保留开源协议文件即可<br>
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
 
+## 更新记录
+参考：[更新记录.md](%B8%FC%D0%C2%BC%C7%C2%BC.md)
+
 ## 前端项目地址
 #### gitee
 [https://gitee.com/zccbbg/ruoyi-fast-vue3](https://gitee.com/zccbbg/ruoyi-fast-vue3)
