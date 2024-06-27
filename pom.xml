@@ -22,7 +22,7 @@
         <mybatis-plus.version>3.5.6</mybatis-plus.version>
         <springdoc.version>2.5.0</springdoc.version>
         <therapi-javadoc.version>0.15.0</therapi-javadoc.version>
-        <snailjob.version>1.0.0-beta3</snailjob.version>
+        <snailjob.version>1.0.1</snailjob.version>
         <poi.version>5.2.3</poi.version>
         <easyexcel.version>3.3.4</easyexcel.version>
         <velocity.version>2.3</velocity.version>
