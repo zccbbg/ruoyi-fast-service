@@ -11,7 +11,7 @@
 活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
 
 ## 更新记录
-参考：[更新记录.md](%B8%FC%D0%C2%BC%C7%C2%BC.md)
+参考：[UpdateHistory.md](UpdateHistory.md)
 
 ## 前端项目地址
 #### gitee
