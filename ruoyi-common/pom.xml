@@ -28,7 +28,6 @@
         <module>ruoyi-common-sensitive</module>
         <module>ruoyi-common-encrypt</module>
         <module>ruoyi-common-idempotent</module>
-        <module>ruoyi-common-job</module>
         <module>ruoyi-common-doc</module>
     </modules>
 
