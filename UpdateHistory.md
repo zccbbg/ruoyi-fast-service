@@ -1,3 +1,7 @@
+## 230627
+1. 删除 snail-job monitor-admin ruoyi-extend 基本用不到
+2. 优化 获取aop代理的方式 减少与其他使用aop的功能冲突的概率
+
 ## 230620
 1. 完成重构 common, framework 包结构, 参照 cloud 版本拆分子模块 ;
 update 更新模块包名 ;
