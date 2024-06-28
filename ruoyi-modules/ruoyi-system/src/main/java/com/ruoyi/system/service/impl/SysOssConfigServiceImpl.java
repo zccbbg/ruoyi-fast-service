@@ -16,7 +16,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.redis.utils.CacheUtils;
 import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.common.oss.constant.OssConstant;
-import com.ruoyi.system.domain.SysOssConfig;
+import com.ruoyi.system.domain.entity.SysOssConfig;
 import com.ruoyi.system.domain.bo.SysOssConfigBo;
 import com.ruoyi.system.domain.vo.SysOssConfigVo;
 import com.ruoyi.system.mapper.SysOssConfigMapper;

@@ -15,7 +15,7 @@ import com.ruoyi.common.idempotent.annotation.RepeatSubmit;
 import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.demo.domain.TestDemo;
+import com.ruoyi.demo.domain.entity.TestDemo;
 import com.ruoyi.demo.domain.bo.TestDemoBo;
 import com.ruoyi.demo.domain.bo.TestDemoImportVo;
 import com.ruoyi.demo.domain.vo.TestDemoVo;

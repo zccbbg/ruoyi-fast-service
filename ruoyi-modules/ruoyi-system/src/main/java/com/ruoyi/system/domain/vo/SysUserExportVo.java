@@ -3,7 +3,7 @@ package com.ruoyi.system.domain.vo;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
 import com.ruoyi.common.excel.convert.ExcelDictConvert;
-import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.entity.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.NoArgsConstructor;

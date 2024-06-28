@@ -1,7 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.domain.entity.SysPost;
 
 import java.util.List;
 

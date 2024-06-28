@@ -13,7 +13,7 @@ import org.aspectj.lang.annotation.AfterReturning;
 import org.aspectj.lang.annotation.AfterThrowing;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
-import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.utils.ServletUtils;
 import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.core.utils.StringUtils;

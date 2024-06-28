@@ -2,8 +2,8 @@ package com.ruoyi.system.service;
 
 import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.system.domain.SysRole;
-import com.ruoyi.system.domain.SysUserRole;
+import com.ruoyi.system.domain.entity.SysRole;
+import com.ruoyi.system.domain.entity.SysUserRole;
 
 import java.util.List;
 import java.util.Set;

@@ -1,7 +1,7 @@
 package com.ruoyi.common.satoken.core.service;
 
 import cn.dev33.satoken.stp.StpInterface;
-import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.enums.UserType;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 

@@ -2,7 +2,7 @@ package com.ruoyi.system.service;
 
 import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
-import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.domain.entity.SysPost;
 
 import java.util.List;
 

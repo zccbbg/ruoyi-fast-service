@@ -1,7 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.domain.entity.SysNotice;
 
 /**
  * 通知公告表 数据层

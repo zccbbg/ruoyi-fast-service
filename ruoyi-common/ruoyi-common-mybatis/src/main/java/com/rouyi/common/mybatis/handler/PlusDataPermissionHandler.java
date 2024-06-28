@@ -12,8 +12,8 @@ import net.sf.jsqlparser.expression.Parenthesis;
 import net.sf.jsqlparser.expression.operators.conditional.AndExpression;
 import net.sf.jsqlparser.parser.CCJSqlParserUtil;
 import org.apache.ibatis.io.Resources;
-import com.ruoyi.common.core.domain.dto.RoleDTO;
-import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.vo.RoleVO;
+import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.core.utils.StreamUtils;
@@ -113,7 +113,7 @@ public class PlusDataPermissionHandler {
         context.setBeanResolver(beanResolver);
         DataPermissionHelper.getContext().forEach(context::setVariable);
         Set<String> conditions = new HashSet<>();
-        for (RoleDTO role : user.getRoles()) {
+        for (RoleVO role : user.getRoles()) {
             user.setRoleId(role.getRoleId());
             // 获取角色权限泛型
             DataScopeType type = DataScopeType.findCode(role.getDataScope());

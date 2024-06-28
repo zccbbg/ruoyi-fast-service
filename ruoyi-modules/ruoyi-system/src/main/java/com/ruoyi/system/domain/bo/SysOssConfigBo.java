@@ -3,7 +3,7 @@ package com.ruoyi.system.domain.bo;
 import com.rouyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.core.validate.AddGroup;
 import com.ruoyi.common.core.validate.EditGroup;
-import com.ruoyi.system.domain.SysOssConfig;
+import com.ruoyi.system.domain.entity.SysOssConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

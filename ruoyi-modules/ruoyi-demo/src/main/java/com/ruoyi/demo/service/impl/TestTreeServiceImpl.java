@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.demo.domain.TestTree;
+import com.ruoyi.demo.domain.entity.TestTree;
 import com.ruoyi.demo.domain.bo.TestTreeBo;
 import com.ruoyi.demo.domain.vo.TestTreeVo;
 import com.ruoyi.demo.mapper.TestTreeMapper;

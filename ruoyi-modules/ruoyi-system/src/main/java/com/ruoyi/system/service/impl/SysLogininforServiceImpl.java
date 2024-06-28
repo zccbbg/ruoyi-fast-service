@@ -11,7 +11,7 @@ import com.ruoyi.common.core.utils.ServletUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.ip.AddressUtils;
 import com.ruoyi.common.log.event.LogininforEvent;
-import com.ruoyi.system.domain.SysLogininfor;
+import com.ruoyi.system.domain.entity.SysLogininfor;
 import com.ruoyi.system.mapper.SysLogininforMapper;
 import com.ruoyi.system.service.ISysLogininforService;
 import jakarta.servlet.http.HttpServletRequest;

@@ -1,7 +1,7 @@
 package com.ruoyi.demo.mapper;
 
 import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.demo.domain.TestDemoEncrypt;
+import com.ruoyi.demo.domain.entity.TestDemoEncrypt;
 
 /**
  * 测试加密功能

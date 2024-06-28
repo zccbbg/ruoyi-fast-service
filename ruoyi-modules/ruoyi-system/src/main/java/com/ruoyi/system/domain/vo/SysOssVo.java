@@ -1,6 +1,6 @@
 package com.ruoyi.system.domain.vo;
 
-import com.ruoyi.system.domain.SysOss;
+import com.ruoyi.system.domain.entity.SysOss;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 

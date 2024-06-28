@@ -1,7 +1,7 @@
 package com.ruoyi.system.service;
 
 import cn.hutool.core.lang.tree.Tree;
-import com.ruoyi.system.domain.SysDept;
+import com.ruoyi.system.domain.entity.SysDept;
 
 import java.util.List;
 

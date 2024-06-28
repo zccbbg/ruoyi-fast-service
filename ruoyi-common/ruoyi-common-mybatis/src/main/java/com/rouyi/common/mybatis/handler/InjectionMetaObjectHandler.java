@@ -3,7 +3,7 @@ package com.rouyi.common.mybatis.handler;
 import cn.hutool.core.util.ObjectUtil;
 import cn.hutool.http.HttpStatus;
 import com.baomidou.mybatisplus.core.handlers.MetaObjectHandler;
-import com.ruoyi.common.core.domain.model.LoginUser;
+import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.rouyi.common.mybatis.core.domain.BaseEntity;
 import com.ruoyi.common.satoken.utils.LoginHelper;

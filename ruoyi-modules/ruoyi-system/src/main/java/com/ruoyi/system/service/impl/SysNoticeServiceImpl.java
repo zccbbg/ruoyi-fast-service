@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.system.domain.SysNotice;
+import com.ruoyi.system.domain.entity.SysNotice;
 import com.ruoyi.system.mapper.SysNoticeMapper;
 import com.ruoyi.system.service.ISysNoticeService;
 import lombok.RequiredArgsConstructor;

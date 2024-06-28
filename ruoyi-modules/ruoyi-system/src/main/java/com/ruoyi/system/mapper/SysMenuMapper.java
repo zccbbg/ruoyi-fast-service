@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.common.core.constant.UserConstants;
-import com.ruoyi.system.domain.SysMenu;
+import com.ruoyi.system.domain.entity.SysMenu;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;

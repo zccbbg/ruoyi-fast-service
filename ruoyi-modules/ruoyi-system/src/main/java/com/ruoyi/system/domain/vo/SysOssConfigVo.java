@@ -1,7 +1,7 @@
 package com.ruoyi.system.domain.vo;
 
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
-import com.ruoyi.system.domain.SysOssConfig;
+import com.ruoyi.system.domain.entity.SysOssConfig;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 

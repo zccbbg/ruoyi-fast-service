@@ -11,7 +11,7 @@ import com.ruoyi.common.core.utils.ValidatorUtils;
 import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.excel.core.ExcelListener;
 import com.ruoyi.common.excel.core.ExcelResult;
-import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.entity.SysUser;
 import com.ruoyi.system.domain.vo.SysUserImportVo;
 import com.ruoyi.system.service.ISysConfigService;
 import com.ruoyi.system.service.ISysUserService;

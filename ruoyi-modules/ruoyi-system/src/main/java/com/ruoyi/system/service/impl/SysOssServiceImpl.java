@@ -20,7 +20,7 @@ import com.ruoyi.common.oss.core.OssClient;
 import com.ruoyi.common.oss.entity.UploadResult;
 import com.ruoyi.common.oss.enumd.AccessPolicyType;
 import com.ruoyi.common.oss.factory.OssFactory;
-import com.ruoyi.system.domain.SysOss;
+import com.ruoyi.system.domain.entity.SysOss;
 import com.ruoyi.system.domain.bo.SysOssBo;
 import com.ruoyi.system.domain.vo.SysOssVo;
 import com.ruoyi.system.mapper.SysOssMapper;

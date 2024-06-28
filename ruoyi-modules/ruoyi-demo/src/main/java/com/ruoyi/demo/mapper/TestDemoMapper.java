@@ -7,7 +7,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.rouyi.common.mybatis.annotation.DataColumn;
 import com.rouyi.common.mybatis.annotation.DataPermission;
 import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.demo.domain.TestDemo;
+import com.ruoyi.demo.domain.entity.TestDemo;
 import com.ruoyi.demo.domain.vo.TestDemoVo;
 import org.apache.ibatis.annotations.Param;
 

@@ -6,7 +6,7 @@ import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.core.constant.UserConstants;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.system.domain.SysDept;
+import com.ruoyi.system.domain.entity.SysDept;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.system.service.ISysDeptService;

@@ -9,7 +9,7 @@ import com.ruoyi.common.core.domain.R;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.excel.utils.ExcelUtil;
-import com.ruoyi.system.domain.SysPost;
+import com.ruoyi.system.domain.entity.SysPost;
 import com.ruoyi.system.service.ISysPostService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

@@ -1,7 +1,7 @@
 package com.ruoyi.system.service;
 
 import com.rouyi.common.mybatis.core.page.PageQuery;
-import com.ruoyi.system.domain.SysUser;
+import com.ruoyi.system.domain.entity.SysUser;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
 
 import java.util.List;

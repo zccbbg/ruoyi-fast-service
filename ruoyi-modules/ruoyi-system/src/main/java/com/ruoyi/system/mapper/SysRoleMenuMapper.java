@@ -1,7 +1,7 @@
 package com.ruoyi.system.mapper;
 
 import com.rouyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.system.domain.SysRoleMenu;
+import com.ruoyi.system.domain.entity.SysRoleMenu;
 
 /**
  * 角色与菜单关联表 数据层

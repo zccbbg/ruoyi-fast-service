@@ -4,7 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.core.constant.CacheNames;
 import com.rouyi.common.mybatis.core.page.PageQuery;
-import com.ruoyi.system.domain.SysDictData;
+import com.ruoyi.system.domain.entity.SysDictData;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.StringUtils;

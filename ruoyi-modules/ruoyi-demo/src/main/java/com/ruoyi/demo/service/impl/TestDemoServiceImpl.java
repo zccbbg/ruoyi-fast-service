@@ -7,7 +7,7 @@ import com.rouyi.common.mybatis.core.page.PageQuery;
 import com.rouyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.demo.domain.TestDemo;
+import com.ruoyi.demo.domain.entity.TestDemo;
 import com.ruoyi.demo.domain.bo.TestDemoBo;
 import com.ruoyi.demo.domain.vo.TestDemoVo;
 import com.ruoyi.demo.mapper.TestDemoMapper;

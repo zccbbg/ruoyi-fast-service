@@ -10,7 +10,7 @@ import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.json.utils.JsonUtils;
 import com.ruoyi.common.redis.utils.CacheUtils;
 import com.ruoyi.common.redis.utils.RedisUtils;
-import com.ruoyi.system.domain.SysCache;
+import com.ruoyi.system.domain.entity.SysCache;
 import lombok.RequiredArgsConstructor;
 import org.redisson.spring.data.connection.RedissonConnectionFactory;
 import org.springframework.data.redis.connection.RedisConnection;

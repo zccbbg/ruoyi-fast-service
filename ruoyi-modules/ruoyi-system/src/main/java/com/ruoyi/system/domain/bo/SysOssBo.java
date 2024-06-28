@@ -1,7 +1,7 @@
 package com.ruoyi.system.domain.bo;
 
 import com.rouyi.common.mybatis.core.domain.BaseEntity;
-import com.ruoyi.system.domain.SysOss;
+import com.ruoyi.system.domain.entity.SysOss;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 import lombok.EqualsAndHashCode;

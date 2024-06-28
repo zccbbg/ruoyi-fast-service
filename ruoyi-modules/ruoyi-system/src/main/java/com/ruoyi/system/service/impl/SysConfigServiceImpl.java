@@ -13,7 +13,7 @@ import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.redis.utils.CacheUtils;
 import com.ruoyi.common.core.utils.SpringUtils;
-import com.ruoyi.system.domain.SysConfig;
+import com.ruoyi.system.domain.entity.SysConfig;
 import com.ruoyi.system.mapper.SysConfigMapper;
 import com.ruoyi.system.service.ISysConfigService;
 import lombok.RequiredArgsConstructor;

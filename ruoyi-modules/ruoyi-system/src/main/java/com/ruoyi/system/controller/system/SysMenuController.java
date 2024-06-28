@@ -9,7 +9,7 @@ import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.system.domain.SysMenu;
+import com.ruoyi.system.domain.entity.SysMenu;
 import com.ruoyi.system.service.ISysMenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;

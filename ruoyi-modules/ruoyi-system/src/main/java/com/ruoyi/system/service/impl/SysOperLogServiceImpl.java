@@ -9,7 +9,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.ip.AddressUtils;
 import com.ruoyi.common.log.event.OperLogEvent;
-import com.ruoyi.system.domain.SysOperLog;
+import com.ruoyi.system.domain.entity.SysOperLog;
 import com.ruoyi.system.mapper.SysOperLogMapper;
 import com.ruoyi.system.service.ISysOperLogService;
 import lombok.RequiredArgsConstructor;

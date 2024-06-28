@@ -1,7 +1,7 @@
 package com.ruoyi.demo.controller;
 
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.demo.domain.TestDemoEncrypt;
+import com.ruoyi.demo.domain.entity.TestDemoEncrypt;
 import com.ruoyi.demo.mapper.TestDemoEncryptMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
