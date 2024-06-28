@@ -1,4 +1,4 @@
-package com.ruoyi.listener;
+package com.ruoyi.system.listener;
 
 import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.listener.SaTokenListener;
@@ -55,7 +55,6 @@ public class UserActionListener implements SaTokenListener {
             } else {
                 RedisUtils.setCacheObject(CacheConstants.ONLINE_TOKEN_KEY + tokenValue, dto, Duration.ofSeconds(tokenConfig.getTimeout()));
             }
-            log.info("user doLogin, userId:{}, token:{}", loginId, tokenValue);
         } else if (userType == UserType.APP_USER) {
             // app端 自行根据业务编写
         }

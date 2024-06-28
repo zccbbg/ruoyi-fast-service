@@ -1,4 +1,4 @@
-package com.ruoyi.web.controller;
+package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import cn.hutool.captcha.AbstractCaptcha;
@@ -11,8 +11,6 @@ import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.reflect.ReflectUtils;
-import com.ruoyi.common.mail.config.properties.MailProperties;
-import com.ruoyi.common.mail.utils.MailUtils;
 import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.common.web.config.properties.CaptchaProperties;
 import com.ruoyi.common.web.enums.CaptchaType;
@@ -47,7 +45,6 @@ import java.util.Map;
 public class CaptchaController {
 
     private final CaptchaProperties captchaProperties;
-    private final MailProperties mailProperties;
 
     /**
      * 短信验证码
@@ -68,28 +65,6 @@ public class CaptchaController {
         if (!"OK".equals(smsResponse.getCode())) {
             log.error("验证码短信发送异常 => {}", smsResponse);
             return R.fail(smsResponse.getMessage());
-        }
-        return R.ok();
-    }
-
-    /**
-     * 邮箱验证码
-     *
-     * @param email 邮箱
-     */
-    @GetMapping("/captchaEmail")
-    public R<Void> emailCode(@NotBlank(message = "{user.email.not.blank}") String email) {
-        if (!mailProperties.getEnabled()) {
-            return R.fail("当前系统没有开启邮箱功能！");
-        }
-        String key = CacheConstants.CAPTCHA_CODE_KEY + email;
-        String code = RandomUtil.randomNumbers(4);
-        RedisUtils.setCacheObject(key, code, Duration.ofMinutes(Constants.CAPTCHA_EXPIRATION));
-        try {
-            MailUtils.sendText(email, "登录验证码", "您本次验证码为：" + code + "，有效性为" + Constants.CAPTCHA_EXPIRATION + "分钟，请尽快填写。");
-        } catch (Exception e) {
-            log.error("验证码短信发送异常 => {}", e.getMessage());
-            return R.fail(e.getMessage());
         }
         return R.ok();
     }
