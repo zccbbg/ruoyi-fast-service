@@ -10,6 +10,7 @@ import com.ruoyi.common.excel.convert.ExcelDictConvert;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -80,7 +81,7 @@ public class SysLogininfor implements Serializable {
      * 访问时间
      */
     @ExcelProperty(value = "访问时间")
-    private Date loginTime;
+    private LocalDateTime loginTime;
 
     /**
      * 请求参数

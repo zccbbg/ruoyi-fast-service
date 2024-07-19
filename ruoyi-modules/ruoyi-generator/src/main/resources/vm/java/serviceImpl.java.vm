@@ -1,9 +1,10 @@
-package ${packageName}.service.impl;
+package ${packageName}.service;
 
 import com.ruoyi.common.core.utils.MapstructUtils;
     #if($table.crud || $table.sub)
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
+import com.ruoyi.common.core.utils.StringUtils;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -12,9 +13,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import ${packageName}.domain.bo.${ClassName}Bo;
 import ${packageName}.domain.vo.${ClassName}Vo;
-import ${packageName}.domain.${ClassName};
+import ${packageName}.domain.entity.${ClassName};
 import ${packageName}.mapper.${ClassName}Mapper;
-import ${packageName}.service.I${ClassName}Service;
 
 import java.util.List;
 import java.util.Map;
@@ -28,26 +28,24 @@ import java.util.Collection;
  */
 @RequiredArgsConstructor
 @Service
-public class ${ClassName}ServiceImpl implements I${ClassName}Service {
+public class ${ClassName}Service {
 
-    private final ${ClassName}Mapper baseMapper;
+    private final ${ClassName}Mapper ${className}Mapper;
 
     /**
      * 查询${functionName}
      */
-    @Override
     public ${ClassName}Vo queryById(${pkColumn.javaType} ${pkColumn.javaField}){
-        return baseMapper.selectVoById(${pkColumn.javaField});
+        return ${className}Mapper.selectVoById(${pkColumn.javaField});
     }
 
 #if($table.crud || $table.sub)
     /**
      * 查询${functionName}列表
      */
-    @Override
     public TableDataInfo<${ClassName}Vo> queryPageList(${ClassName}Bo bo, PageQuery pageQuery) {
         LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(bo);
-        Page<${ClassName}Vo> result = baseMapper.selectVoPage(pageQuery.build(), lqw);
+        Page<${ClassName}Vo> result = ${className}Mapper.selectVoPage(pageQuery.build(), lqw);
         return TableDataInfo.build(result);
     }
 #end
@@ -55,10 +53,9 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     /**
      * 查询${functionName}列表
      */
-    @Override
     public List<${ClassName}Vo> queryList(${ClassName}Bo bo) {
         LambdaQueryWrapper<${ClassName}> lqw = buildQueryWrapper(bo);
-        return baseMapper.selectVoList(lqw);
+        return ${className}Mapper.selectVoList(lqw);
     }
 
     private LambdaQueryWrapper<${ClassName}> buildQueryWrapper(${ClassName}Bo bo) {
@@ -91,43 +88,23 @@ public class ${ClassName}ServiceImpl implements I${ClassName}Service {
     /**
      * 新增${functionName}
      */
-    @Override
-    public Boolean insertByBo(${ClassName}Bo bo) {
+    public void insertByBo(${ClassName}Bo bo) {
         ${ClassName} add = MapstructUtils.convert(bo, ${ClassName}.class);
-        validEntityBeforeSave(add);
-        boolean flag = baseMapper.insert(add) > 0;
-#set($pk=$pkColumn.javaField.substring(0,1).toUpperCase() + ${pkColumn.javaField.substring(1)})
-        if (flag) {
-            bo.set$pk(add.get$pk());
-        }
-        return flag;
+        ${className}Mapper.insert(add);
     }
 
     /**
      * 修改${functionName}
      */
-    @Override
-    public Boolean updateByBo(${ClassName}Bo bo) {
+    public void updateByBo(${ClassName}Bo bo) {
         ${ClassName} update = MapstructUtils.convert(bo, ${ClassName}.class);
-        validEntityBeforeSave(update);
-        return baseMapper.updateById(update) > 0;
-    }
-
-    /**
-     * 保存前的数据校验
-     */
-    private void validEntityBeforeSave(${ClassName} entity){
-        //TODO 做一些数据校验,如唯一约束
+        ${className}Mapper.updateById(update);
     }
 
     /**
      * 批量删除${functionName}
      */
-    @Override
-    public Boolean deleteWithValidByIds(Collection<${pkColumn.javaType}> ids, Boolean isValid) {
-        if(isValid){
-            //TODO 做一些业务上的校验,判断是否需要校验
-        }
-        return baseMapper.deleteBatchIds(ids) > 0;
+    public void deleteByIds(Collection<${pkColumn.javaType}> ids) {
+        ${className}Mapper.deleteBatchIds(ids);
     }
 }

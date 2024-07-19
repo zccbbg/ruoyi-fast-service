@@ -54,5 +54,4 @@ public interface GenTableMapper extends BaseMapperPlus<GenTable, GenTable> {
      * @return 业务信息
      */
     GenTable selectGenTableByName(String tableName);
-
 }

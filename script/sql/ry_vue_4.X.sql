@@ -12,7 +12,7 @@ create table sys_dept (
   phone             varchar(11)     default null               comment '联系电话',
   email             varchar(50)     default null               comment '邮箱',
   status            char(1)         default '0'                comment '部门状态（0正常 1停用）',
-  del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+  del_flag          char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
   create_by         varchar(64)     default ''                 comment '创建者',
   create_time       datetime                                   comment '创建时间',
   update_by         varchar(64)     default ''                 comment '更新者',
@@ -51,7 +51,7 @@ create table sys_user (
   avatar            varchar(100)    default ''                 comment '头像地址',
   password          varchar(100)    default ''                 comment '密码',
   status            char(1)         default '0'                comment '帐号状态（0正常 1停用）',
-  del_flag          char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+  del_flag          char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
   login_ip          varchar(128)    default ''                 comment '最后登录IP',
   login_date        datetime                                   comment '最后登录时间',
   create_by         varchar(64)     default ''                 comment '创建者',
@@ -110,7 +110,7 @@ create table sys_role (
   menu_check_strictly  tinyint(1)      default 1                  comment '菜单树选择项是否关联显示',
   dept_check_strictly  tinyint(1)      default 1                  comment '部门树选择项是否关联显示',
   status               char(1)         not null                   comment '角色状态（0正常 1停用）',
-  del_flag             char(1)         default '0'                comment '删除标志（0代表存在 2代表删除）',
+  del_flag             char(1)         default '0'                comment '删除标志（0代表存在 1代表删除）',
   create_by            varchar(64)     default ''                 comment '创建者',
   create_time          datetime                                   comment '创建时间',
   update_by            varchar(64)     default ''                 comment '更新者',
@@ -160,7 +160,7 @@ create table sys_menu (
 insert into sys_menu values('1', '系统管理', '0', '1', 'system',           null, '', 1, 0, 'M', '0', '0', '', 'system',   'admin', sysdate(), '', null, '系统管理目录');
 insert into sys_menu values('2', '系统监控', '0', '2', 'monitor',          null, '', 1, 0, 'M', '0', '0', '', 'monitor',  'admin', sysdate(), '', null, '系统监控目录');
 insert into sys_menu values('3', '系统工具', '0', '3', 'tool',             null, '', 1, 0, 'M', '0', '0', '', 'tool',     'admin', sysdate(), '', null, '系统工具目录');
-insert into sys_menu values('4', 'PLUS官网', '0', '4', 'https://gitee.com/dromara/RuoYi-Vue-Plus', null, '', 0, 0, 'M', '0', '0', '', 'guide',    'admin', sysdate(), '', null, 'RuoYi-Vue-Plus官网地址');
+insert into sys_menu values('4', 'PLUS官网', '0', '4', 'https://gitee.com/zccbbg/ruoyi-fast-service', null, '', 0, 0, 'M', '0', '0', '', 'guide',    'admin', sysdate(), '', null, 'ruoyi-fast-service官网地址');
 -- 二级菜单
 insert into sys_menu values('100',  '用户管理', '1',   '1', 'user',       'system/user/index',        '', 1, 0, 'C', '0', '0', 'system:user:list',        'user',          'admin', sysdate(), '', null, '用户管理菜单');
 insert into sys_menu values('101',  '角色管理', '1',   '2', 'role',       'system/role/index',        '', 1, 0, 'C', '0', '0', 'system:role:list',        'peoples',       'admin', sysdate(), '', null, '角色管理菜单');

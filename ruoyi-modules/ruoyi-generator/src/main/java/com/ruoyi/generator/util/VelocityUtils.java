@@ -4,11 +4,10 @@ import cn.hutool.core.collection.CollUtil;
 import cn.hutool.core.convert.Convert;
 import cn.hutool.core.lang.Dict;
 import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.generator.constant.GenConstants;
-import com.ruoyi.common.mybatis.helper.DataBaseHelper;
 import com.ruoyi.common.core.utils.DateUtils;
-import com.ruoyi.common.json.utils.JsonUtils;
 import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.json.utils.JsonUtils;
+import com.ruoyi.generator.constant.GenConstants;
 import com.ruoyi.generator.domain.GenTable;
 import com.ruoyi.generator.domain.GenTableColumn;
 import lombok.AccessLevel;
@@ -135,19 +134,10 @@ public class VelocityUtils {
         templates.add("vm/java/vo.java.vm");
         templates.add("vm/java/bo.java.vm");
         templates.add("vm/java/mapper.java.vm");
-        templates.add("vm/java/service.java.vm");
         templates.add("vm/java/serviceImpl.java.vm");
         templates.add("vm/java/controller.java.vm");
         templates.add("vm/xml/mapper.xml.vm");
-        if (DataBaseHelper.isOracle()) {
-            templates.add("vm/sql/oracle/sql.vm");
-        } else if (DataBaseHelper.isPostgerSql()) {
-            templates.add("vm/sql/postgres/sql.vm");
-        } else if (DataBaseHelper.isSqlServer()) {
-            templates.add("vm/sql/sqlserver/sql.vm");
-        } else {
-            templates.add("vm/sql/sql.vm");
-        }
+        templates.add("vm/sql/sql.vm");
         templates.add("vm/js/api.js.vm");
         if (GenConstants.TPL_CRUD.equals(tplCategory)) {
             templates.add("vm/vue/index.vue.vm");
@@ -180,7 +170,7 @@ public class VelocityUtils {
         String vuePath = "vue";
 
         if (template.contains("domain.java.vm")) {
-            fileName = StringUtils.format("{}/domain/{}.java", javaPath, className);
+            fileName = StringUtils.format("{}/domain/entity/{}.java", javaPath, className);
         }
         if (template.contains("vo.java.vm")) {
             fileName = StringUtils.format("{}/domain/vo/{}Vo.java", javaPath, className);
@@ -192,10 +182,8 @@ public class VelocityUtils {
             fileName = StringUtils.format("{}/domain/{}.java", javaPath, genTable.getSubTable().getClassName());
         } else if (template.contains("mapper.java.vm")) {
             fileName = StringUtils.format("{}/mapper/{}Mapper.java", javaPath, className);
-        } else if (template.contains("service.java.vm")) {
-            fileName = StringUtils.format("{}/service/I{}Service.java", javaPath, className);
         } else if (template.contains("serviceImpl.java.vm")) {
-            fileName = StringUtils.format("{}/service/impl/{}ServiceImpl.java", javaPath, className);
+            fileName = StringUtils.format("{}/service/{}Service.java", javaPath, className);
         } else if (template.contains("controller.java.vm")) {
             fileName = StringUtils.format("{}/controller/{}Controller.java", javaPath, className);
         } else if (template.contains("mapper.xml.vm")) {

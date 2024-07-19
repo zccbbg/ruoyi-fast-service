@@ -1,18 +1,21 @@
 package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.secure.BCrypt;
+import cn.hutool.core.bean.BeanUtil;
 import cn.hutool.core.io.FileUtil;
-import com.ruoyi.common.log.annotation.Log;
-import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.system.domain.entity.SysUser;
-import com.ruoyi.common.log.enums.BusinessType;
-import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.core.utils.file.MimeTypeUtils;
+import com.ruoyi.common.log.annotation.Log;
+import com.ruoyi.common.log.enums.BusinessType;
+import com.ruoyi.common.satoken.utils.LoginHelper;
+import com.ruoyi.common.web.core.BaseController;
+import com.ruoyi.system.domain.bo.SysUserBo;
+import com.ruoyi.system.domain.bo.SysUserProfileBo;
 import com.ruoyi.system.domain.vo.SysOssVo;
-import com.ruoyi.system.service.ISysOssService;
-import com.ruoyi.system.service.ISysUserService;
+import com.ruoyi.system.domain.vo.SysUserVo;
+import com.ruoyi.system.service.SysUserService;
+import com.ruoyi.system.service.SysOssService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
@@ -33,15 +36,15 @@ import java.util.Map;
 @RequestMapping("/system/user/profile")
 public class SysProfileController extends BaseController {
 
-    private final ISysUserService userService;
-    private final ISysOssService iSysOssService;
+    private final SysUserService userService;
+    private final SysOssService sysOssService;
 
     /**
      * 个人信息
      */
     @GetMapping
     public R<Map<String, Object>> profile() {
-        SysUser user = userService.selectUserById(LoginHelper.getUserId());
+        SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
         return R.ok(Map.of(
             "user", user,
             "roleGroup", userService.selectUserRoleGroup(user.getUserName()),
@@ -54,7 +57,8 @@ public class SysProfileController extends BaseController {
      */
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping
-    public R<Void> updateProfile(@RequestBody SysUser user) {
+    public R<Void> updateProfile(@Validated @RequestBody SysUserProfileBo profile) {
+        SysUserBo user = BeanUtil.toBean(profile, SysUserBo.class);
         if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
             return R.fail("修改用户'" + user.getUserName() + "'失败，手机号码已存在");
         }
@@ -81,7 +85,7 @@ public class SysProfileController extends BaseController {
     @Log(title = "个人信息", businessType = BusinessType.UPDATE)
     @PutMapping("/updatePwd")
     public R<Void> updatePwd(String oldPassword, String newPassword) {
-        SysUser user = userService.selectUserById(LoginHelper.getUserId());
+        SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
         String userName = user.getUserName();
         String password = user.getPassword();
         if (!BCrypt.checkpw(oldPassword, password)) {
@@ -110,7 +114,7 @@ public class SysProfileController extends BaseController {
             if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
                 return R.fail("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
             }
-            SysOssVo oss = iSysOssService.upload(avatarfile);
+            SysOssVo oss = sysOssService.upload(avatarfile);
             String avatar = oss.getUrl();
             if (userService.updateUserAvatar(LoginHelper.getUsername(), avatar)) {
                 return R.ok(Map.of("imgUrl", avatar));

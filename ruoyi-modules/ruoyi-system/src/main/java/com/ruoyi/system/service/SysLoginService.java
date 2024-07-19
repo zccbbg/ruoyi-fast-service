@@ -8,9 +8,9 @@ import cn.hutool.core.util.ObjectUtil;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.Constants;
-import com.ruoyi.common.core.domain.vo.RoleVO;
 import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.domain.bo.XcxLoginUser;
+import com.ruoyi.common.core.domain.vo.RoleVO;
 import com.ruoyi.common.core.enums.DeviceType;
 import com.ruoyi.common.core.enums.LoginType;
 import com.ruoyi.common.core.enums.UserStatus;
@@ -23,6 +23,9 @@ import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.web.config.properties.CaptchaProperties;
 import com.ruoyi.system.domain.entity.SysUser;
+import com.ruoyi.system.domain.vo.SysDeptVo;
+import com.ruoyi.system.domain.vo.SysRoleVo;
+import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -46,6 +49,8 @@ public class SysLoginService {
     private final SysUserMapper userMapper;
     private final CaptchaProperties captchaProperties;
     private final SysPermissionService permissionService;
+    private final SysRoleService roleService;
+    private final SysDeptService deptService;
 
     @Value("${user.password.maxRetryCount}")
     private Integer maxRetryCount;
@@ -69,7 +74,7 @@ public class SysLoginService {
             validateCaptcha(username, code, uuid);
         }
         // 框架登录不限制从什么表查询 只要最终构建出 LoginUser 即可
-        SysUser user = loadUserByUsername(username);
+        SysUserVo user = loadUserByUsername(username);
         checkLogin(LoginType.PASSWORD, username, () -> !BCrypt.checkpw(password, user.getPassword()));
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
         LoginUser loginUser = buildLoginUser(user);
@@ -83,7 +88,7 @@ public class SysLoginService {
 
     public String smsLogin(String phonenumber, String smsCode) {
         // 通过手机号查找用户
-        SysUser user = loadUserByPhonenumber(phonenumber);
+        SysUserVo user = loadUserByPhonenumber(phonenumber);
 
         checkLogin(LoginType.SMS, user.getUserName(), () -> !validateSmsCode(phonenumber, smsCode));
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
@@ -98,7 +103,7 @@ public class SysLoginService {
 
     public String emailLogin(String email, String emailCode) {
         // 通过手邮箱查找用户
-        SysUser user = loadUserByEmail(email);
+        SysUserVo user = loadUserByEmail(email);
 
         checkLogin(LoginType.EMAIL, user.getUserName(), () -> !validateEmailCode(email, emailCode));
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
@@ -118,7 +123,7 @@ public class SysLoginService {
         String openid = "";
 
         // 框架登录不限制从什么表查询 只要最终构建出 LoginUser 即可
-        SysUser user = loadUserByOpenid(openid);
+        SysUserVo user = loadUserByOpenid(openid);
 
         // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
         XcxLoginUser loginUser = new XcxLoginUser();
@@ -211,10 +216,8 @@ public class SysLoginService {
         }
     }
 
-    private SysUser loadUserByUsername(String username) {
-        SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
-            .select(SysUser::getUserName, SysUser::getStatus)
-            .eq(SysUser::getUserName, username));
+    private SysUserVo loadUserByUsername(String username) {
+        SysUserVo user = userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName, username));
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", username);
             throw new UserException("user.not.exists", username);
@@ -222,13 +225,11 @@ public class SysLoginService {
             log.info("登录用户：{} 已被停用.", username);
             throw new UserException("user.blocked", username);
         }
-        return userMapper.selectUserByUserName(username);
+        return user;
     }
 
-    private SysUser loadUserByPhonenumber(String phonenumber) {
-        SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
-            .select(SysUser::getPhonenumber, SysUser::getStatus)
-            .eq(SysUser::getPhonenumber, phonenumber));
+    private SysUserVo loadUserByPhonenumber(String phonenumber) {
+        SysUserVo user = userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getPhonenumber, phonenumber));
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", phonenumber);
             throw new UserException("user.not.exists", phonenumber);
@@ -236,13 +237,11 @@ public class SysLoginService {
             log.info("登录用户：{} 已被停用.", phonenumber);
             throw new UserException("user.blocked", phonenumber);
         }
-        return userMapper.selectUserByPhonenumber(phonenumber);
+        return user;
     }
 
-    private SysUser loadUserByEmail(String email) {
-        SysUser user = userMapper.selectOne(new LambdaQueryWrapper<SysUser>()
-            .select(SysUser::getPhonenumber, SysUser::getStatus)
-            .eq(SysUser::getEmail, email));
+    private SysUserVo loadUserByEmail(String email) {
+        SysUserVo user = userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getEmail, email));
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", email);
             throw new UserException("user.not.exists", email);
@@ -250,13 +249,13 @@ public class SysLoginService {
             log.info("登录用户：{} 已被停用.", email);
             throw new UserException("user.blocked", email);
         }
-        return userMapper.selectUserByEmail(email);
+        return user;
     }
 
-    private SysUser loadUserByOpenid(String openid) {
+    private SysUserVo loadUserByOpenid(String openid) {
         // 使用 openid 查询绑定用户 如未绑定用户 则根据业务自行处理 例如 创建默认用户
         // todo 自行实现 userService.selectUserByOpenid(openid);
-        SysUser user = new SysUser();
+        SysUserVo user = new SysUserVo();
         if (ObjectUtil.isNull(user)) {
             log.info("登录用户：{} 不存在.", openid);
             // todo 用户不存在 业务逻辑自行实现
@@ -270,17 +269,23 @@ public class SysLoginService {
     /**
      * 构建登录用户
      */
-    private LoginUser buildLoginUser(SysUser user) {
+    private LoginUser buildLoginUser(SysUserVo user) {
         LoginUser loginUser = new LoginUser();
         loginUser.setUserId(user.getUserId());
         loginUser.setDeptId(user.getDeptId());
         loginUser.setUsername(user.getUserName());
         loginUser.setUserType(user.getUserType());
-        loginUser.setMenuPermission(permissionService.getMenuPermission(user));
-        loginUser.setRolePermission(permissionService.getRolePermission(user));
-        loginUser.setDeptName(ObjectUtil.isNull(user.getDept()) ? "" : user.getDept().getDeptName());
-        List<RoleVO> roles = BeanUtil.copyToList(user.getRoles(), RoleVO.class);
-        loginUser.setRoles(roles);
+        loginUser.setMenuPermission(permissionService.getMenuPermission(user.getUserId()));
+        loginUser.setRolePermission(permissionService.getRolePermission(user.getUserId()));
+
+        SysDeptVo dept = null;
+        if (ObjectUtil.isNotNull(user.getDeptId())) {
+            dept = deptService.selectDeptById(user.getDeptId());
+        }
+        loginUser.setDeptName(ObjectUtil.isNull(dept) ? "" : dept.getDeptName());
+        List<SysRoleVo> roles = roleService.selectRolesByUserId(user.getUserId());
+        loginUser.setRoles(BeanUtil.copyToList(roles, RoleVO.class));
+
         return loginUser;
     }
 

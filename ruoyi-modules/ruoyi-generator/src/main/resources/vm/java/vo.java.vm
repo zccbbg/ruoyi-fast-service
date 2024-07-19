@@ -3,6 +3,7 @@ package ${packageName}.domain.vo;
 #foreach ($import in $importList)
 import ${import};
 #end
+import ${packageName}.domain.entity.${ClassName};
 import com.alibaba.excel.annotation.ExcelIgnoreUnannotated;
 import com.alibaba.excel.annotation.ExcelProperty;
 import com.ruoyi.common.excel.annotation.ExcelDictFormat;
@@ -11,6 +12,7 @@ import lombok.Data;
 import io.github.linpeilie.annotations.AutoMapper;
 
 import java.io.Serializable;
+import java.io.Serial;
 
 /**
  * ${functionName}视图对象 ${tableName}
@@ -23,6 +25,7 @@ import java.io.Serializable;
 @AutoMapper(target = ${ClassName}.class)
 public class ${ClassName}Vo implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
 #foreach ($column in $columns)

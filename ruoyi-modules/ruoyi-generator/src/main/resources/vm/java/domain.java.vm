@@ -1,4 +1,4 @@
-package ${packageName}.domain;
+package ${packageName}.domain.entity;
 
 import com.baomidou.mybatisplus.annotation.*;
 import lombok.Data;
@@ -10,6 +10,8 @@ import ${import};
 #if($table.crud || $table.sub)
 #elseif($table.tree)
 #end
+
+import java.io.Serial;
 
 /**
  * ${functionName}对象 ${tableName}
@@ -27,6 +29,7 @@ import ${import};
 @TableName("${tableName}")
 public class ${ClassName} extends ${Entity} {
 
+    @Serial
     private static final long serialVersionUID=1L;
 
 #foreach ($column in $columns)

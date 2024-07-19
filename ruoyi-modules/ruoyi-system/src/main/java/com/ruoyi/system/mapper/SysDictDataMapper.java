@@ -2,8 +2,8 @@ package com.ruoyi.system.mapper;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
-import com.ruoyi.common.core.constant.UserConstants;
 import com.ruoyi.system.domain.entity.SysDictData;
+import com.ruoyi.system.domain.vo.SysDictDataVo;
 
 import java.util.List;
 
@@ -12,12 +12,11 @@ import java.util.List;
  *
  * @author Lion Li
  */
-public interface SysDictDataMapper extends BaseMapperPlus<SysDictData, SysDictData> {
+public interface SysDictDataMapper extends BaseMapperPlus<SysDictData, SysDictDataVo> {
 
-    default List<SysDictData> selectDictDataByType(String dictType) {
-        return selectList(
+    default List<SysDictDataVo> selectDictDataByType(String dictType) {
+        return selectVoList(
             new LambdaQueryWrapper<SysDictData>()
-                .eq(SysDictData::getStatus, UserConstants.DICT_NORMAL)
                 .eq(SysDictData::getDictType, dictType)
                 .orderByAsc(SysDictData::getDictSort));
     }

@@ -12,6 +12,7 @@ import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -118,7 +119,7 @@ public class SysOperLog implements Serializable {
     private String jsonResult;
 
     /**
-     * 操作状态（0正常 1异常）
+     * 操作状态（0异常 1正常）
      */
     @ExcelProperty(value = "状态", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "sys_common_status")
@@ -134,7 +135,7 @@ public class SysOperLog implements Serializable {
      * 操作时间
      */
     @ExcelProperty(value = "操作时间")
-    private Date operTime;
+    private LocalDateTime operTime;
 
     /**
      * 请求参数
