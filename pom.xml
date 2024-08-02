@@ -5,12 +5,12 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.ruoyi</groupId>
-    <artifactId>ruoyi-wms</artifactId>
+    <artifactId>ruoyi-fast</artifactId>
     <version>${revision}</version>
 
-    <name>ruoyi-wms</name>
+    <name>ruoyi-fast</name>
     <url>https://gitee.com/zccbbg/wms-ruoyi</url>
-    <description>ruoyi-wms后台管理系统</description>
+    <description>ruoyi-fast后台管理系统</description>
 
     <properties>
         <revision>5.2.0</revision>
