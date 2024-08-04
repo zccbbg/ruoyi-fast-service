@@ -630,8 +630,8 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 103, 'admin', '疯狂的狮子Li', 'sys_user', 'crazyLionLi@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '1', '0', '127.0.0.1', '2024-08-04 15:38:17', 'admin', '2024-06-13 16:06:25', 'admin', '2024-08-04 15:38:17', '管理员');
-INSERT INTO `sys_user` VALUES (2, 105, 'lionli', '疯狂的狮子Li', 'sys_user', '*******@qq.com', '15666666666', '1', '', '$2a$10$AkMsjUie8i3XN/NzflqmLO3KEQFiDWrT6tj8Ul/Xc30wD9zfRQAFG', '1', '0', '127.0.0.1', '2024-06-13 16:06:25', 'admin', '2024-06-13 16:06:25', 'admin', '2024-07-10 17:37:16', '测试员');
+INSERT INTO `sys_user` VALUES (1, 103, 'admin', '字节大叔', 'sys_user', 'zccbbg@qq.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '1', '0', '127.0.0.1', '2024-08-04 15:38:17', 'admin', '2024-06-13 16:06:25', 'admin', '2024-08-04 15:38:17', '管理员');
+INSERT INTO `sys_user` VALUES (2, 105, 'tester', '测试员', 'sys_user', '*******@qq.com', '15666666666', '1', '', '$2a$10$AkMsjUie8i3XN/NzflqmLO3KEQFiDWrT6tj8Ul/Xc30wD9zfRQAFG', '1', '0', '127.0.0.1', '2024-06-13 16:06:25', 'admin', '2024-06-13 16:06:25', 'admin', '2024-07-10 17:37:16', '测试员');
 
 -- ----------------------------
 -- Table structure for sys_user_post
