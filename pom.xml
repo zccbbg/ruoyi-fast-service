@@ -327,6 +327,7 @@
         <module>ruoyi-admin</module>
         <module>ruoyi-common</module>
         <module>ruoyi-modules</module>
+        <module>ruoyi-common/ruoyi-common-lucene</module>
     </modules>
     <packaging>pom</packaging>
 
