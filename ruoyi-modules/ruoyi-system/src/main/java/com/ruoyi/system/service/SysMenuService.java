@@ -428,4 +428,20 @@ public class SysMenuService {
         return StringUtils.replaceEach(path, new String[]{Constants.HTTP, Constants.HTTPS, Constants.WWW, ".", ":"},
             new String[]{"", "", "", "/", "/"});
     }
+
+    public List<RouterVo> resetChildrenName(List<RouterVo> routerVos) {
+        routerVos.forEach(parent ->{
+            List<RouterVo> children = parent.getChildren();
+            if(children!=null){
+                children.forEach(child ->{
+                    child.setName(child.getName()+"_"+parent.getName());
+                    System.out.println("新的子路由名为:"+child.getName());
+                    //递归处理更深层次的子路由
+                    resetChildrenName(Collections.singletonList(child));
+                });
+            }
+        });
+
+        return routerVos;
+    }
 }

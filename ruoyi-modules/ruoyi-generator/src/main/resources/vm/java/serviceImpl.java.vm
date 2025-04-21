@@ -5,6 +5,7 @@ import com.ruoyi.common.core.utils.MapstructUtils;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.core.utils.StringUtils;
+import com.ruoyi.common.mybatis.core.domain.BaseEntity;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 #end
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
@@ -82,6 +83,7 @@ public class ${ClassName}Service {
 #end
 #end
 #end
+        lqw.orderByDesc(BaseEntity::getUpdateTime);
         return lqw;
     }
 

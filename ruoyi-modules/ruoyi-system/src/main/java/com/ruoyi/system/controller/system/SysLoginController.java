@@ -132,6 +132,7 @@ public class SysLoginController {
     @GetMapping("getRouters")
     public R<List<RouterVo>> getRouters() {
         List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
-        return R.ok(menuService.buildMenus(menus));
+        List<RouterVo> routerVos = menuService.buildMenus(menus);
+        return R.ok(menuService.resetChildrenName(routerVos));
     }
 }
