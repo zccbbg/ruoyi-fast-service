@@ -45,6 +45,8 @@ server:
 
 # 日志配置
 logging:
+  file:
+    path: /data/logs/ruoyi-fast
   level:
     com.ruoyi: @logging.level@
     org.springframework: warn
