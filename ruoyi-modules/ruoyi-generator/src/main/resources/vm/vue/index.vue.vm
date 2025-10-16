@@ -327,7 +327,7 @@
 
 <script setup name="${BusinessName}">
   import { list${BusinessName}, get${BusinessName}, del${BusinessName}, add${BusinessName}, update${BusinessName} } from "@/api/${moduleName}/${businessName}";
-
+  import {onMounted} from "vue";
 const { proxy } = getCurrentInstance();
   #if(${dicts} != '')
 #set($dictsNoSymbol=$dicts.replace("'", ""))
@@ -383,6 +383,10 @@ const { proxy } = getCurrentInstance();
 });
 
 const { queryParams, form, rules } = toRefs(data);
+
+onMounted(() => {
+  getList();
+});
 
 /** 查询${functionName}列表 */
 function getList() {
@@ -566,6 +570,4 @@ function handleExport() {
     ...queryParams.value
   }, `${businessName}_#[[${new Date().getTime()}]]#.xlsx`)
 }
-
-getList();
 </script>
