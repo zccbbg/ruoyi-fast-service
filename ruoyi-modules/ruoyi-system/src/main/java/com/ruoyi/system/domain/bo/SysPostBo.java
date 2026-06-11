@@ -46,7 +46,7 @@ public class SysPostBo extends BaseEntity {
     private Integer postSort;
 
     /**
-     * 状态（0停用 1正常）
+     * 状态（1正常 0停用）
      */
     private String status;
 

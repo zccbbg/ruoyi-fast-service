@@ -58,7 +58,7 @@ public class SysOssConfig extends BaseEntity {
     private String domain;
 
     /**
-     * 是否https（0否 1是）
+     * 是否https（Y=是,N=否）
      */
     private String isHttps;
 
@@ -68,7 +68,7 @@ public class SysOssConfig extends BaseEntity {
     private String region;
 
     /**
-     * 是否默认（0=是,1=否）
+     * 是否默认（1=是,0=否）
      */
     private String status;
 

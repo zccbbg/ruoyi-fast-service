@@ -78,7 +78,7 @@ public class SysRole extends BaseEntity {
     private Boolean deptCheckStrictly;
 
     /**
-     * 角色状态（0正常 1停用）
+     * 角色状态（1正常 0停用）
      */
     @ExcelProperty(value = "角色状态", converter = ExcelDictConvert.class)
     @ExcelDictFormat(dictType = "sys_normal_disable")

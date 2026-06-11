@@ -42,7 +42,7 @@ public class SysDictTypeBo extends BaseEntity {
     private String dictType;
 
     /**
-     * 状态（0停用 1正常）
+     * 状态（1正常 0停用）
      */
     private String status;
 
