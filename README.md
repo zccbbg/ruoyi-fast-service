@@ -44,15 +44,28 @@
 - 后端采用**插件化 + 扩展包**结构：`ruoyi-common`（satoken / redis / mybatis / oss / excel / sms / log / idempotent / ratelimiter / translation 等插件包）+ `ruoyi-modules`（system / generator / demo）+ `ruoyi-admin`，模块低耦合、易扩展。
 - 官方为模块相互注入，耦合较重、扩展困难。
 
-### 本项目相对 Plus 的精简与定制
+### 与ruoyi-vue-plus对比
 
-- 去除 Service 接口层，仅保留实现类，简化代码。
-- 数据库仅支持 MySQL（不含 Plus 的 Oracle/PostgreSQL/SQLServer 多库异构）。
-- 不含多租户、不含 Flowable 工作流（5.x 特性中主动舍弃的重型能力）。
-- 暂不支持 Docker 部署。
-- 移除 snail-job、monitor-admin、ruoyi-extend 等不常用组件。
-- 统一约定：逻辑删除 `0=存在 / 1=删除`；状态 `1=正常 / 0=停用`；`BaseEntity` 时间字段使用 `LocalDateTime`。
-- system 模块引入 VO/BO 分层；代码生成器前端编辑页由 dialog 改为 drawer。
+> 本项目继承自 Plus 4.x，仅把 5.x 的现代技术底座（JDK17 + Spring Boot 3）搬过来，主动舍弃多租户、工作流等重型模块。下表与 Plus 4.x、Plus 5.x 三方对比。
+
+| 维度 | 本项目 ruoyi-fast | RuoYi-Vue-Plus 4.x | RuoYi-Vue-Plus 5.x |
+|------|------------------|--------------------|--------------------|
+| JDK | 17 | 8 | 17（部分支持 21） |
+| Spring Boot | 3.2.6 | 2.7.x | 3.x |
+| 多租户 | ❌ 无（拦截器仅注释保留） | ❌ 基本无 | ✅ SaaS 多租户 |
+| 工作流 | ❌ 无 | ❌ 无（需自行整合 Flowable） | ✅ 内置（5.2 为 Warm-Flow） |
+| 分布式任务 | ❌ 无（已移除 snail-job） | Xxl-Job（extend 扩展） | ✅ SnailJob 内置 |
+| 第三方登录 | ❌ 无 | ✅ JustAuth | ✅ JustAuth |
+| WebSocket / SSE | ❌ 无 | 部分 | ✅ SSE 消息推送 |
+| 多数据库异构 | ❌ 仅 MySQL（其余注释掉） | ✅ MySQL/Oracle/PG/SQLServer | ✅ 同 4.x |
+| Service 接口层 | 去除（system 用具体类） | ✅ I*Service + Impl | ✅ I*Service + Impl |
+| 逻辑删除约定 | 0=存在 / 1=删除 | 2=删除 | 2=删除 |
+| 状态约定 | 1=正常 / 0=停用 | 0=正常 / 1=停用 | 0=正常 / 1=停用 |
+| 时间类型 | LocalDateTime | Date | LocalDateTime |
+| 对象转换 | MapStruct-Plus | BeanUtil / BeanCopier | MapStruct |
+| Docker | ❌ 已删除 | ✅ | ✅ |
+| 前端 | Vue3 + TS（vue3-element-admin） | Vue2/Vue3 + JS | Vue3 + TS / Vben5 |
+
 
 ## 贡献代码
 
