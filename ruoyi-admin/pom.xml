@@ -50,12 +50,6 @@
             <artifactId>ruoyi-common-ratelimiter</artifactId>
         </dependency>
 
-        <!-- 代码生成-->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-generator</artifactId>
-        </dependency>
-
         <!--  demo模块  -->
         <dependency>
             <groupId>com.ruoyi</groupId>
