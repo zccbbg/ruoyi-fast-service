@@ -298,13 +298,6 @@
                 <version>${mapstruct-plus.version}</version>
             </dependency>
 
-            <!-- demo模块 -->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-demo</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
         </dependencies>
     </dependencyManagement>
 

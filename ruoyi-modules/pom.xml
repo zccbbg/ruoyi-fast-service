@@ -10,7 +10,6 @@
     <modelVersion>4.0.0</modelVersion>
 
     <modules>
-        <module>ruoyi-demo</module>
         <module>ruoyi-system</module>
     </modules>
 

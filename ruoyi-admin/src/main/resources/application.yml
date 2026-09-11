@@ -221,11 +221,9 @@ springdoc:
         type: APIKEY
         in: HEADER
         name: ${sa-token.token-name}
-  #这里定义了两个分组，可定义多个，也可以不定义
+  # 可定义多个分组，也可以不定义
   group-configs:
-    - group: 1.演示模块
-      packages-to-scan: com.ruoyi.demo
-    - group: 2.系统模块
+    - group: 系统模块
       packages-to-scan: com.ruoyi.web
 # 防止XSS攻击
 xss:

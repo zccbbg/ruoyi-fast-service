@@ -52,18 +52,12 @@
 |------|------------------|--------------------|--------------------|
 | JDK | 17 | 8 | 17（部分支持 21） |
 | Spring Boot | 3.2.6 | 2.7.x | 3.x |
-| 多租户 | ❌ 无（拦截器仅注释保留） | ❌ 基本无 | ✅ SaaS 多租户 |
-| 工作流 | ❌ 无 | ❌ 无（需自行整合 Flowable） | ✅ 内置（5.2 为 Warm-Flow） |
-| 分布式任务 | ❌ 无（已移除 snail-job） | Xxl-Job（extend 扩展） | ✅ SnailJob 内置 |
-| 第三方登录 | ❌ 无 | ✅ JustAuth | ✅ JustAuth |
 | WebSocket / SSE | ❌ 无 | 部分 | ✅ SSE 消息推送 |
-| 多数据库异构 | ❌ 仅 MySQL（其余注释掉） | ✅ MySQL/Oracle/PG/SQLServer | ✅ 同 4.x |
 | Service 接口层 | 去除（system 用具体类） | ✅ I*Service + Impl | ✅ I*Service + Impl |
 | 逻辑删除约定 | 0=存在 / 1=删除 | 2=删除 | 2=删除 |
 | 状态约定 | 1=正常 / 0=停用 | 0=正常 / 1=停用 | 0=正常 / 1=停用 |
 | 时间类型 | LocalDateTime | Date | LocalDateTime |
 | 对象转换 | MapStruct-Plus | BeanUtil / BeanCopier | MapStruct |
-| Docker | ❌ 已删除 | ✅ | ✅ |
 | 前端 | Vue3 + TS（vue3-element-admin） | Vue2/Vue3 + JS | Vue3 + TS / Vben5 |
 
 
