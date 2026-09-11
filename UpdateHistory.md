@@ -1,3 +1,15 @@
+## 260911
+1. service：移除 `spring-boot-starter-actuator` 依赖、Actuator 端点配置及 `/actuator/**` 的匿名访问放行。
+2. service：移除 `ruoyi-demo` Maven 子模块、相关依赖、OpenAPI 分组和演示缓存常量。
+3. vue：移除 demo 的 API 与页面源码；数据库中的演示菜单、权限与测试表数据未修改。
+
+## 260907
+1. service：移除代码生成模块的模板、配置、控制器、实体及 Mapper 等后端实现。
+2. vue：移除代码生成器页面、组件、路由和 API，并同步更新首页及 README 中的功能说明。
+
+## 260722
+1. vue：将多个页面的默认分页条数调整为 30，分页可选条数统一为 30、50、100、200。
+
 ## 260611
 1. service：统一状态码定义规范。
 2. vue：修复 OSS 配置状态切换功能。
