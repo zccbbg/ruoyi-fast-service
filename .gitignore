@@ -47,6 +47,3 @@ nbdist/
 application-local.yml
 
 .flattened-pom.xml
-
-## todo
-application-dev.yml
