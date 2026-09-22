@@ -2,10 +2,8 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.bean.BeanUtil;
-import cn.hutool.core.io.FileUtil;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.utils.StringUtils;
-import com.ruoyi.common.core.utils.file.MimeTypeUtils;
 import com.ruoyi.common.log.annotation.Log;
 import com.ruoyi.common.log.enums.BusinessType;
 import com.ruoyi.common.satoken.utils.LoginHelper;
@@ -13,18 +11,11 @@ import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.system.domain.bo.SysUserBo;
 import com.ruoyi.system.domain.bo.SysUserProfileBo;
 import com.ruoyi.system.domain.vo.ProfileVo;
-import com.ruoyi.system.domain.vo.SysOssVo;
 import com.ruoyi.system.domain.vo.SysUserVo;
-import com.ruoyi.system.service.SysOssService;
 import com.ruoyi.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
-
-import java.util.Arrays;
-import java.util.Map;
 
 /**
  * 个人信息 业务处理
@@ -38,7 +29,6 @@ import java.util.Map;
 public class SysProfileController extends BaseController {
 
     private final SysUserService userService;
-    private final SysOssService sysOssService;
 
     /**
      * 个人信息
@@ -95,27 +85,5 @@ public class SysProfileController extends BaseController {
             return R.ok();
         }
         return R.fail("修改密码异常，请联系管理员");
-    }
-
-    /**
-     * 头像上传
-     *
-     * @param avatarfile 用户头像
-     */
-    @Log(title = "用户头像", businessType = BusinessType.UPDATE)
-    @PostMapping(value = "/avatar", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public R<Map<String, Object>> avatar(@RequestPart("avatarfile") MultipartFile avatarfile) {
-        if (!avatarfile.isEmpty()) {
-            String extension = FileUtil.extName(avatarfile.getOriginalFilename());
-            if (!StringUtils.equalsAnyIgnoreCase(extension, MimeTypeUtils.IMAGE_EXTENSION)) {
-                return R.fail("文件格式不正确，请上传" + Arrays.toString(MimeTypeUtils.IMAGE_EXTENSION) + "格式");
-            }
-            SysOssVo oss = sysOssService.upload(avatarfile);
-            String avatar = oss.getUrl();
-            if (userService.updateUserAvatar(LoginHelper.getUsername(), avatar)) {
-                return R.ok(Map.of("imgUrl", avatar));
-            }
-        }
-        return R.fail("上传图片异常，请联系管理员");
     }
 }

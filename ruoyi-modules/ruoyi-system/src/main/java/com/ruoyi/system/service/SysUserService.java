@@ -352,20 +352,6 @@ public class SysUserService implements UserService {
     }
 
     /**
-     * 修改用户头像
-     *
-     * @param userName 用户名
-     * @param avatar   头像地址
-     * @return 结果
-     */
-    public boolean updateUserAvatar(String userName, String avatar) {
-        return userMapper.update(null,
-            new LambdaUpdateWrapper<SysUser>()
-                .set(SysUser::getAvatar, avatar)
-                .eq(SysUser::getUserName, userName)) > 0;
-    }
-
-    /**
      * 重置用户密码
      *
      * @param userId   用户ID

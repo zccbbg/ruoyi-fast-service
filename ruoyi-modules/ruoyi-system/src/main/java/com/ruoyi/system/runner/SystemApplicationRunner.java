@@ -3,7 +3,6 @@ package com.ruoyi.system.runner;
 import com.ruoyi.common.core.config.RuoYiConfig;
 import com.ruoyi.system.service.SysConfigService;
 import com.ruoyi.system.service.SysDictTypeService;
-import com.ruoyi.system.service.SysOssConfigService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.ApplicationArguments;
@@ -23,12 +22,14 @@ public class SystemApplicationRunner implements ApplicationRunner {
     private final RuoYiConfig ruoyiConfig;
     private final SysConfigService configService;
     private final SysDictTypeService dictTypeService;
-    private final SysOssConfigService ossConfigService;
 
+    /**
+     * 按配置加载系统参数和字典缓存。
+     *
+     * @param args 应用启动参数
+     */
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        ossConfigService.init();
-        log.info("初始化OSS配置成功");
         if (ruoyiConfig.isCacheLazy()) {
             return;
         }
