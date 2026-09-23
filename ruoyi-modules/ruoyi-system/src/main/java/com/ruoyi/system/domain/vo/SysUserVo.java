@@ -4,9 +4,6 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.ruoyi.common.sensitive.annotation.Sensitive;
 import com.ruoyi.common.sensitive.core.SensitiveStrategy;
-import com.ruoyi.common.translation.annotation.Translation;
-import com.ruoyi.common.translation.constant.TransConstant;
-import com.ruoyi.system.domain.entity.SysRole;
 import com.ruoyi.system.domain.entity.SysUser;
 import io.github.linpeilie.annotations.AutoMapper;
 import lombok.Data;
@@ -14,7 +11,6 @@ import lombok.Data;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.Date;
-import java.util.List;
 
 @Data
 @AutoMapper(target = SysUser.class)
@@ -26,11 +22,6 @@ public class SysUserVo implements Serializable {
      * 用户ID
      */
     private Long userId;
-
-    /**
-     * 部门ID
-     */
-    private Long deptId;
 
     /**
      * 用户账号
@@ -100,32 +91,6 @@ public class SysUserVo implements Serializable {
      * 备注
      */
     private String remark;
-
-    /**
-     * 部门名
-     */
-    @Translation(type = TransConstant.DEPT_ID_TO_NAME, mapper = "deptId")
-    private String deptName;
-
-    /**
-     * 角色对象
-     */
-    private List<SysRoleVo> roles;
-
-    /**
-     * 角色组
-     */
-    private Long[] roleIds;
-
-    /**
-     * 岗位组
-     */
-    private Long[] postIds;
-
-    /**
-     * 数据权限 当前角色ID
-     */
-    private Long roleId;
 
     /**
      * 创建时间

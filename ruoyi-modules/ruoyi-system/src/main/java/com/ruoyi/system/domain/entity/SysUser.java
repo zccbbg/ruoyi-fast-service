@@ -16,7 +16,6 @@ import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
 
 import java.util.Date;
-import java.util.List;
 
 /**
  * 用户对象 sys_user
@@ -35,11 +34,6 @@ public class SysUser extends BaseEntity {
      */
     @TableId(value = "user_id")
     private Long userId;
-
-    /**
-     * 部门ID
-     */
-    private Long deptId;
 
     /**
      * 用户账号
@@ -121,36 +115,6 @@ public class SysUser extends BaseEntity {
      * 备注
      */
     private String remark;
-
-    /**
-     * 部门对象
-     */
-    @TableField(exist = false)
-    private SysDept dept;
-
-    /**
-     * 角色对象
-     */
-    @TableField(exist = false)
-    private List<SysRole> roles;
-
-    /**
-     * 角色组
-     */
-    @TableField(exist = false)
-    private Long[] roleIds;
-
-    /**
-     * 岗位组
-     */
-    @TableField(exist = false)
-    private Long[] postIds;
-
-    /**
-     * 数据权限 当前角色ID
-     */
-    @TableField(exist = false)
-    private Long roleId;
 
     public SysUser(Long userId) {
         this.userId = userId;

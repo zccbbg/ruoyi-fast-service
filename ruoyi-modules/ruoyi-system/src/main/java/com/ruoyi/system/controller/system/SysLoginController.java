@@ -5,14 +5,10 @@ import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.domain.bo.EmailLoginBody;
 import com.ruoyi.common.core.domain.bo.LoginBody;
-import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.domain.bo.SmsLoginBody;
 import com.ruoyi.common.satoken.utils.LoginHelper;
-import com.ruoyi.system.domain.entity.SysMenu;
-import com.ruoyi.system.domain.vo.RouterVo;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.service.SysLoginService;
-import com.ruoyi.system.service.SysMenuService;
 import com.ruoyi.system.service.SysUserService;
 import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +32,6 @@ import java.util.Map;
 public class SysLoginController {
 
     private final SysLoginService loginService;
-    private final SysMenuService menuService;
     private final SysUserService userService;
 
     /**
@@ -114,25 +108,11 @@ public class SysLoginController {
      */
     @GetMapping("getInfo")
     public R<Map<String, Object>> getInfo() {
-        LoginUser loginUser = LoginHelper.getLoginUser();
-        SysUserVo user = userService.selectUserById(loginUser.getUserId());
+        SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
         return R.ok(Map.of(
-                "user", user,
-                "roles", loginUser.getRolePermission(),
-                "permissions", loginUser.getMenuPermission()
+                "user", user
             )
         );
     }
 
-    /**
-     * 获取路由信息
-     *
-     * @return 路由信息
-     */
-    @GetMapping("getRouters")
-    public R<List<RouterVo>> getRouters() {
-        List<SysMenu> menus = menuService.selectMenuTreeByUserId(LoginHelper.getUserId());
-        List<RouterVo> routerVos = menuService.buildMenus(menus);
-        return R.ok(menuService.resetChildrenName(routerVos));
-    }
 }

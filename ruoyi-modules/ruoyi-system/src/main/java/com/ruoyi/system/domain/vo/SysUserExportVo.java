@@ -79,16 +79,4 @@ public class SysUserExportVo implements Serializable {
     @ExcelProperty(value = "最后登录时间")
     private Date loginDate;
 
-    /**
-     * 部门名称
-     */
-    @ExcelProperty(value = "部门名称")
-    private String deptName;
-
-    /**
-     * 负责人
-     */
-    @ExcelProperty(value = "部门负责人")
-    private String leader;
-
 }

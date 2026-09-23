@@ -15,15 +15,4 @@ public class ProfileVo {
      */
     private SysUserVo user;
 
-    /**
-     * 用户所属角色组
-     */
-    private String roleGroup;
-
-    /**
-     * 用户所属岗位组
-     */
-    private String postGroup;
-
-
 }

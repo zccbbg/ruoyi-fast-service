@@ -2,12 +2,8 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
-import cn.hutool.core.lang.tree.Tree;
 import cn.hutool.core.util.ArrayUtil;
-import cn.hutool.core.util.ObjectUtil;
-import com.ruoyi.common.core.constant.UserConstants;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.utils.StreamUtils;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.excel.core.ExcelResult;
 import com.ruoyi.common.excel.utils.ExcelUtil;
@@ -17,14 +13,7 @@ import com.ruoyi.common.mybatis.core.page.PageQuery;
 import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.web.core.BaseController;
-import com.ruoyi.system.domain.bo.SysDeptBo;
-import com.ruoyi.system.domain.bo.SysPostBo;
-import com.ruoyi.system.domain.bo.SysRoleBo;
 import com.ruoyi.system.domain.bo.SysUserBo;
-import com.ruoyi.system.domain.entity.SysDept;
-import com.ruoyi.system.domain.entity.SysPost;
-import com.ruoyi.system.domain.entity.SysRole;
-import com.ruoyi.system.domain.vo.SysRoleVo;
 import com.ruoyi.system.domain.vo.SysUserExportVo;
 import com.ruoyi.system.domain.vo.SysUserImportVo;
 import com.ruoyi.system.domain.vo.SysUserVo;
@@ -39,7 +28,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -56,9 +44,6 @@ import java.util.Map;
 public class SysUserController extends BaseController {
 
     private final SysUserService userService;
-    private final SysRoleService roleService;
-    private final SysPostService postService;
-    private final SysDeptService deptService;
 
     /**
      * 获取用户列表
@@ -110,22 +95,7 @@ public class SysUserController extends BaseController {
     @SaCheckPermission("system:user:query")
     @GetMapping(value = {"/", "/{userId}"})
     public R<Map<String, Object>> getInfo(@PathVariable(value = "userId", required = false) Long userId) {
-        userService.checkUserDataScope(userId);
-        Map<String, Object> ajax = new HashMap<>();
-        SysRoleBo role = new SysRoleBo();
-        role.setStatus(UserConstants.ROLE_NORMAL);
-        SysPostBo post = new SysPostBo();
-        post.setStatus(UserConstants.POST_NORMAL);
-        List<SysRoleVo> roles = roleService.selectRoleList(role);
-        ajax.put("roles", LoginHelper.isAdmin(userId) ? roles : StreamUtils.filter(roles, r -> !r.isAdmin()));
-        ajax.put("posts", postService.selectPostList(post));
-        if (ObjectUtil.isNotNull(userId)) {
-            SysUserVo sysUser = userService.selectUserById(userId);
-            ajax.put("user", sysUser);
-            ajax.put("postIds", postService.selectPostListByUserId(userId));
-            ajax.put("roleIds", StreamUtils.toList(sysUser.getRoles(), SysRoleVo::getRoleId));
-        }
-        return R.ok(ajax);
+        return R.ok(Map.of("user", userId == null ? new SysUserVo() : userService.selectUserById(userId)));
     }
 
     /**
@@ -135,7 +105,6 @@ public class SysUserController extends BaseController {
     @Log(title = "用户管理", businessType = BusinessType.INSERT)
     @PostMapping
     public R<Void> add(@Validated @RequestBody SysUserBo user) {
-        deptService.checkDeptDataScope(user.getDeptId());
         if (!userService.checkUserNameUnique(user)) {
             return R.fail("新增用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
@@ -156,7 +125,6 @@ public class SysUserController extends BaseController {
     public R<Void> edit(@Validated @RequestBody SysUserBo user) {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
-        deptService.checkDeptDataScope(user.getDeptId());
         if (!userService.checkUserNameUnique(user)) {
             return R.fail("修改用户'" + user.getUserName() + "'失败，登录账号已存在");
         } else if (StringUtils.isNotEmpty(user.getPhonenumber()) && !userService.checkPhoneUnique(user)) {
@@ -208,46 +176,6 @@ public class SysUserController extends BaseController {
         userService.checkUserAllowed(user.getUserId());
         userService.checkUserDataScope(user.getUserId());
         return toAjax(userService.updateUserStatus(user.getUserId(), user.getStatus()));
-    }
-
-    /**
-     * 根据用户编号获取授权角色
-     *
-     * @param userId 用户ID
-     */
-    @SaCheckPermission("system:user:query")
-    @GetMapping("/authRole/{userId}")
-    public R<Map<String, Object>> authRole(@PathVariable Long userId) {
-        SysUserVo user = userService.selectUserById(userId);
-        List<SysRoleVo> roles = roleService.selectRolesAuthByUserId(userId);
-        return R.ok(Map.of(
-            "user", user,
-            "roles", LoginHelper.isAdmin(userId) ? roles : StreamUtils.filter(roles, r -> !r.isAdmin())
-        ));
-    }
-
-    /**
-     * 用户授权角色
-     *
-     * @param userId  用户Id
-     * @param roleIds 角色ID串
-     */
-    @SaCheckPermission("system:user:edit")
-    @Log(title = "用户管理", businessType = BusinessType.GRANT)
-    @PutMapping("/authRole")
-    public R<Void> insertAuthRole(Long userId, Long[] roleIds) {
-        userService.checkUserDataScope(userId);
-        userService.insertUserAuth(userId, roleIds);
-        return R.ok();
-    }
-
-    /**
-     * 获取部门树列表
-     */
-    @SaCheckPermission("system:user:list")
-    @GetMapping("/deptTree")
-    public R<List<Tree<Long>>> deptTree(SysDeptBo dept) {
-        return R.ok(deptService.selectDeptTreeList(dept));
     }
 
 }
