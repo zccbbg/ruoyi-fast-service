@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.toolkit.Constants;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.ruoyi.common.mybatis.core.mapper.BaseMapperPlus;
 import com.ruoyi.system.domain.entity.SysUser;
-import com.ruoyi.system.domain.vo.SysUserExportVo;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import org.apache.ibatis.annotations.Param;
 
@@ -30,5 +29,4 @@ public interface SysUserMapper extends BaseMapperPlus<SysUser, SysUserVo> {
 
     Long countUserById(Long userId);
 
-    List<SysUserExportVo> selectUserExportList(Wrapper<SysUser> sysUserWrapper);
 }

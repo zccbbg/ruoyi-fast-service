@@ -21,7 +21,6 @@ CREATE TABLE `sys_config`  (
 -- ----------------------------
 INSERT INTO `sys_config` VALUES (2, '用户管理-账号初始密码', 'sys.user.initPassword', '123456', 'Y', 'admin', '2024-06-13 16:06:37', '', NULL, '初始化密码 123456');
 INSERT INTO `sys_config` VALUES (4, '账号自助-验证码开关', 'sys.account.captchaEnabled', 'true', 'Y', 'admin', '2024-06-13 16:06:37', '', NULL, '是否开启验证码功能（true开启，false关闭）');
-INSERT INTO `sys_config` VALUES (5, '账号自助-是否开启用户注册功能', 'sys.account.registerUser', 'false', 'Y', 'admin', '2024-06-13 16:06:37', '', NULL, '是否开启注册用户功能（true开启，false关闭）');
 
 -- ----------------------------
 -- Table structure for sys_dict_data
@@ -184,7 +183,6 @@ CREATE TABLE `sys_oper_log`  (
 -- ----------------------------
 INSERT INTO `sys_oper_log` VALUES (1820003099041587202, '操作日志', 9, 'com.ruoyi.system.controller.monitor.SysOperlogController.clean()', 'DELETE', 1, 'admin', '研发部门', '/monitor/operlog/clean', '127.0.0.1', '内网IP', '{}', '{\"code\":200,\"msg\":\"操作成功\",\"data\":null}', 1, '', '2024-08-04 15:45:27');
 INSERT INTO `sys_oper_log` VALUES (1820003134722531330, '登录日志', 9, 'com.ruoyi.system.controller.monitor.SysLogininforController.clean()', 'DELETE', 1, 'admin', '研发部门', '/monitor/logininfor/clean', '127.0.0.1', '内网IP', '{}', '{\"code\":200,\"msg\":\"操作成功\",\"data\":null}', 1, '', '2024-08-04 15:45:36');
-INSERT INTO `sys_oper_log` VALUES (1820019896939700226, '用户管理', 1, 'com.ruoyi.system.controller.system.SysUserController.add()', 'POST', 1, 'admin', '研发部门', '/system/user', '127.0.0.1', '内网IP', '{\"createBy\":null,\"createTime\":null,\"updateBy\":null,\"updateTime\":null,\"userId\":\"1820019896092450818\",\"deptId\":100,\"userName\":\"test01\",\"nickName\":\"test01\",\"userType\":null,\"email\":null,\"phonenumber\":null,\"sex\":null,\"avatar\":null,\"status\":\"1\",\"delFlag\":null,\"loginIp\":null,\"loginDate\":null,\"remark\":null,\"dept\":null,\"roles\":null,\"roleIds\":[],\"postIds\":[],\"roleId\":null,\"admin\":false}', '{\"code\":200,\"msg\":\"操作成功\",\"data\":null}', 1, '', '2024-08-04 16:52:12');
 
 -- ----------------------------
 -- Table structure for sys_user
@@ -193,12 +191,9 @@ DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user`  (
   `user_id` bigint(20) NOT NULL COMMENT '用户ID',
   `user_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户账号',
-  `nick_name` varchar(30) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NOT NULL COMMENT '用户昵称',
   `user_type` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT 'sys_user' COMMENT '用户类型（sys_user系统用户）',
-  `email` varchar(50) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '用户邮箱',
   `phonenumber` varchar(11) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '手机号码',
   `sex` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '用户性别（0男 1女 2未知）',
-  `avatar` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '头像地址',
   `password` varchar(100) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '' COMMENT '密码',
   `status` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '1' COMMENT '帐号状态（1正常 0停用）',
   `del_flag` char(1) CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci NULL DEFAULT '0' COMMENT '删除标志（0代表存在 1代表删除）',
@@ -215,9 +210,9 @@ CREATE TABLE `sys_user`  (
 -- ----------------------------
 -- Records of sys_user
 -- ----------------------------
-INSERT INTO `sys_user` VALUES (1, 'admin', '字节大叔', 'sys_user', 'crazyLionLi@163.com', '15888888888', '1', '', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '1', '0', '127.0.0.1', '2025-09-12 15:26:34', 'admin', '2024-06-13 16:06:25', 'admin', '2025-09-12 15:26:34', '管理员');
-INSERT INTO `sys_user` VALUES (2, 'lionli', '测试员', 'sys_user', '*******@qq.com', '15666666666', '1', '', '$2a$10$AkMsjUie8i3XN/NzflqmLO3KEQFiDWrT6tj8Ul/Xc30wD9zfRQAFG', '1', '0', '127.0.0.1', '2024-06-13 16:06:25', 'admin', '2024-06-13 16:06:25', 'admin', '2024-07-10 17:37:16', '测试员');
-INSERT INTO `sys_user` VALUES (1820019896092450818, 'test01', 'test01', 'sys_user', '', '', '0', '', '$2a$10$MKTcKwjtB11PH9fVsqZTgeaqwFiNjRa6M2Rur.kMIl/BvNH046fm.', '1', '0', '', NULL, 'admin', '2024-08-04 16:52:12', 'admin', '2024-08-04 16:52:12', NULL);
+INSERT INTO `sys_user` VALUES (1, 'admin', 'sys_user', '15888888888', '1', '$2a$10$7JB720yubVSZvUI0rEqK/.VqGOZTH.ulu33dHOiBE8ByOhJIrdAu2', '1', '0', '127.0.0.1', '2025-09-12 15:26:34', 'admin', '2024-06-13 16:06:25', 'admin', '2025-09-12 15:26:34', '管理员');
+INSERT INTO `sys_user` VALUES (2, 'lionli', 'sys_user', '15666666666', '1', '$2a$10$AkMsjUie8i3XN/NzflqmLO3KEQFiDWrT6tj8Ul/Xc30wD9zfRQAFG', '1', '0', '127.0.0.1', '2024-06-13 16:06:25', 'admin', '2024-06-13 16:06:25', 'admin', '2024-07-10 17:37:16', '测试员');
+INSERT INTO `sys_user` VALUES (1820019896092450818, 'test01', 'sys_user', '', '0', '$2a$10$MKTcKwjtB11PH9fVsqZTgeaqwFiNjRa6M2Rur.kMIl/BvNH046fm.', '1', '0', '', NULL, 'admin', '2024-08-04 16:52:12', 'admin', '2024-08-04 16:52:12', NULL);
 
 -- ----------------------------
 SET FOREIGN_KEY_CHECKS = 1;

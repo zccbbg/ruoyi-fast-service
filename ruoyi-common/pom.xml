@@ -12,7 +12,6 @@
     <modules>
         <module>ruoyi-common-bom</module>
         <module>ruoyi-common-core</module>
-        <module>ruoyi-common-sms</module>
         <module>ruoyi-common-json</module>
         <module>ruoyi-common-excel</module>
         <module>ruoyi-common-redis</module>
@@ -20,7 +19,6 @@
         <module>ruoyi-common-web</module>
         <module>ruoyi-common-security</module>
         <module>ruoyi-common-mybatis</module>
-        <module>ruoyi-common-mail</module>
         <module>ruoyi-common-log</module>
         <module>ruoyi-common-ratelimiter</module>
         <module>ruoyi-common-translation</module>

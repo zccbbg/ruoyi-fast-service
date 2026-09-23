@@ -23,12 +23,6 @@
             <artifactId>ruoyi-common-core</artifactId>
         </dependency>
 
-        <!-- SMS功能模块 -->
-        <dependency>
-            <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common-sms</artifactId>
-        </dependency>
-
         <!-- excel -->
         <dependency>
             <groupId>com.ruoyi</groupId>

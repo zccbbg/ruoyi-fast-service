@@ -8,7 +8,6 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.ruoyi.common.core.constant.CacheConstants;
 import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.domain.bo.LoginUser;
-import com.ruoyi.common.core.domain.bo.XcxLoginUser;
 import com.ruoyi.common.core.enums.DeviceType;
 import com.ruoyi.common.core.enums.LoginType;
 import com.ruoyi.common.core.enums.UserStatus;
@@ -78,59 +77,6 @@ public class SysLoginService {
         return StpUtil.getTokenValue();
     }
 
-    public String smsLogin(String phonenumber, String smsCode) {
-        // 通过手机号查找用户
-        SysUserVo user = loadUserByPhonenumber(phonenumber);
-
-        checkLogin(LoginType.SMS, user.getUserName(), () -> !validateSmsCode(phonenumber, smsCode));
-        // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
-        LoginUser loginUser = buildLoginUser(user);
-        // 生成token
-        LoginHelper.loginByDevice(loginUser, DeviceType.APP);
-
-        recordLogininfor(user.getUserName(), Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
-        recordLoginInfo(user.getUserId(), user.getUserName());
-        return StpUtil.getTokenValue();
-    }
-
-    public String emailLogin(String email, String emailCode) {
-        // 通过手邮箱查找用户
-        SysUserVo user = loadUserByEmail(email);
-
-        checkLogin(LoginType.EMAIL, user.getUserName(), () -> !validateEmailCode(email, emailCode));
-        // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
-        LoginUser loginUser = buildLoginUser(user);
-        // 生成token
-        LoginHelper.loginByDevice(loginUser, DeviceType.APP);
-
-        recordLogininfor(user.getUserName(), Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
-        recordLoginInfo(user.getUserId(), user.getUserName());
-        return StpUtil.getTokenValue();
-    }
-
-    public String xcxLogin(String xcxCode) {
-        // xcxCode 为 小程序调用 wx.login 授权后获取
-        // todo 以下自行实现
-        // 校验 appid + appsrcret + xcxCode 调用登录凭证校验接口 获取 session_key 与 openid
-        String openid = "";
-
-        // 框架登录不限制从什么表查询 只要最终构建出 LoginUser 即可
-        SysUserVo user = loadUserByOpenid(openid);
-
-        // 此处可根据登录用户的数据不同 自行创建 loginUser 属性不够用继承扩展就行了
-        XcxLoginUser loginUser = new XcxLoginUser();
-        loginUser.setUserId(user.getUserId());
-        loginUser.setUsername(user.getUserName());
-        loginUser.setUserType(user.getUserType());
-        loginUser.setOpenid(openid);
-        // 生成token
-        LoginHelper.loginByDevice(loginUser, DeviceType.XCX);
-
-        recordLogininfor(user.getUserName(), Constants.LOGIN_SUCCESS, MessageUtils.message("user.login.success"));
-        recordLoginInfo(user.getUserId(), user.getUserName());
-        return StpUtil.getTokenValue();
-    }
-
     /**
      * 退出登录
      */
@@ -164,30 +110,6 @@ public class SysLoginService {
     }
 
     /**
-     * 校验短信验证码
-     */
-    private boolean validateSmsCode(String phonenumber, String smsCode) {
-        String code = RedisUtils.getCacheObject(CacheConstants.CAPTCHA_CODE_KEY + phonenumber);
-        if (StringUtils.isBlank(code)) {
-            recordLogininfor(phonenumber, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire"));
-            throw new CaptchaExpireException();
-        }
-        return code.equals(smsCode);
-    }
-
-    /**
-     * 校验邮箱验证码
-     */
-    private boolean validateEmailCode(String email, String emailCode) {
-        String code = RedisUtils.getCacheObject(CacheConstants.CAPTCHA_CODE_KEY + email);
-        if (StringUtils.isBlank(code)) {
-            recordLogininfor(email, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire"));
-            throw new CaptchaExpireException();
-        }
-        return code.equals(emailCode);
-    }
-
-    /**
      * 校验验证码
      *
      * @param username 用户名
@@ -216,44 +138,6 @@ public class SysLoginService {
         } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
             log.info("登录用户：{} 已被停用.", username);
             throw new UserException("user.blocked", username);
-        }
-        return user;
-    }
-
-    private SysUserVo loadUserByPhonenumber(String phonenumber) {
-        SysUserVo user = userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getPhonenumber, phonenumber));
-        if (ObjectUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", phonenumber);
-            throw new UserException("user.not.exists", phonenumber);
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", phonenumber);
-            throw new UserException("user.blocked", phonenumber);
-        }
-        return user;
-    }
-
-    private SysUserVo loadUserByEmail(String email) {
-        SysUserVo user = userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getEmail, email));
-        if (ObjectUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", email);
-            throw new UserException("user.not.exists", email);
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", email);
-            throw new UserException("user.blocked", email);
-        }
-        return user;
-    }
-
-    private SysUserVo loadUserByOpenid(String openid) {
-        // 使用 openid 查询绑定用户 如未绑定用户 则根据业务自行处理 例如 创建默认用户
-        // todo 自行实现 userService.selectUserByOpenid(openid);
-        SysUserVo user = new SysUserVo();
-        if (ObjectUtil.isNull(user)) {
-            log.info("登录用户：{} 不存在.", openid);
-            // todo 用户不存在 业务逻辑自行实现
-        } else if (UserStatus.DISABLE.getCode().equals(user.getStatus())) {
-            log.info("登录用户：{} 已被停用.", openid);
-            // todo 用户已被停用 业务逻辑自行实现
         }
         return user;
     }

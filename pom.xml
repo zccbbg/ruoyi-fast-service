@@ -41,9 +41,6 @@
         <!-- 离线IP地址定位库 -->
         <ip2region.version>2.7.0</ip2region.version>
 
-        <!-- SMS 配置 -->
-        <sms4j.version>2.2.0</sms4j.version>
-
         <!-- 插件版本 -->
         <maven-jar-plugin.version>3.2.2</maven-jar-plugin.version>
         <maven-war-plugin.version>3.2.2</maven-war-plugin.version>
@@ -213,13 +210,6 @@
                 <groupId>com.squareup.okhttp3</groupId>
                 <artifactId>okhttp</artifactId>
                 <version>${okhttp.version}</version>
-            </dependency>
-
-            <!--短信sms4j-->
-            <dependency>
-                <groupId>org.dromara.sms4j</groupId>
-                <artifactId>sms4j-spring-boot-starter</artifactId>
-                <version>${sms4j.version}</version>
             </dependency>
 
             <dependency>

@@ -26,13 +26,6 @@
                 <version>${revision}</version>
             </dependency>
 
-            <!-- 短信模块 -->
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common-sms</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
             <!-- 序列化模块 -->
             <dependency>
                 <groupId>com.ruoyi</groupId>
@@ -76,12 +69,6 @@
             <dependency>
                 <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-mybatis</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common-mail</artifactId>
                 <version>${revision}</version>
             </dependency>
 

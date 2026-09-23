@@ -29,20 +29,9 @@ public class SysUserVo implements Serializable {
     private String userName;
 
     /**
-     * 用户昵称
-     */
-    private String nickName;
-
-    /**
      * 用户类型（sys_user系统用户）
      */
     private String userType;
-
-    /**
-     * 用户邮箱
-     */
-    @Sensitive(strategy = SensitiveStrategy.EMAIL)
-    private String email;
 
     /**
      * 手机号码
@@ -54,11 +43,6 @@ public class SysUserVo implements Serializable {
      * 用户性别
      */
     private String sex;
-
-    /**
-     * 用户头像
-     */
-    private String avatar;
 
     /**
      * 密码

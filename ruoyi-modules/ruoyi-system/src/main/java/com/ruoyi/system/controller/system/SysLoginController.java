@@ -3,14 +3,11 @@ package com.ruoyi.system.controller.system;
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.ruoyi.common.core.constant.Constants;
 import com.ruoyi.common.core.domain.R;
-import com.ruoyi.common.core.domain.bo.EmailLoginBody;
 import com.ruoyi.common.core.domain.bo.LoginBody;
-import com.ruoyi.common.core.domain.bo.SmsLoginBody;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.service.SysLoginService;
 import com.ruoyi.system.service.SysUserService;
-import jakarta.validation.constraints.NotBlank;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +15,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -46,48 +42,6 @@ public class SysLoginController {
         // 生成令牌
         String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
             loginBody.getUuid());
-        return R.ok(Map.of(Constants.TOKEN, token));
-    }
-
-    /**
-     * 短信登录
-     *
-     * @param smsLoginBody 登录信息
-     * @return 结果
-     */
-    @SaIgnore
-    @PostMapping("/smsLogin")
-    public R<Map<String, Object>> smsLogin(@Validated @RequestBody SmsLoginBody smsLoginBody) {
-        // 生成令牌
-        String token = loginService.smsLogin(smsLoginBody.getPhonenumber(), smsLoginBody.getSmsCode());
-        return R.ok(Map.of(Constants.TOKEN, token));
-    }
-
-    /**
-     * 邮件登录
-     *
-     * @param body 登录信息
-     * @return 结果
-     */
-    @PostMapping("/emailLogin")
-    public R<Map<String, Object>> emailLogin(@Validated @RequestBody EmailLoginBody body) {
-        // 生成令牌
-        String token = loginService.emailLogin(body.getEmail(), body.getEmailCode());
-        return R.ok(Map.of(Constants.TOKEN, token));
-    }
-
-    /**
-     * 小程序登录(示例)
-     *
-     * @param xcxCode 小程序code
-     * @return 结果
-     */
-    @SaIgnore
-    @PostMapping("/xcxLogin")
-    public R<Map<String, Object>> xcxLogin(@NotBlank(message = "{xcx.code.not.blank}") String xcxCode) {
-        Map<String, Object> ajax = new HashMap<>();
-        // 生成令牌
-        String token = loginService.xcxLogin(xcxCode);
         return R.ok(Map.of(Constants.TOKEN, token));
     }
 

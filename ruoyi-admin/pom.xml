@@ -37,11 +37,6 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common-mail</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common-ratelimiter</artifactId>
         </dependency>
 

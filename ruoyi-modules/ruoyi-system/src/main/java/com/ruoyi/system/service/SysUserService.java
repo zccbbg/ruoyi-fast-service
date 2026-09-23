@@ -7,8 +7,8 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.ruoyi.common.core.constant.CacheNames;
 import com.ruoyi.common.core.constant.UserConstants;
+import com.ruoyi.common.core.constant.CacheNames;
 import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.service.UserService;
 import com.ruoyi.common.core.utils.MapstructUtils;
@@ -18,12 +18,10 @@ import com.ruoyi.common.mybatis.core.page.TableDataInfo;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.system.domain.bo.SysUserBo;
 import com.ruoyi.system.domain.entity.SysUser;
-import com.ruoyi.system.domain.vo.SysUserExportVo;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -83,16 +81,6 @@ public class SysUserService implements UserService {
     }
 
     /**
-     * 通过手机号查询用户
-     *
-     * @param phonenumber 手机号
-     * @return 用户对象信息
-     */
-    public SysUserVo selectUserByPhonenumber(String phonenumber) {
-        return userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getPhonenumber, phonenumber));
-    }
-
-    /**
      * 通过用户ID查询用户
      *
      * @param userId 用户ID
@@ -123,18 +111,6 @@ public class SysUserService implements UserService {
     public boolean checkPhoneUnique(SysUserBo user) {
         boolean exist = userMapper.exists(new LambdaQueryWrapper<SysUser>()
             .eq(SysUser::getPhonenumber, user.getPhonenumber())
-            .ne(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId()));
-        return !exist;
-    }
-
-    /**
-     * 校验email是否唯一
-     *
-     * @param user 用户信息
-     */
-    public boolean checkEmailUnique(SysUserBo user) {
-        boolean exist = userMapper.exists(new LambdaQueryWrapper<SysUser>()
-            .eq(SysUser::getEmail, user.getEmail())
             .ne(ObjectUtil.isNotNull(user.getUserId()), SysUser::getUserId, user.getUserId()));
         return !exist;
     }
@@ -183,19 +159,6 @@ public class SysUserService implements UserService {
     }
 
     /**
-     * 注册用户信息
-     *
-     * @param user 用户信息
-     * @return 结果
-     */
-    public boolean registerUser(SysUserBo user) {
-        user.setCreateBy(user.getUserName());
-        user.setUpdateBy(user.getUserName());
-        SysUser sysUser = MapstructUtils.convert(user, SysUser.class);
-        return userMapper.insert(sysUser) > 0;
-    }
-
-    /**
      * 修改保存用户信息
      *
      * @param user 用户信息
@@ -219,23 +182,6 @@ public class SysUserService implements UserService {
             new LambdaUpdateWrapper<SysUser>()
                 .set(SysUser::getStatus, status)
                 .eq(SysUser::getUserId, userId));
-    }
-
-    /**
-     * 修改用户基本信息
-     *
-     * @param user 用户信息
-     * @return 结果
-     */
-    @CacheEvict(cacheNames = CacheNames.SYS_NICKNAME, key = "#user.userId")
-    public int updateUserProfile(SysUserBo user) {
-        return userMapper.update(null,
-            new LambdaUpdateWrapper<SysUser>()
-                .set(ObjectUtil.isNotNull(user.getNickName()), SysUser::getNickName, user.getNickName())
-                .set(SysUser::getPhonenumber, user.getPhonenumber())
-                .set(SysUser::getEmail, user.getEmail())
-                .set(SysUser::getSex, user.getSex())
-                .eq(SysUser::getUserId, user.getUserId()));
     }
 
     /**
@@ -285,7 +231,4 @@ public class SysUserService implements UserService {
         return ObjectUtil.isNull(sysUser) ? null : sysUser.getUserName();
     }
 
-    public List<SysUserExportVo> selectUserExportList(SysUserBo user) {
-        return userMapper.selectUserExportList(this.buildQueryWrapper(user));
-    }
 }
