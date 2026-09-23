@@ -10,7 +10,6 @@ import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.common.web.core.BaseController;
 import com.ruoyi.system.domain.bo.SysUserBo;
 import com.ruoyi.system.domain.bo.SysUserProfileBo;
-import com.ruoyi.system.domain.vo.ProfileVo;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.service.SysUserService;
 import lombok.RequiredArgsConstructor;
@@ -34,11 +33,9 @@ public class SysProfileController extends BaseController {
      * 个人信息
      */
     @GetMapping
-    public R<ProfileVo> profile() {
+    public R<SysUserVo> profile() {
         SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
-        ProfileVo profileVo = new ProfileVo();
-        profileVo.setUser(user);
-        return R.ok(profileVo);
+        return R.ok(user);
     }
 
     /**
