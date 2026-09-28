@@ -40,8 +40,7 @@ public class SysLoginController {
     @PostMapping("/login")
     public R<Map<String, Object>> login(@Validated @RequestBody LoginBody loginBody) {
         // 生成令牌
-        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword(), loginBody.getCode(),
-            loginBody.getUuid());
+        String token = loginService.login(loginBody.getUsername(), loginBody.getPassword());
         return R.ok(Map.of(Constants.TOKEN, token));
     }
 

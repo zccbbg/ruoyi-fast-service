@@ -29,14 +29,4 @@ public class LoginBody {
     @Length(min = UserConstants.PASSWORD_MIN_LENGTH, max = UserConstants.PASSWORD_MAX_LENGTH, message = "{user.password.length.valid}")
     private String password;
 
-    /**
-     * 验证码
-     */
-    private String code;
-
-    /**
-     * 唯一标识
-     */
-    private String uuid;
-
 }

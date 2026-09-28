@@ -13,11 +13,6 @@ public interface CacheConstants {
     String ONLINE_TOKEN_KEY = "online_tokens:";
 
     /**
-     * 验证码 redis key
-     */
-    String CAPTCHA_CODE_KEY = "captcha_codes:";
-
-    /**
      * 参数管理 cache key
      */
     String SYS_CONFIG_KEY = "sys_config:";

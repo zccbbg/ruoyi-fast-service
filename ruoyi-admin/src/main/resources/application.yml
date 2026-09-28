@@ -9,18 +9,6 @@ ruoyi:
   # 缓存懒加载
   cacheLazy: false
 
-captcha:
-  enable: true
-  # 页面 <参数设置> 可开启关闭 验证码校验
-  # 验证码类型 math 数组计算 char 字符验证
-  type: MATH
-  # line 线段干扰 circle 圆圈干扰 shear 扭曲干扰
-  category: CIRCLE
-  # 数字验证码位数
-  numberLength: 1
-  # 字符验证码长度
-  charLength: 4
-
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
@@ -55,10 +43,10 @@ logging:
 # 用户配置
 user:
   password:
-    # 密码最大错误次数
+    # 允许密码错误次数，超过后锁定
     maxRetryCount: 5
-    # 密码锁定时间（默认10分钟）
-    lockTime: 10
+    # 密码错误计数窗口和锁定时间（分钟）
+    lockTime: 120
 
 # Spring配置
 spring:

@@ -38,7 +38,6 @@ public class CacheController {
         CACHES.add(new SysCache(CacheConstants.ONLINE_TOKEN_KEY, "在线用户"));
         CACHES.add(new SysCache(CacheNames.SYS_CONFIG, "配置信息"));
         CACHES.add(new SysCache(CacheNames.SYS_DICT, "数据字典"));
-        CACHES.add(new SysCache(CacheConstants.CAPTCHA_CODE_KEY, "验证码"));
         CACHES.add(new SysCache(CacheConstants.REPEAT_SUBMIT_KEY, "防重提交"));
         CACHES.add(new SysCache(CacheConstants.RATE_LIMIT_KEY, "限流处理"));
         CACHES.add(new SysCache(CacheConstants.PWD_ERR_CNT_KEY, "密码错误次数"));

@@ -16,6 +16,7 @@ import com.ruoyi.system.domain.vo.SysLogininforVo;
 import com.ruoyi.system.service.SysLogininforService;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.redisson.api.RLock;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -76,13 +77,23 @@ public class SysLogininforController extends BaseController {
         return R.ok();
     }
 
+    /**
+     * 清除指定账号的密码错误次数并提前解除登录锁定。
+     *
+     * @param userName 要解锁的账号名
+     * @return 操作结果
+     */
     @SaCheckPermission("monitor:logininfor:unlock")
     @Log(title = "账户解锁", businessType = BusinessType.OTHER)
     @GetMapping("/unlock/{userName}")
     public R<Void> unlock(@PathVariable("userName") String userName) {
         String loginName = CacheConstants.PWD_ERR_CNT_KEY + userName;
-        if (RedisUtils.hasKey(loginName)) {
+        RLock accountLock = RedisUtils.getClient().getLock(loginName + ":lock");
+        accountLock.lock();
+        try {
             RedisUtils.deleteObject(loginName);
+        } finally {
+            accountLock.unlock();
         }
         return R.ok();
     }

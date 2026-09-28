@@ -11,19 +11,17 @@ import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.core.enums.DeviceType;
 import com.ruoyi.common.core.enums.LoginType;
 import com.ruoyi.common.core.enums.UserStatus;
-import com.ruoyi.common.core.exception.user.CaptchaException;
-import com.ruoyi.common.core.exception.user.CaptchaExpireException;
 import com.ruoyi.common.core.exception.user.UserException;
 import com.ruoyi.common.core.utils.*;
 import com.ruoyi.common.log.event.LogininforEvent;
 import com.ruoyi.common.redis.utils.RedisUtils;
 import com.ruoyi.common.satoken.utils.LoginHelper;
-import com.ruoyi.common.web.config.properties.CaptchaProperties;
 import com.ruoyi.system.domain.entity.SysUser;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.mapper.SysUserMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.redisson.api.RLock;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +39,6 @@ import java.util.function.Supplier;
 public class SysLoginService {
 
     private final SysUserMapper userMapper;
-    private final CaptchaProperties captchaProperties;
 
     @Value("${user.password.maxRetryCount}")
     private Integer maxRetryCount;
@@ -54,16 +51,9 @@ public class SysLoginService {
      *
      * @param username 用户名
      * @param password 密码
-     * @param code     验证码
-     * @param uuid     唯一标识
      * @return 结果
      */
-    public String login(String username, String password, String code, String uuid) {
-        boolean captchaEnabled = captchaProperties.getEnable();
-        // 验证码开关
-        if (captchaEnabled) {
-            validateCaptcha(username, code, uuid);
-        }
+    public String login(String username, String password) {
         // 框架登录不限制从什么表查询 只要最终构建出 LoginUser 即可
         SysUserVo user = loadUserByUsername(username);
         checkLogin(LoginType.PASSWORD, username, () -> !BCrypt.checkpw(password, user.getPassword()));
@@ -109,27 +99,6 @@ public class SysLoginService {
         SpringUtils.context().publishEvent(logininforEvent);
     }
 
-    /**
-     * 校验验证码
-     *
-     * @param username 用户名
-     * @param code     验证码
-     * @param uuid     唯一标识
-     */
-    public void validateCaptcha(String username, String code, String uuid) {
-        String verifyKey = CacheConstants.CAPTCHA_CODE_KEY + StringUtils.defaultString(uuid, "");
-        String captcha = RedisUtils.getCacheObject(verifyKey);
-        RedisUtils.deleteObject(verifyKey);
-        if (captcha == null) {
-            recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.expire"));
-            throw new CaptchaExpireException();
-        }
-        if (!code.equalsIgnoreCase(captcha)) {
-            recordLogininfor(username, Constants.LOGIN_FAIL, MessageUtils.message("user.jcaptcha.error"));
-            throw new CaptchaException();
-        }
-    }
-
     private SysUserVo loadUserByUsername(String username) {
         SysUserVo user = userMapper.selectVoOne(new LambdaQueryWrapper<SysUser>().eq(SysUser::getUserName, username));
         if (ObjectUtil.isNull(user)) {
@@ -168,37 +137,45 @@ public class SysLoginService {
     }
 
     /**
-     * 登录校验
+     * 校验账号密码并按账号记录错误次数。
+     *
+     * @param loginType 登录类型
+     * @param username 用户名
+     * @param supplier 密码是否错误的判断
      */
     private void checkLogin(LoginType loginType, String username, Supplier<Boolean> supplier) {
-        String clientIP = ServletUtils.getClientIP();
-        String errorKey = CacheConstants.PWD_ERR_CNT_KEY + username+":"+clientIP;
+        String errorKey = CacheConstants.PWD_ERR_CNT_KEY + username;
         String loginFail = Constants.LOGIN_FAIL;
-
-        // 获取用户登录错误次数，默认为0 (可自定义限制策略 例如: key + username + ip)
-        int errorNumber = ObjectUtil.defaultIfNull(RedisUtils.getCacheObject(errorKey), 0);
-        // 锁定时间内登录 则踢出
-        if (errorNumber >= maxRetryCount) {
-            recordLogininfor(username, loginFail, MessageUtils.message(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
-            throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
-        }
-
-        if (supplier.get()) {
-            // 错误次数递增
-            errorNumber++;
-            RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
-            // 达到规定错误次数 则锁定登录
-            if (errorNumber >= maxRetryCount) {
+        RLock accountLock = RedisUtils.getClient().getLock(errorKey + ":lock");
+        accountLock.lock();
+        try {
+            // 获取账号密码错误次数，默认为0。
+            int errorNumber = ObjectUtil.defaultIfNull(RedisUtils.getCacheObject(errorKey), 0);
+            // 第六次输错后，两小时内拒绝该账号再次登录。
+            if (errorNumber > maxRetryCount) {
                 recordLogininfor(username, loginFail, MessageUtils.message(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
                 throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
-            } else {
-                // 未达到规定错误次数
-                recordLogininfor(username, loginFail, MessageUtils.message(loginType.getRetryLimitCount(), errorNumber));
-                throw new UserException(loginType.getRetryLimitCount(), errorNumber);
             }
-        }
 
-        // 登录成功 清空错误次数
-        RedisUtils.deleteObject(errorKey);
+            if (supplier.get()) {
+                // 错误次数递增，并从最后一次错误起重新计算两小时。
+                errorNumber++;
+                RedisUtils.setCacheObject(errorKey, errorNumber, Duration.ofMinutes(lockTime));
+                // 超过五次错误时锁定登录。
+                if (errorNumber > maxRetryCount) {
+                    recordLogininfor(username, loginFail, MessageUtils.message(loginType.getRetryLimitExceed(), maxRetryCount, lockTime));
+                    throw new UserException(loginType.getRetryLimitExceed(), maxRetryCount, lockTime);
+                } else {
+                    // 未达到规定错误次数
+                    recordLogininfor(username, loginFail, MessageUtils.message(loginType.getRetryLimitCount(), errorNumber));
+                    throw new UserException(loginType.getRetryLimitCount(), errorNumber);
+                }
+            }
+
+            // 登录成功 清空错误次数
+            RedisUtils.deleteObject(errorKey);
+        } finally {
+            accountLock.unlock();
+        }
     }
 }

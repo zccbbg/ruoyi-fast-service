@@ -8,11 +8,6 @@ public interface GlobalConstants {
     String GLOBAL_REDIS_KEY = "global:";
 
     /**
-     * 验证码 redis key
-     */
-    String CAPTCHA_CODE_KEY = GLOBAL_REDIS_KEY + "captcha_codes:";
-
-    /**
      * 防重提交 redis key
      */
     String REPEAT_SUBMIT_KEY = GLOBAL_REDIS_KEY + "repeat_submit:";
