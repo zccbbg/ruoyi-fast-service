@@ -2,7 +2,7 @@ package com.ruoyi.system.listener;
 
 import cn.dev33.satoken.config.SaTokenConfig;
 import cn.dev33.satoken.listener.SaTokenListener;
-import cn.dev33.satoken.stp.SaLoginModel;
+import cn.dev33.satoken.stp.parameter.SaLoginParameter;
 import cn.hutool.http.useragent.UserAgent;
 import cn.hutool.http.useragent.UserAgentUtil;
 import com.ruoyi.common.core.constant.CacheConstants;
@@ -33,9 +33,14 @@ public class UserActionListener implements SaTokenListener {
 
     /**
      * 每次登录时触发
+     *
+     * @param loginType 登录类型
+     * @param loginId 登录用户标识
+     * @param tokenValue Token 值
+     * @param loginParameter 登录参数
      */
     @Override
-    public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginModel loginModel) {
+    public void doLogin(String loginType, Object loginId, String tokenValue, SaLoginParameter loginParameter) {
         UserType userType = UserType.getUserType(loginId.toString());
         if (userType == UserType.SYS_USER) {
             UserAgent userAgent = UserAgentUtil.parse(ServletUtils.getRequest().getHeader("User-Agent"));
@@ -131,8 +136,13 @@ public class UserActionListener implements SaTokenListener {
 
     /**
      * 每次Token续期时触发
+     *
+     * @param loginType 登录类型
+     * @param loginId 登录用户标识
+     * @param tokenValue Token 值
+     * @param timeout 续期后的有效时长
      */
     @Override
-    public void doRenewTimeout(String tokenValue, Object loginId, long timeout) {
+    public void doRenewTimeout(String loginType, Object loginId, String tokenValue, long timeout) {
     }
 }

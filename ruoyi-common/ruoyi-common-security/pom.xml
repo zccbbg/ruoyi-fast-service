@@ -17,6 +17,11 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-webmvc</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common-satoken</artifactId>
         </dependency>

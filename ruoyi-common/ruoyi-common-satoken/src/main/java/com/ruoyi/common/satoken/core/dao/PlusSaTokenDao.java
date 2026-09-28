@@ -1,6 +1,6 @@
 package com.ruoyi.common.satoken.core.dao;
 
-import cn.dev33.satoken.dao.SaTokenDao;
+import cn.dev33.satoken.dao.auto.SaTokenDaoBySessionFollowObject;
 import cn.dev33.satoken.util.SaFoxUtil;
 import com.github.benmanes.caffeine.cache.Cache;
 import com.github.benmanes.caffeine.cache.Caffeine;
@@ -19,7 +19,7 @@ import java.util.concurrent.TimeUnit;
  *
  * @author Lion Li
  */
-public class PlusSaTokenDao implements SaTokenDao {
+public class PlusSaTokenDao implements SaTokenDaoBySessionFollowObject {
 
     private static final Cache<String, Object> CAFFEINE = Caffeine.newBuilder()
         // 设置最后一次写入或访问后经过固定时间过期
@@ -100,6 +100,18 @@ public class PlusSaTokenDao implements SaTokenDao {
     public Object getObject(String key) {
         Object o = CAFFEINE.get(key, k -> RedisUtils.getCacheObject(key));
         return o;
+    }
+
+    /**
+     * 按指定类型获取对象。
+     *
+     * @param key 缓存键
+     * @param type 对象类型
+     * @return 对应类型的对象，不存在时返回 null
+     */
+    @Override
+    public <T> T getObject(String key, Class<T> type) {
+        return type.cast(getObject(key));
     }
 
     /**
