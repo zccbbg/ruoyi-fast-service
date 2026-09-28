@@ -2,6 +2,7 @@ package com.ruoyi.common.web.config;
 
 import com.ruoyi.common.web.core.I18nLocaleResolver;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.webmvc.autoconfigure.WebMvcAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.servlet.LocaleResolver;
 
@@ -10,7 +11,7 @@ import org.springframework.web.servlet.LocaleResolver;
  *
  * @author Lion Li
  */
-@AutoConfiguration
+@AutoConfiguration(before = WebMvcAutoConfiguration.class)
 public class I18nConfig {
 
     /** 用途：注册国际化语言解析器；参数：无；返回值：语言解析器。 */

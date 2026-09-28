@@ -3,6 +3,7 @@ package com.ruoyi.system.controller.system;
 import cn.dev33.satoken.annotation.SaCheckPermission;
 import cn.dev33.satoken.secure.BCrypt;
 import cn.hutool.core.util.ArrayUtil;
+import com.ruoyi.common.core.constant.HttpStatus;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.utils.StringUtils;
 import com.ruoyi.common.log.annotation.Log;
@@ -51,7 +52,11 @@ public class SysUserController extends BaseController {
     @SaCheckPermission("system:user:query")
     @GetMapping(value = {"/", "/{userId}"})
     public R<Map<String, Object>> getInfo(@PathVariable(value = "userId", required = false) Long userId) {
-        return R.ok(Map.of("user", userId == null ? new SysUserVo() : userService.selectUserById(userId)));
+        SysUserVo user = userId == null ? new SysUserVo() : userService.selectUserById(userId);
+        if (user == null) {
+            return R.fail(HttpStatus.NOT_FOUND, "用户不存在");
+        }
+        return R.ok(Map.of("user", user));
     }
 
     /**
