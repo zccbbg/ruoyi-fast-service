@@ -2,7 +2,6 @@ package com.ruoyi.common.core.utils;
 
 import cn.hutool.extra.spring.SpringUtil;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
-import org.springframework.boot.autoconfigure.thread.Threading;
 import org.springframework.context.ApplicationContext;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
@@ -62,8 +61,9 @@ public final class SpringUtils extends SpringUtil {
         return getApplicationContext();
     }
 
+    /** 用途：读取虚拟线程开关；参数：无；返回值：是否启用虚拟线程。 */
     public static boolean isVirtual() {
-        return Threading.VIRTUAL.isActive(getBean(Environment.class));
+        return Boolean.parseBoolean(getBean(Environment.class).getProperty("spring.threads.virtual.enabled", "false"));
     }
 
 }

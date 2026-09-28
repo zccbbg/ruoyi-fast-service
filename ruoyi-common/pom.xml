@@ -25,7 +25,6 @@
         <module>ruoyi-common-sensitive</module>
         <module>ruoyi-common-encrypt</module>
         <module>ruoyi-common-idempotent</module>
-        <module>ruoyi-common-doc</module>
     </modules>
 
     <artifactId>ruoyi-common</artifactId>

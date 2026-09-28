@@ -9,6 +9,11 @@ ruoyi:
   # 缓存懒加载
   cacheLazy: false
 
+# 健康资料目录和密钥由部署环境提供，真实资料不进入代码仓库。
+health:
+  data-root: ${HEALTH_DATA_ROOT:}
+  encryption-key: ${HEALTH_CONFIG_KEY:}
+
 # 开发环境配置
 server:
   # 服务器的HTTP端口，默认为8080
@@ -16,20 +21,6 @@ server:
   servlet:
     # 应用的访问路径
     context-path: /
-  # undertow 配置
-  undertow:
-    # HTTP post内容的最大大小。当值为-1时，默认值为大小是无限的
-    max-http-post-size: -1
-    # 以下的配置会影响buffer,这些buffer会用于服务器连接的IO操作,有点类似netty的池化内存管理
-    # 每块buffer的空间大小,越小的空间被利用越充分
-    buffer-size: 512
-    # 是否分配的直接内存
-    direct-buffers: true
-    threads:
-      # 设置IO线程数, 它主要执行非阻塞的任务,它们会负责多个连接, 默认设置每个CPU核心一个线程
-      io: 8
-      # 阻塞任务线程池, 当执行类似servlet请求阻塞操作, undertow会从这个线程池中取得线程,它的值设置取决于系统的负载
-      worker: 256
 
 # 日志配置
 logging:
@@ -62,9 +53,9 @@ spring:
   servlet:
     multipart:
       # 单个文件大小
-      max-file-size: 10MB
+      max-file-size: 15MB
       # 设置总上传的文件大小
-      max-request-size: 20MB
+      max-request-size: 16MB
   # 服务模块
   devtools:
     restart:
@@ -107,7 +98,7 @@ sa-token:
   # token前缀
   token-prefix: "Bearer"
   # jwt秘钥
-  jwt-secret-key: abcdefghijklmnopqrstuvwxyz
+  jwt-secret-key: ${HEALTH_JWT_SECRET:}
 
 # security配置
 security:
@@ -121,9 +112,6 @@ security:
     # 公共路径
     - /favicon.ico
     - /error
-    # swagger 文档配置
-    - /*/api-docs
-    - /*/api-docs/**
 
 # MyBatisPlus配置
 # https://baomidou.com/config/
@@ -183,36 +171,6 @@ mybatis-encryptor:
   publicKey:
   privateKey:
 
-springdoc:
-  api-docs:
-    # 是否开启接口文档
-    enabled: true
-#  swagger-ui:
-#    # 持久化认证数据
-#    persistAuthorization: true
-  info:
-    # 标题
-    title: '标题：${ruoyi.name}后台管理系统_接口文档'
-    # 描述
-    description: '描述：用于管理集团旗下公司的人员信息,具体包括XXX,XXX模块...'
-    # 版本
-    version: '版本号: ${revision}'
-    # 作者信息
-    contact:
-      name: zcc
-      email: zccbbg@qq.com
-      url: https://gitee.com/zccbbg/ruoyi-fast-service
-  components:
-    # 鉴权方式配置
-    security-schemes:
-      apiKey:
-        type: APIKEY
-        in: HEADER
-        name: ${sa-token.token-name}
-  # 可定义多个分组，也可以不定义
-  group-configs:
-    - group: 系统模块
-      packages-to-scan: com.ruoyi.web
 # 防止XSS攻击
 xss:
   # 过滤开关

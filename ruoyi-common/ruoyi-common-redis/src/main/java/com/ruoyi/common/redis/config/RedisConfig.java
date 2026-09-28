@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import com.ruoyi.common.core.utils.SpringUtils;
 import com.ruoyi.common.redis.config.properties.RedissonProperties;
 import com.ruoyi.common.redis.handler.KeyPrefixHandler;
-import com.ruoyi.common.redis.handler.RedisExceptionHandler;
 import org.redisson.client.codec.StringCodec;
 import org.redisson.codec.CompositeCodec;
 import org.redisson.codec.TypedJsonJacksonCodec;
@@ -96,14 +95,6 @@ public class RedisConfig {
             }
             log.info("初始化 redis 配置");
         };
-    }
-
-    /**
-     * 异常处理器
-     */
-    @Bean
-    public RedisExceptionHandler redisExceptionHandler() {
-        return new RedisExceptionHandler();
     }
 
     /**
