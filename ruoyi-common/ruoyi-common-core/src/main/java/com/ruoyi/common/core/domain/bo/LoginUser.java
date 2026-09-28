@@ -102,6 +102,8 @@ public class LoginUser implements Serializable {
 
     /**
      * 获取登录id
+     *
+     * @return 用户类型与用户编号组成的登录标识
      */
     public String getLoginId() {
         if (userType == null) {
@@ -110,7 +112,7 @@ public class LoginUser implements Serializable {
         if (userId == null) {
             throw new IllegalArgumentException("用户ID不能为空");
         }
-        return userType + ":" + userId;
+        return userType + "_" + userId;
     }
 
 }

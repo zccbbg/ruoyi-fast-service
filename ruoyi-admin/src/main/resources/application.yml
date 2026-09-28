@@ -98,7 +98,7 @@ sa-token:
   # token前缀
   token-prefix: "Bearer"
   # jwt秘钥
-  jwt-secret-key: ${HEALTH_JWT_SECRET:}
+  jwt-secret-key: flasjf555jas56dfj
 
 # security配置
 security:
