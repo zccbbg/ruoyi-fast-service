@@ -12,7 +12,7 @@ ruoyi:
 # 健康资料目录和密钥由部署环境提供，真实资料不进入代码仓库。
 health:
   data-root: D:\code\health
-  encryption-key: sdfasdfsf_sspodifosajf
+  encryption-key: fqmp4r7/MsZDHZ2/R+pPapbaDFB0MEC/WFVCDc9fsh8=
 
 # 开发环境配置
 server:

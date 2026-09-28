@@ -134,11 +134,12 @@ public class HealthModels {
 
     /** 用途：加密模型密钥后存储；参数：原始密钥；返回值：带随机向量的密文。 */
     private String encrypt(String value) {
+        SecretKeySpec key = secret();
         try {
             byte[] nonce = new byte[12];
             random.nextBytes(nonce);
             Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-            cipher.init(Cipher.ENCRYPT_MODE, secret(), new GCMParameterSpec(128, nonce));
+            cipher.init(Cipher.ENCRYPT_MODE, key, new GCMParameterSpec(128, nonce));
             return Base64.getEncoder().encodeToString(nonce) + ":"
                 + Base64.getEncoder().encodeToString(cipher.doFinal(value.getBytes(StandardCharsets.UTF_8)));
         } catch (Exception ex) {
@@ -148,10 +149,11 @@ public class HealthModels {
 
     /** 用途：解密服务端调用模型所需的密钥；参数：密文；返回值：原始密钥。 */
     private String decrypt(String value) {
+        SecretKeySpec key = secret();
         try {
             String[] parts = value.split(":", 2);
             Cipher cipher = Cipher.getInstance("AES/GCM/NoPadding");
-            cipher.init(Cipher.DECRYPT_MODE, secret(),
+            cipher.init(Cipher.DECRYPT_MODE, key,
                 new GCMParameterSpec(128, Base64.getDecoder().decode(parts[0])));
             return new String(cipher.doFinal(Base64.getDecoder().decode(parts[1])), StandardCharsets.UTF_8);
         } catch (Exception ex) {
@@ -161,11 +163,15 @@ public class HealthModels {
 
     /** 用途：读取服务器提供的 AES 主密钥；参数：无；返回值：256 位密钥。 */
     private SecretKeySpec secret() {
-        byte[] key = Base64.getDecoder().decode(encryptionKey);
-        if (key.length != 32) {
-            throw new IllegalStateException("HEALTH_CONFIG_KEY 必须是 32 字节密钥的 Base64 值");
+        try {
+            byte[] key = Base64.getDecoder().decode(encryptionKey);
+            if (key.length == 32) {
+                return new SecretKeySpec(key, "AES");
+            }
+        } catch (IllegalArgumentException ex) {
+            throw new IllegalStateException("HEALTH_CONFIG_KEY 必须是 32 字节密钥的标准 Base64 值", ex);
         }
-        return new SecretKeySpec(key, "AES");
+        throw new IllegalStateException("HEALTH_CONFIG_KEY 必须是 32 字节密钥的标准 Base64 值");
     }
 
     public record ModelInput(String name, String provider, String purpose, String modelId,
