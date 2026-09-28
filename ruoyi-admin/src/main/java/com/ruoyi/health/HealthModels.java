@@ -2,18 +2,20 @@ package com.ruoyi.health;
 
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
-import java.sql.ResultSet;
 import java.util.Base64;
 import java.util.List;
 import java.util.UUID;
 import javax.crypto.Cipher;
 import javax.crypto.spec.GCMParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.update.LambdaUpdateWrapper;
+import com.ruoyi.health.domain.HealthModel;
+import com.ruoyi.health.mapper.HealthModelMapper;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeType;
@@ -21,26 +23,30 @@ import org.springframework.core.io.ByteArrayResource;
 
 @Service
 public class HealthModels {
-    private final JdbcTemplate jdbc;
+    private final HealthModelMapper mapper;
     private final String encryptionKey;
     private final SecureRandom random = new SecureRandom();
 
-    /** 用途：创建模型配置服务；参数：数据库访问器、服务器加密密钥；返回值：无。 */
-    public HealthModels(JdbcTemplate jdbc, @Value("${health.encryption-key:}") String encryptionKey) {
-        this.jdbc = jdbc;
+    /** 用途：创建模型配置服务；参数：MyBatis-Plus Mapper、服务器加密密钥；返回值：无。 */
+    public HealthModels(HealthModelMapper mapper, @Value("${health.encryption-key:}") String encryptionKey) {
+        this.mapper = mapper;
         this.encryptionKey = encryptionKey;
     }
 
     /** 用途：列出可用模型且不返回密钥；参数：无；返回值：模型配置列表。 */
     public List<ModelView> list() {
-        return jdbc.query("select id,name,provider,purpose,model_id,is_default from health_model order by purpose,is_default desc,created_at",
-            (rs, row) -> view(rs));
+        return mapper.selectList(new LambdaQueryWrapper<HealthModel>()
+                .orderByAsc(HealthModel::getPurpose)
+                .orderByDesc(HealthModel::getDefaultFlag)
+                .orderByAsc(HealthModel::getCreatedAt))
+            .stream().map(this::view).toList();
     }
 
     /** 用途：保存问答或报告模型配置；参数：模型表单；返回值：模型编号。 */
     @Transactional
     public String save(ModelInput input) {
-        if (input.name() == null || input.name().isBlank() || input.modelId() == null || input.modelId().isBlank()
+        if (input == null || input.name() == null || input.name().isBlank()
+            || input.modelId() == null || input.modelId().isBlank()
             || input.apiKey() == null || input.apiKey().isBlank()) {
             throw new IllegalArgumentException("模型名称、编号和密钥不能为空");
         }
@@ -48,42 +54,52 @@ public class HealthModels {
             || !List.of("CHAT", "REPORT").contains(input.purpose())) {
             throw new IllegalArgumentException("不支持的服务商或用途");
         }
-        String id = UUID.randomUUID().toString();
-        String encrypted = encrypt(input.apiKey().trim());
+        HealthModel model = new HealthModel();
+        model.setId(UUID.randomUUID().toString());
+        model.setName(input.name().trim());
+        model.setProvider(input.provider());
+        model.setPurpose(input.purpose());
+        model.setModelId(input.modelId().trim());
+        model.setEncryptedKey(encrypt(input.apiKey().trim()));
+        model.setDefaultFlag(input.makeDefault());
         if (input.makeDefault()) {
-            jdbc.update("update health_model set is_default=0 where purpose=?", input.purpose());
+            mapper.update(null, new LambdaUpdateWrapper<HealthModel>()
+                .eq(HealthModel::getPurpose, input.purpose()).set(HealthModel::getDefaultFlag, false));
         }
-        jdbc.update("insert into health_model(id,name,provider,purpose,model_id,encrypted_key,is_default) values(?,?,?,?,?,?,?)",
-            id, input.name().trim(), input.provider(), input.purpose(), input.modelId().trim(),
-            encrypted, input.makeDefault() ? 1 : 0);
-        return id;
+        mapper.insert(model);
+        return model.getId();
     }
 
     /** 用途：删除模型配置；参数：模型编号；返回值：无。 */
     public void delete(String id) {
-        jdbc.update("delete from health_model where id=?", id);
+        mapper.deleteById(id);
     }
 
     /** 用途：设定同一用途下的默认模型；参数：模型编号；返回值：无。 */
     @Transactional
     public void setDefault(String id) {
-        List<String> purposes = jdbc.query("select purpose from health_model where id=?",
-            (rs, row) -> rs.getString(1), id);
-        if (purposes.isEmpty()) throw new IllegalArgumentException("模型不存在");
-        jdbc.update("update health_model set is_default=0 where purpose=?", purposes.get(0));
-        jdbc.update("update health_model set is_default=1 where id=?", id);
+        HealthModel model = mapper.selectById(id);
+        if (model == null) throw new IllegalArgumentException("模型不存在");
+        mapper.update(null, new LambdaUpdateWrapper<HealthModel>()
+            .eq(HealthModel::getPurpose, model.getPurpose()).set(HealthModel::getDefaultFlag, false));
+        mapper.update(null, new LambdaUpdateWrapper<HealthModel>()
+            .eq(HealthModel::getId, id).set(HealthModel::getDefaultFlag, true));
     }
 
     /** 用途：读取指定用途的模型，未指定时选择默认项；参数：模型编号和用途；返回值：内部模型配置。 */
     public ModelConfig select(String id, String purpose) {
-        List<ModelConfig> found = id == null || id.isBlank()
-            ? jdbc.query("select * from health_model where purpose=? order by is_default desc,created_at limit 1",
-                (rs, row) -> config(rs), purpose)
-            : jdbc.query("select * from health_model where id=? and purpose=?", (rs, row) -> config(rs), id, purpose);
-        if (found.isEmpty()) {
+        LambdaQueryWrapper<HealthModel> query = new LambdaQueryWrapper<HealthModel>()
+            .eq(HealthModel::getPurpose, purpose).last("limit 1");
+        if (id == null || id.isBlank()) {
+            query.orderByDesc(HealthModel::getDefaultFlag).orderByAsc(HealthModel::getCreatedAt);
+        } else {
+            query.eq(HealthModel::getId, id);
+        }
+        HealthModel found = mapper.selectOne(query);
+        if (found == null) {
             throw new IllegalStateException("请先配置" + ("CHAT".equals(purpose) ? "问答" : "报告识别") + "模型");
         }
-        return found.get(0);
+        return config(found);
     }
 
     /** 用途：按服务商接口调用文字模型；参数：模型配置和提示词；返回值：模型回答。 */
@@ -105,15 +121,15 @@ public class HealthModels {
         return ChatClient.builder(OpenAiChatModel.builder().options(options).build()).build();
     }
 
-    /** 用途：将数据库行转换成无密钥视图；参数：查询结果；返回值：模型视图。 */
-    private ModelView view(ResultSet rs) throws java.sql.SQLException {
-        return new ModelView(rs.getString("id"), rs.getString("name"), rs.getString("provider"),
-            rs.getString("purpose"), rs.getString("model_id"), rs.getBoolean("is_default"));
+    /** 用途：将数据库实体转换成无密钥视图；参数：模型实体；返回值：模型视图。 */
+    private ModelView view(HealthModel model) {
+        return new ModelView(model.getId(), model.getName(), model.getProvider(),
+            model.getPurpose(), model.getModelId(), Boolean.TRUE.equals(model.getDefaultFlag()));
     }
 
-    /** 用途：将数据库行转换成内部模型配置；参数：查询结果；返回值：含解密密钥的配置。 */
-    private ModelConfig config(ResultSet rs) throws java.sql.SQLException {
-        return new ModelConfig(rs.getString("provider"), rs.getString("model_id"), decrypt(rs.getString("encrypted_key")));
+    /** 用途：将数据库实体转换成内部模型配置；参数：模型实体；返回值：含解密密钥的配置。 */
+    private ModelConfig config(HealthModel model) {
+        return new ModelConfig(model.getProvider(), model.getModelId(), decrypt(model.getEncryptedKey()));
     }
 
     /** 用途：加密模型密钥后存储；参数：原始密钥；返回值：带随机向量的密文。 */

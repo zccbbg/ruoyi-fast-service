@@ -215,6 +215,11 @@
                 <artifactId>redisson-spring-boot-starter</artifactId>
                 <version>${redisson.version}</version>
             </dependency>
+            <dependency>
+                <groupId>org.redisson</groupId>
+                <artifactId>redisson-spring-cache</artifactId>
+                <version>${redisson.version}</version>
+            </dependency>
 
             <dependency>
                 <groupId>com.alibaba</groupId>
