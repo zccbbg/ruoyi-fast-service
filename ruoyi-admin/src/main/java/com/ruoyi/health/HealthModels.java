@@ -20,6 +20,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.MimeType;
 import org.springframework.core.io.ByteArrayResource;
+import reactor.core.publisher.Flux;
 
 @Service
 public class HealthModels {
@@ -105,6 +106,11 @@ public class HealthModels {
     /** 用途：按服务商接口调用文字模型；参数：模型配置和提示词；返回值：模型回答。 */
     public String ask(ModelConfig config, String prompt) {
         return client(config).prompt().user(prompt).call().content();
+    }
+
+    /** 用途：按服务商接口逐段生成文字回答；参数：模型配置和提示词；返回值：回答片段流。 */
+    public Flux<String> stream(ModelConfig config, String prompt) {
+        return client(config).prompt().user(prompt).stream().content();
     }
 
     /** 用途：将报告图片交给具备视觉能力的模型识别；参数：模型配置、图片字节、MIME 类型和提示词；返回值：识别文本。 */

@@ -62,6 +62,9 @@ spring:
       # 热部署开关
       enabled: true
   mvc:
+    async:
+      # 流式问答允许模型在较长时间内持续生成回答。
+      request-timeout: 300000
     format:
       date-time: yyyy-MM-dd HH:mm:ss
   jackson:
