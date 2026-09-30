@@ -17,6 +17,7 @@ public class HealthModel {
     private String provider;
     private String purpose;
     private String modelId;
+    private String baseUrl;
     private String encryptedKey;
     @TableField("is_default")
     private Boolean defaultFlag;

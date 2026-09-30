@@ -4,6 +4,7 @@ CREATE TABLE IF NOT EXISTS health_model (
     provider VARCHAR(20) NOT NULL,
     purpose VARCHAR(20) NOT NULL,
     model_id VARCHAR(100) NOT NULL,
+    base_url VARCHAR(500) NULL,
     encrypted_key TEXT NOT NULL,
     is_default TINYINT(1) NOT NULL DEFAULT 0,
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP

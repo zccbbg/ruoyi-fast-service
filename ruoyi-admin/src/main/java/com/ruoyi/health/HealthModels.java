@@ -1,5 +1,6 @@
 package com.ruoyi.health;
 
+import java.net.URI;
 import java.nio.charset.StandardCharsets;
 import java.security.SecureRandom;
 import java.util.Base64;
@@ -50,9 +51,21 @@ public class HealthModels {
             || input.apiKey() == null || input.apiKey().isBlank()) {
             throw new IllegalArgumentException("模型名称、编号和密钥不能为空");
         }
-        if (!List.of("OPENAI", "DEEPSEEK").contains(input.provider())
+        if (!List.of("OPENAI", "DEEPSEEK", "CUSTOM").contains(input.provider())
             || !List.of("CHAT", "REPORT").contains(input.purpose())) {
             throw new IllegalArgumentException("不支持的服务商或用途");
+        }
+        String baseUrl = input.baseUrl() == null ? "" : input.baseUrl().trim();
+        if ("CUSTOM".equals(input.provider())) {
+            try {
+                URI uri = URI.create(baseUrl);
+                if (baseUrl.length() > 500 || !"https".equalsIgnoreCase(uri.getScheme()) || uri.getHost() == null
+                    || uri.getUserInfo() != null || uri.getQuery() != null || uri.getFragment() != null) {
+                    throw new IllegalArgumentException("接口地址必须是 HTTPS URL");
+                }
+            } catch (IllegalArgumentException ex) {
+                throw new IllegalArgumentException("接口地址必须是 HTTPS URL", ex);
+            }
         }
         HealthModel model = new HealthModel();
         model.setId(UUID.randomUUID().toString());
@@ -60,6 +73,7 @@ public class HealthModels {
         model.setProvider(input.provider());
         model.setPurpose(input.purpose());
         model.setModelId(input.modelId().trim());
+        model.setBaseUrl("CUSTOM".equals(input.provider()) ? baseUrl : null);
         model.setEncryptedKey(encrypt(input.apiKey().trim()));
         model.setDefaultFlag(input.makeDefault());
         if (input.makeDefault()) {
@@ -115,8 +129,7 @@ public class HealthModels {
 
     /** 用途：创建动态模型客户端；参数：模型配置；返回值：Spring AI 客户端。 */
     private ChatClient client(ModelConfig config) {
-        String url = "DEEPSEEK".equals(config.provider()) ? "https://api.deepseek.com" : "https://api.openai.com";
-        OpenAiChatOptions options = OpenAiChatOptions.builder().baseUrl(url).apiKey(config.apiKey())
+        OpenAiChatOptions options = OpenAiChatOptions.builder().baseUrl(config.baseUrl()).apiKey(config.apiKey())
             .model(config.modelId()).build();
         return ChatClient.builder(OpenAiChatModel.builder().options(options).build()).build();
     }
@@ -129,7 +142,15 @@ public class HealthModels {
 
     /** 用途：将数据库实体转换成内部模型配置；参数：模型实体；返回值：含解密密钥的配置。 */
     private ModelConfig config(HealthModel model) {
-        return new ModelConfig(model.getProvider(), model.getModelId(), decrypt(model.getEncryptedKey()));
+        String baseUrl = model.getBaseUrl();
+        if (baseUrl == null || baseUrl.isBlank()) {
+            baseUrl = switch (model.getProvider()) {
+                case "DEEPSEEK" -> "https://api.deepseek.com";
+                case "OPENAI" -> "https://api.openai.com";
+                default -> throw new IllegalStateException("自定义模型缺少接口地址");
+            };
+        }
+        return new ModelConfig(model.getProvider(), model.getModelId(), decrypt(model.getEncryptedKey()), baseUrl);
     }
 
     /** 用途：加密模型密钥后存储；参数：原始密钥；返回值：带随机向量的密文。 */
@@ -175,8 +196,8 @@ public class HealthModels {
     }
 
     public record ModelInput(String name, String provider, String purpose, String modelId,
-                             String apiKey, boolean makeDefault) {}
+                             String apiKey, String baseUrl, boolean makeDefault) {}
     public record ModelView(String id, String name, String provider, String purpose,
                             String modelId, boolean isDefault) {}
-    public record ModelConfig(String provider, String modelId, String apiKey) {}
+    public record ModelConfig(String provider, String modelId, String apiKey, String baseUrl) {}
 }

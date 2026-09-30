@@ -270,7 +270,7 @@ public class HealthFiles {
     private String imageVision(byte[] bytes, String extension) {
         HealthModels.ModelConfig model = models.select(null, "REPORT");
         if ("DEEPSEEK".equals(model.provider())) {
-            throw new IllegalArgumentException("图片及扫描 PDF 需要配置支持视觉识别的 OpenAI 报告模型");
+            throw new IllegalArgumentException("图片及扫描 PDF 需要配置支持视觉识别的报告模型");
         }
         return models.readImage(model, bytes,
             ".png".equals(extension) ? MimeTypeUtils.IMAGE_PNG : MimeTypeUtils.IMAGE_JPEG,
