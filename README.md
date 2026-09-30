@@ -1,14 +1,26 @@
-## 平台简介
+# 若依 AI 健康档案助手
+
+`ruoyi-ai-health-assistant` 是基于若依二次开发的健康档案 AI 应用。项目以家庭成员为单位管理健康资料，提供档案问答、报告识别和指标趋势查看等功能。
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/zccbbg/ruoyi-fast-service/blob/master/LICENSE)
 [![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-blue.svg)]()
 [![JDK-21](https://img.shields.io/badge/JDK-21-green.svg)]()
 
-> 本项目继承自ruoyi-vue-plus,由于ruoyi-vue-plus 4.x版本不再开发，而5.x过于庞大，增加了flowable和多租户，本项目在4.x基础上适当增加一些5.x比较好的功能。
+项目沿用 RuoYi-Fast 的后台基础能力，并在此基础上开发健康档案业务。当前 AI 问答根据已有档案片段生成回答并标注来源；报告识别结果需要人工核对后才会写入资料。
 
+## 主要功能
 
-> 项目代码、文档 均开源免费可商用 遵循开源协议在项目中保留开源协议文件即可<br>
-活到老写到老 为兴趣而开源 为学习而开源 为让大家真正可以学到技术而开源
+- **健康档案问答**：按成员检索 Markdown 档案，生成带来源的回答，并保存会话记录。
+- **报告识别**：上传 PDF 或图片，提取报告摘要、指标和待办事项；核对草稿后写入档案。
+- **指标趋势**：按成员查看已整理的结构化健康指标。
+- **模型配置**：分别配置问答模型和报告识别模型。
+- **后台管理**：保留用户、通知公告、字典、参数及日志等基础管理能力。
+
+## 技术与目录
+
+- 后端：JDK 21、Spring Boot 4.1.1、Spring AI、MyBatis-Plus。
+- 前端：Vue 3、Element Plus、Vite，代码位于独立的 `ruoyi-fast-vue3` 仓库。
+- `ruoyi-admin` 包含健康档案接口与应用入口；`ruoyi-modules/ruoyi-system` 和 `ruoyi-common` 提供后台管理与公共能力。
 
 ## 更新记录
 参考：[UpdateHistory.md](UpdateHistory.md)
@@ -20,35 +32,11 @@
 #### github
 [https://github.com/zccbbg/ruoyi-fast-vue3](https://github.com/zccbbg/ruoyi-fast-vue3)
 
-## 本框架与RuoYi的功能差异
-
-> 说明：本项目继承自 RuoYi-Vue-Plus 4.x，并回填了部分 5.x 的实用特性、同时做了精简。下表对比对象为官方若依 **RuoYi-Vue 前后端分离版**。
-
-### 技术栈差异
-
-| 维度 | 本框架 ruoyi-fast | 官方 RuoYi-Vue |
-|------|------------------|----------------|
-| 前端 | Vue3 + TypeScript + Element Plus（基于 vue3-element-admin 重写） | Vue2 + JavaScript |
-| JDK / Spring Boot | JDK 21 + Spring Boot 4.1.1 | JDK 8 + Spring Boot 2.x |
-| 权限认证 | Sa-Token + JWT，注解支持 `AND`/`OR` 等复杂表达式 | Spring Security，仅支持是否匹配 |
-| ORM | MyBatis-Plus，基于对象几乎不写 SQL | 原生 MyBatis，需手写 XML SQL |
-| Web 容器 | Undertow（基于 XNIO 高性能容器） | Tomcat |
-| Redis 客户端 | Redisson，支持分布式限流/队列等 | Lettuce + RedisTemplate |
-| 对象转换 | MapStruct-Plus（编译期生成，规避 JDK17 下 BeanUtil 转换出错） | BeanUtils |
-| SQL 监控 | p6spy，输出完整 SQL 与执行耗时 | 日志拼接，需手动还原参数 |
-| 数据分页 | MyBatis-Plus 分页插件，支持多字段/复杂排序 | PageHelper，仅单查询单排序 |
-| 数据权限 | MyBatis-Plus 插件无感拼接 SQL | 注解 + AOP 手动拼接 |
-
-### 工程结构差异
-
-- 后端按 `ruoyi-common`、`ruoyi-modules/ruoyi-system` 和 `ruoyi-admin` 分层组织，公共能力通过插件包提供，系统管理功能集中在 system 模块。
-- 官方为模块相互注入，耦合较重、扩展困难。
-
 ## 项目学习文档
 
-项目实现说明和学习笔记统一放在 [`项目学习文档`](项目学习文档/README.md) 目录，后续可在这里补充记忆功能等模块的设计与实现过程。
+项目实现说明和学习笔记统一放在 [`项目学习文档`](项目学习文档/README.md) 目录。记忆功能等后续设计可在这里持续补充。
 
 
 ## 贡献代码
 
-欢迎各路英雄豪杰 `PR` 代码 请提交到 `dev` 开发分支 统一测试发版
+欢迎提交 PR；请提交到 `dev` 开发分支。
