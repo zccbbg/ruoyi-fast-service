@@ -56,7 +56,7 @@ public class HealthController {
     }
 
     /** 用途：按成员和问题检索资料并流式返回带来源的回答；参数：问答请求；返回值：SSE 回答流。 */
-    @PostMapping(value = "/ask", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
+    @PostMapping(value = "/ask/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<StreamingResponseBody> ask(@RequestBody Question question) throws IOException {
         if (question.text() == null || question.text().isBlank() || question.text().length() > 2000) {
             throw new IllegalArgumentException("问题不能为空且不能超过 2000 字");
