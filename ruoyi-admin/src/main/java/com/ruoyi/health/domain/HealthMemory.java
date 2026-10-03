@@ -6,17 +6,17 @@ import com.baomidou.mybatisplus.annotation.TableName;
 import java.time.LocalDateTime;
 import lombok.Data;
 
-/** 数据库中保存的一条健康资料问答消息。 */
+/** 从用户聊天自述提取的跨会话记忆，不作为健康档案证据。 */
 @Data
-@TableName("health_chat_message")
-public class HealthChatMessage {
+@TableName("health_memory")
+public class HealthMemory {
     @TableId(type = IdType.AUTO)
     private Long id;
     private Long userId;
-    private String conversationId;
     private String member;
-    private String role;
+    private String kind;
     private String content;
-    private String sources;
+    private String sourceConversationId;
     private LocalDateTime createdAt;
+    private LocalDateTime updatedAt;
 }
