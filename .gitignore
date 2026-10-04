@@ -47,3 +47,4 @@ nbdist/
 application-local.yml
 
 .flattened-pom.xml
+AGENTS.md
