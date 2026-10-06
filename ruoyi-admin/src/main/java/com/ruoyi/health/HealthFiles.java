@@ -12,12 +12,19 @@ import java.nio.file.StandardOpenOption;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Stream;
 import javax.imageio.ImageIO;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.cn.smart.SmartChineseAnalyzer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.pdfbox.Loader;
 import org.apache.pdfbox.pdmodel.PDDocument;
 import org.apache.pdfbox.rendering.PDFRenderer;
@@ -31,6 +38,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class HealthFiles {
     private static final Pattern DATE = Pattern.compile("\\d{4}-\\d{2}-\\d{2}");
     private static final Pattern NUMBER = Pattern.compile("(?<![\\d.])\\d+(?:\\.\\d+)?");
+    private static final SmartChineseAnalyzer SEARCH_ANALYZER = new SmartChineseAnalyzer();
     private final Path root;
     private final HealthModels models;
     private final ObjectMapper mapper;
@@ -74,8 +82,8 @@ public class HealthFiles {
         return Files.readString(file, StandardCharsets.UTF_8);
     }
 
-    /** 用途：从指定成员的 Markdown 中选取相关片段；参数：成员和问题；返回值：按相关度排序的引用片段。 */
-    public List<Source> search(String name, String question) throws IOException {
+    /** 用途：从指定成员的 Markdown 中选取相关片段；参数：成员、本轮问题和历史检索文本；返回值：按相关度排序的引用片段。 */
+    public List<Source> search(String name, String question, String history) throws IOException {
         Path folder = member(name);
         List<Source> found = new ArrayList<>();
         try (Stream<Path> files = Files.walk(folder, 2)) {
@@ -88,25 +96,55 @@ public class HealthFiles {
                     String text = section.length() > 2200 ? section.substring(0, 2200) : section;
                     String relative = folder.relativize(file).toString().replace('\\', '/');
                     Matcher date = DATE.matcher(file.getFileName().toString());
-                    found.add(new Source(relative, date.find() ? date.group() : "日期见原文", text,
-                        score(question, text + relative)));
+                    found.add(new Source(relative, date.find() ? date.group() : "日期见原文", text, 0));
                 }
             }
         }
-        return found.stream().filter(source -> source.score() > 0).sorted(Comparator.comparingInt(Source::score).reversed())
-            .limit(8).toList();
+        Set<String> currentTerms = searchTerms(question);
+        Set<String> historyTerms = searchTerms(history);
+        Set<String> allTerms = new HashSet<>(currentTerms);
+        allTerms.addAll(historyTerms);
+        Map<String, Integer> frequency = new HashMap<>();
+        List<Set<String>> sourceTerms = new ArrayList<>();
+        for (Source source : found) {
+            Set<String> terms = searchTerms(source.text() + " " + source.path());
+            sourceTerms.add(terms);
+            for (String term : allTerms) {
+                if (terms.contains(term)) frequency.merge(term, 1, Integer::sum);
+            }
+        }
+        List<Source> scored = new ArrayList<>();
+        for (int i = 0; i < found.size(); i++) {
+            Source source = found.get(i);
+            int score = score(currentTerms, historyTerms, frequency, found.size(), sourceTerms.get(i));
+            if (score > 0) scored.add(new Source(source.path(), source.date(), source.text(), score));
+        }
+        return scored.stream().sorted(Comparator.comparingInt(Source::score).reversed()).limit(8).toList();
     }
 
-    /** 用途：按关键词及中文双字片段估算相关性；参数：问题和资料文本；返回值：相关分数。 */
-    private int score(String question, String text) {
-        if (question == null || question.isBlank()) return 0;
+    /** 用途：使用中文分词器提取去重后的检索词；参数：检索文本；返回值：词项集合。 */
+    private Set<String> searchTerms(String text) throws IOException {
+        Set<String> terms = new HashSet<>();
+        if (text == null || text.isBlank()) return terms;
+        try (TokenStream stream = SEARCH_ANALYZER.tokenStream("content", text)) {
+            CharTermAttribute word = stream.addAttribute(CharTermAttribute.class);
+            stream.reset();
+            while (stream.incrementToken()) terms.add(word.toString());
+            stream.end();
+        }
+        return terms;
+    }
+
+    /** 用途：按分词匹配度和档案中的稀有程度计算相关性，并提高本轮问题权重；参数：本轮词、历史词、词频、片段数和资料词项；返回值：相关分数。 */
+    private int score(Set<String> currentTerms, Set<String> historyTerms, Map<String, Integer> frequency,
+                      int sourceCount, Set<String> sourceTerms) {
         int result = 0;
-        String lower = text.toLowerCase();
-        for (String word : question.toLowerCase().split("[\\s，。？！、,.?]+")) {
-            if (word.length() > 1 && lower.contains(word)) result += 8;
-            for (int i = 0; i + 1 < word.length(); i++) {
-                if (lower.contains(word.substring(i, i + 2))) result++;
-            }
+        Set<String> terms = new HashSet<>(historyTerms);
+        terms.addAll(currentTerms);
+        for (String term : terms) {
+            if (!sourceTerms.contains(term)) continue;
+            int rarity = 1 + 8 * (sourceCount - frequency.getOrDefault(term, sourceCount)) / sourceCount;
+            result += rarity * (currentTerms.contains(term) ? 3 : 1);
         }
         return result;
     }

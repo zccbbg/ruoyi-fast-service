@@ -124,7 +124,7 @@ OpenAiChatOptions options = OpenAiChatOptions.builder()
 
 问答接口是 `POST /health/ask/stream`。请求包含成员、问题、可选的模型 ID 和会话 ID；新会话的 UUID 由后端生成。进入模型调用前，控制器会校验问题长度和成员目录，并从当前登录账号获取用户 ID。聊天消息按账号、成员、会话查询；跨会话记忆按账号、成员查询，避免把其他人的内容带进本轮回答。
 
-`HealthFiles.search` 遍历该成员目录内的 Markdown 文件，按二级标题切分片段，对问题词和中文相邻双字片段做简单的包含匹配评分，最后保留分数大于零的前 8 个片段。检索词由本轮问题、上一条用户问题和选中的相关记忆组成。每个入选片段连同相对文件路径、日期进入本轮提示词，回答完成后路径也会作为引用来源返回。这里没有向量化、向量数据库或 Spring AI 的 `EmbeddingModel`。
+`HealthFiles.search` 遍历该成员目录内的 Markdown 文件，按二级标题切分片段。检索文本由本轮问题、当前会话的全部历史用户问题（过长时分段压缩）和选中的相关记忆组成。检索文本与档案片段使用 Lucene 中文分词器提取词项，按词项在候选片段中的稀有程度打分，并提高本轮问题词项的权重；最后保留分数大于零的前 8 个片段。每个入选片段连同相对文件路径、日期进入本轮提示词，回答完成后路径也会作为引用来源返回。这里没有向量化、向量数据库或 Spring AI 的 `EmbeddingModel`。完整步骤见 [`HealthController.ask` 逐步解读](HealthController问答方法逐步解读.md)。
 
 控制器把回答规则放在 `system` 消息中：仅依据本轮提供的档案片段回答，标明日期与来源，不能把聊天自述当作已核实的档案事实。近期原始消息转换为 Spring AI 的 `UserMessage` 和 `AssistantMessage`；会话摘要、相关记忆、本轮问题和档案片段放入本轮 `user` 提示词。最后调用 `HealthModels.stream` 生成回答。
 
