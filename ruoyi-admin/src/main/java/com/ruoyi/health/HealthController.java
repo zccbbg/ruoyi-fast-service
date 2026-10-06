@@ -18,7 +18,6 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.stream.Stream;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.UserMessage;
@@ -36,6 +35,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import reactor.core.publisher.Mono;
 import reactor.core.publisher.Sinks;
 
 @RestController
@@ -83,23 +83,22 @@ public class HealthController {
         Long userId = currentUserId();
         String requestId = UUID.fromString(question.requestId()).toString();
         String askKey = userId + ":" + requestId;
-        AskCancellation stop = activeAsks.computeIfAbsent(askKey,
-            ignored -> new AskCancellation(new AtomicReference<>(), Sinks.one()));
+        AskCancellation stop = activeAsks.computeIfAbsent(askKey, ignored -> new AskCancellation());
         try {
-        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
+        stop.checkpoint();
         String conversation = question.conversationId() == null || question.conversationId().isBlank()
             ? UUID.randomUUID().toString() : question.conversationId();
         if (!conversation.matches("[a-f0-9-]{36}")) throw new IllegalArgumentException("无效的会话编号");
         HealthModels.ModelConfig model = models.select(question.modelId(), "CHAT");
         HealthMemoryService.ConversationContext conversationContext =
             memories.conversation(userId, question.member(), conversation);
-        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
+        stop.checkpoint();
         List<HealthChatMessage> recent = conversationContext.recent();
         List<HealthMemory> selected = memories.relevant(userId, question.member(), question.text(), model);
-        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
+        stop.checkpoint();
         String searchContext = searchHistoryQuestions(userId, question.member(), conversation, question.text(), model)
             + " " + selected.stream().map(HealthMemory::getContent).reduce("", (a, b) -> a + " " + b);
-        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
+        stop.checkpoint();
         List<HealthFiles.Source> sources = files.search(question.member(), question.text(), searchContext);
         StringBuilder context = new StringBuilder();
         for (HealthFiles.Source source : sources) {
@@ -126,39 +125,36 @@ public class HealthController {
         StreamingResponseBody body = output -> {
             StringBuilder answer = new StringBuilder();
             try {
-                if (Boolean.TRUE.equals(stop.state().get())) return;
+                if (stop.cancelled()) return;
                 if (sources.isEmpty()) {
                     String message = "当前档案中没有找到足够的相关记录。没有记录不代表没有发生。";
                     answer.append(message);
                     sendEvent(output, Map.of("type", "chunk", "text", message));
                 } else {
                     try (Stream<String> chunks = models.stream(model, system, history, prompt)
-                            .takeUntilOther(stop.signal().asMono()).toStream()) {
+                            .takeUntilOther(stop.onCancel()).toStream()) {
                         Iterator<String> iterator = chunks.iterator();
                         while (iterator.hasNext()) {
                             String chunk = iterator.next();
-                            if (Boolean.TRUE.equals(stop.state().get())) return;
+                            if (stop.cancelled()) return;
                             if (chunk == null || chunk.isEmpty()) continue;
                             answer.append(chunk);
                             sendEvent(output, Map.of("type", "chunk", "text", chunk));
                         }
                     }
                 }
-                synchronized (stop) {
-                    if (Boolean.TRUE.equals(stop.state().get())) return;
-                    chatMapper.insertExchange(userId, conversation, question.member(), question.text(), answer.toString(),
-                        mapper.writeValueAsString(paths));
-                    stop.state().set(false);
-                }
+                String sourceJson = mapper.writeValueAsString(paths);
+                if (!stop.commit(() -> chatMapper.insertExchange(userId, conversation, question.member(),
+                        question.text(), answer.toString(), sourceJson))) return;
                 sendEvent(output, Map.of("type", "done", "conversationId", conversation, "sources", paths));
                 memories.afterAnswer(userId, question.member(), conversation, question.text(), model);
             } catch (IOException ex) {
-                if (!Boolean.TRUE.equals(stop.state().get())) throw ex;
+                if (!stop.cancelled()) throw ex;
             } catch (RuntimeException ex) {
-                if (!Boolean.TRUE.equals(stop.state().get()))
+                if (!stop.cancelled())
                     sendEvent(output, Map.of("type", "error", "message", "回答生成失败，请重试"));
             } finally {
-                if (Boolean.FALSE.equals(stop.state().get())) {
+                if (stop.committed()) {
                     CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES)
                         .execute(() -> activeAsks.remove(askKey, stop));
                 } else {
@@ -178,16 +174,8 @@ public class HealthController {
     @DeleteMapping("/ask/{requestId}")
     public R<Boolean> stopAsk(@PathVariable String requestId) {
         String askKey = currentUserId() + ":" + UUID.fromString(requestId);
-        AskCancellation stop = activeAsks.computeIfAbsent(askKey,
-            ignored -> new AskCancellation(new AtomicReference<>(), Sinks.one()));
-        boolean stopped;
-        synchronized (stop) {
-            if (stop.state().get() == null) {
-                stop.state().set(true);
-                stop.signal().tryEmitValue(true);
-            }
-            stopped = Boolean.TRUE.equals(stop.state().get());
-        }
+        AskCancellation stop = activeAsks.computeIfAbsent(askKey, ignored -> new AskCancellation());
+        boolean stopped = stop.cancel();
         CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES).execute(() -> activeAsks.remove(askKey, stop));
         return R.ok(stopped);
     }
@@ -351,7 +339,51 @@ public class HealthController {
         return R.ok();
     }
 
-    private record AskCancellation(AtomicReference<Boolean> state, Sinks.One<Boolean> signal) {}
+    private enum AskState { RUNNING, CANCELLED, COMMITTED }
+
+    private static final class AskCancellation {
+        private volatile AskState state = AskState.RUNNING;
+        private final Sinks.One<Boolean> signal = Sinks.one();
+
+        /** 用途：在同步处理阶段检查本轮问答是否仍可继续；参数：无；返回值：无。 */
+        void checkpoint() {
+            if (state != AskState.RUNNING) throw new IllegalStateException("问答已停止或完成");
+        }
+
+        /** 用途：判断本轮问答是否已被用户停止；参数：无；返回值：是否已停止。 */
+        boolean cancelled() {
+            return state == AskState.CANCELLED;
+        }
+
+        /** 用途：提供模型流订阅的停止信号；参数：无；返回值：停止时发出事件的 Mono。 */
+        Mono<Boolean> onCancel() {
+            return signal.asMono();
+        }
+
+        /** 用途：发送停止信号并与写入操作确定先后；参数：无；返回值：是否成功停止或此前已停止。 */
+        boolean cancel() {
+            boolean emit;
+            synchronized (this) {
+                emit = state == AskState.RUNNING;
+                if (emit) state = AskState.CANCELLED;
+            }
+            if (emit) signal.tryEmitValue(true);
+            return cancelled();
+        }
+
+        /** 用途：仅在尚未停止时执行问答写入并标记完成；参数：写入操作；返回值：是否完成写入。 */
+        synchronized boolean commit(Runnable save) {
+            if (state != AskState.RUNNING) return false;
+            save.run();
+            state = AskState.COMMITTED;
+            return true;
+        }
+
+        /** 用途：判断本轮问答是否已写入；参数：无；返回值：是否已写入。 */
+        boolean committed() {
+            return state == AskState.COMMITTED;
+        }
+    }
     public record Question(String member, String text, String modelId, String conversationId, String requestId) {}
     public record Conversation(String id, String title) {}
     public record Message(String role, String content, String sources) {}
