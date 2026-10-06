@@ -28,6 +28,8 @@
 
 `client` 每次调用都会根据选中的配置构造客户端。项目没有在这里配置统一的聊天记忆组件或 Advisor；历史消息由业务代码从数据库取出，再显式传给 `ChatClient`。也没有在 `HealthModels` 中设置重试、超时或温度等额外选项，实际调用以当前代码和所选模型服务为准。
 
+项目没有实现 `ChatMemoryRepository`：该接口本身只定义聊天消息的存取，单靠它不能完成账号与成员隔离、会话摘要、跨会话记忆筛选，以及回答完成后的引用来源保存等业务流程。当前实现的取舍和可替换范围见[问答记忆机制](问答记忆机制.md#为什么没有实现-chatmemoryrepository)。
+
 ## 项目直接使用的 Spring AI 类型
 
 当前后端 Java 代码直接引用了 **6 个 `org.springframework.ai` 包下的类型**，分别出现在 `HealthModels` 和 `HealthController`。它们处在不同层次：`OpenAiChatOptions` 提供模型调用参数，`OpenAiChatModel` 对接模型服务，`ChatClient` 组织提示词和调用；`Message`、`UserMessage`、`AssistantMessage` 描述传给模型的历史消息。
