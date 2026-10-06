@@ -6,7 +6,9 @@
 
 ## 请求与响应
 
-前端 [`askHealth`](../../ruoyi-fast-vue3/src/api/health.js) 向 `POST /health/ask/stream` 发送 JSON，包含成员、问题、模型编号和可选的会话编号。请求头设置 `Accept: text/event-stream`，并携带登录令牌。这里使用 `fetch`，可在一次请求中提交 JSON 请求体和认证头。
+前端 [`askHealth`](../../ruoyi-fast-vue3/src/api/health.js) 向 `POST /health/ask/stream` 发送 JSON，包含成员、问题、模型编号、本轮请求编号和可选的会话编号。请求头设置 `Accept: text/event-stream`，并携带登录令牌。这里使用 `fetch`，可在一次请求中提交 JSON 请求体和认证头。
+
+生成期间，输入框右侧显示“停止生成”。点击后前端用 `AbortController` 中断接收、移除本轮临时问答并保留输入，同时通过 `DELETE /health/ask/{requestId}` 通知后端。后端按账号和请求编号查找停止信号，终止模型响应流；若停止信号先于会话写入到达，则不保存本轮问答，也不会触发后续记忆处理。已完成写入的请求无法追溯取消。记忆筛选和历史问题压缩使用同步模型调用，若停止恰逢这些调用，调用返回后才会检查停止信号。
 
 后端 [`HealthController.ask`](../ruoyi-admin/src/main/java/com/ruoyi/health/HealthController.java) 声明响应类型为 `text/event-stream`，使用 `StreamingResponseBody` 写入事件。每个事件写为 `data:` 加一段 JSON，再加两个换行符；写入后调用 `flush()`，让客户端及时收到内容。响应还设置了 `Cache-Control: no-cache` 和 `X-Accel-Buffering: no`。
 

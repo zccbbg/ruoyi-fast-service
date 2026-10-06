@@ -11,9 +11,15 @@ import com.ruoyi.health.mapper.HealthChatMapper;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.stream.Stream;
 import org.springframework.ai.chat.messages.AssistantMessage;
 import org.springframework.ai.chat.messages.UserMessage;
 import org.springframework.http.MediaType;
@@ -30,6 +36,7 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.method.annotation.StreamingResponseBody;
+import reactor.core.publisher.Sinks;
 
 @RestController
 @RequestMapping("/health")
@@ -41,6 +48,7 @@ public class HealthController {
     private final HealthMemoryService memories;
     private final HealthChatMapper chatMapper;
     private final ObjectMapper mapper;
+    private final Map<String, AskCancellation> activeAsks = new ConcurrentHashMap<>();
 
     /** 用途：创建健康业务接口；参数：文件服务、模型服务、提示词服务、记忆服务、会话 Mapper 和 JSON 解析器；返回值：无。 */
     public HealthController(HealthFiles files, HealthModels models, HealthPromptService prompts, HealthMemoryService memories,
@@ -65,7 +73,7 @@ public class HealthController {
         return R.ok("操作成功", files.source(member, path));
     }
 
-    /** 用途：按当前账号和成员读取记忆、检索档案并流式回答；参数：问答请求；返回值：SSE 回答流。 */
+    /** 用途：按当前账号和成员读取记忆、检索档案并流式回答；参数：含请求编号的问答请求；返回值：SSE 回答流。 */
     @PostMapping(value = "/ask/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
     public ResponseEntity<StreamingResponseBody> ask(@RequestBody Question question) throws IOException {
         if (question.text() == null || question.text().isBlank() || question.text().length() > 2000) {
@@ -73,16 +81,25 @@ public class HealthController {
         }
         files.member(question.member());
         Long userId = currentUserId();
+        String requestId = UUID.fromString(question.requestId()).toString();
+        String askKey = userId + ":" + requestId;
+        AskCancellation stop = activeAsks.computeIfAbsent(askKey,
+            ignored -> new AskCancellation(new AtomicReference<>(), Sinks.one()));
+        try {
+        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
         String conversation = question.conversationId() == null || question.conversationId().isBlank()
             ? UUID.randomUUID().toString() : question.conversationId();
         if (!conversation.matches("[a-f0-9-]{36}")) throw new IllegalArgumentException("无效的会话编号");
         HealthModels.ModelConfig model = models.select(question.modelId(), "CHAT");
         HealthMemoryService.ConversationContext conversationContext =
             memories.conversation(userId, question.member(), conversation);
+        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
         List<HealthChatMessage> recent = conversationContext.recent();
         List<HealthMemory> selected = memories.relevant(userId, question.member(), question.text(), model);
+        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
         String searchContext = searchHistoryQuestions(userId, question.member(), conversation, question.text(), model)
             + " " + selected.stream().map(HealthMemory::getContent).reduce("", (a, b) -> a + " " + b);
+        if (Boolean.TRUE.equals(stop.state().get())) throw new IllegalStateException("问答已停止");
         List<HealthFiles.Source> sources = files.search(question.member(), question.text(), searchContext);
         StringBuilder context = new StringBuilder();
         for (HealthFiles.Source source : sources) {
@@ -109,29 +126,70 @@ public class HealthController {
         StreamingResponseBody body = output -> {
             StringBuilder answer = new StringBuilder();
             try {
+                if (Boolean.TRUE.equals(stop.state().get())) return;
                 if (sources.isEmpty()) {
                     String message = "当前档案中没有找到足够的相关记录。没有记录不代表没有发生。";
                     answer.append(message);
                     sendEvent(output, Map.of("type", "chunk", "text", message));
                 } else {
-                    for (String chunk : models.stream(model, system, history, prompt).toIterable()) {
-                        if (chunk == null || chunk.isEmpty()) continue;
-                        answer.append(chunk);
-                        sendEvent(output, Map.of("type", "chunk", "text", chunk));
+                    try (Stream<String> chunks = models.stream(model, system, history, prompt)
+                            .takeUntilOther(stop.signal().asMono()).toStream()) {
+                        Iterator<String> iterator = chunks.iterator();
+                        while (iterator.hasNext()) {
+                            String chunk = iterator.next();
+                            if (Boolean.TRUE.equals(stop.state().get())) return;
+                            if (chunk == null || chunk.isEmpty()) continue;
+                            answer.append(chunk);
+                            sendEvent(output, Map.of("type", "chunk", "text", chunk));
+                        }
                     }
                 }
-                chatMapper.insertExchange(userId, conversation, question.member(), question.text(), answer.toString(),
-                    mapper.writeValueAsString(paths));
+                synchronized (stop) {
+                    if (Boolean.TRUE.equals(stop.state().get())) return;
+                    chatMapper.insertExchange(userId, conversation, question.member(), question.text(), answer.toString(),
+                        mapper.writeValueAsString(paths));
+                    stop.state().set(false);
+                }
                 sendEvent(output, Map.of("type", "done", "conversationId", conversation, "sources", paths));
                 memories.afterAnswer(userId, question.member(), conversation, question.text(), model);
             } catch (IOException ex) {
-                throw ex;
+                if (!Boolean.TRUE.equals(stop.state().get())) throw ex;
             } catch (RuntimeException ex) {
-                sendEvent(output, Map.of("type", "error", "message", "回答生成失败，请重试"));
+                if (!Boolean.TRUE.equals(stop.state().get()))
+                    sendEvent(output, Map.of("type", "error", "message", "回答生成失败，请重试"));
+            } finally {
+                if (Boolean.FALSE.equals(stop.state().get())) {
+                    CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES)
+                        .execute(() -> activeAsks.remove(askKey, stop));
+                } else {
+                    activeAsks.remove(askKey, stop);
+                }
             }
         };
         return ResponseEntity.ok().contentType(MediaType.TEXT_EVENT_STREAM).header("Cache-Control", "no-cache")
             .header("X-Accel-Buffering", "no").body(body);
+        } catch (IOException | RuntimeException ex) {
+            activeAsks.remove(askKey, stop);
+            throw ex;
+        }
+    }
+
+    /** 用途：按当前账号和请求编号停止正在生成的问答；参数：请求编号；返回值：是否在写入前停止。 */
+    @DeleteMapping("/ask/{requestId}")
+    public R<Boolean> stopAsk(@PathVariable String requestId) {
+        String askKey = currentUserId() + ":" + UUID.fromString(requestId);
+        AskCancellation stop = activeAsks.computeIfAbsent(askKey,
+            ignored -> new AskCancellation(new AtomicReference<>(), Sinks.one()));
+        boolean stopped;
+        synchronized (stop) {
+            if (stop.state().get() == null) {
+                stop.state().set(true);
+                stop.signal().tryEmitValue(true);
+            }
+            stopped = Boolean.TRUE.equals(stop.state().get());
+        }
+        CompletableFuture.delayedExecutor(1, TimeUnit.MINUTES).execute(() -> activeAsks.remove(askKey, stop));
+        return R.ok(stopped);
     }
 
     /** 用途：将单个 JSON 事件写入并立即刷新到客户端；参数：输出流和事件内容；返回值：无。 */
@@ -293,7 +351,8 @@ public class HealthController {
         return R.ok();
     }
 
-    public record Question(String member, String text, String modelId, String conversationId) {}
+    private record AskCancellation(AtomicReference<Boolean> state, Sinks.One<Boolean> signal) {}
+    public record Question(String member, String text, String modelId, String conversationId, String requestId) {}
     public record Conversation(String id, String title) {}
     public record Message(String role, String content, String sources) {}
     public record MemoryInput(String member, String content) {}
