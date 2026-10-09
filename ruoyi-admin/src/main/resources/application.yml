@@ -36,7 +36,7 @@ logging:
   file:
     path: /data/logs/ruoyi-fast
   level:
-    com.ruoyi: @logging.level@
+    com.ruoyi: info
     org.springframework: warn
   config: classpath:logback-plus.xml
 
@@ -57,7 +57,7 @@ spring:
     # 国际化资源文件路径
     basename: i18n/messages
   profiles:
-    active: @profiles.active@
+    active: dev
   # 文件上传
   servlet:
     multipart:
