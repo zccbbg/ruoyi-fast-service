@@ -20,7 +20,6 @@
         <module>ruoyi-common-security</module>
         <module>ruoyi-common-mybatis</module>
         <module>ruoyi-common-log</module>
-        <module>ruoyi-common-translation</module>
         <module>ruoyi-common-sensitive</module>
     </modules>
 

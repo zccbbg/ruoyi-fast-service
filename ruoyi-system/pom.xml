@@ -36,11 +36,6 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
-            <artifactId>ruoyi-common-translation</artifactId>
-        </dependency>
-
-        <dependency>
-            <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common-sensitive</artifactId>
         </dependency>
 

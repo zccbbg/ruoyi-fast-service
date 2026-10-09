@@ -37,11 +37,12 @@
 | 系统管理 | 移除部门、岗位、菜单和角色管理，保留用户管理。 |
 | 登录认证 | 移除注册、验证码、邮件和短信登录，保留账号密码登录。 |
 | 通用模块 | 移除代码生成器、演示模块和 OSS 模块。 |
+| 后台功能 | 移除通知公告和缓存监控。 |
 | 前端布局 | 移除主题切换、设置抽屉、顶部导航和标签页。 |
 
 ### 工程结构差异
 
-- 后端采用**插件化 + 扩展包**结构：`ruoyi-common`（satoken / redis / mybatis / excel / log / idempotent / ratelimiter / translation 等插件包）+ `ruoyi-system` + `ruoyi-admin`，模块低耦合、易扩展。
+- 后端采用**插件化 + 扩展包**结构：`ruoyi-common`（satoken / redis / mybatis / excel / log / sensitive 等插件包）+ `ruoyi-system` + `ruoyi-admin`，模块低耦合、易扩展。
 - 官方为模块相互注入，耦合较重、扩展困难。
 
 ### 与ruoyi-vue-plus对比
