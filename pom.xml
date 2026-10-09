@@ -252,7 +252,7 @@
     <modules>
         <module>ruoyi-admin</module>
         <module>ruoyi-common</module>
-        <module>ruoyi-modules</module>
+        <module>ruoyi-system</module>
     </modules>
     <packaging>pom</packaging>
 

@@ -20,7 +20,7 @@
 
 - 后端：JDK 21、Spring Boot 4.1.1、Spring AI、MyBatis-Plus。
 - 前端：Vue 3、Element Plus、Vite，代码位于独立的 `ruoyi-fast-vue3` 仓库。
-- `ruoyi-admin` 包含健康档案接口与应用入口；`ruoyi-modules/ruoyi-system` 和 `ruoyi-common` 提供后台管理与公共能力。
+- `ruoyi-admin` 包含健康档案接口与应用入口；`ruoyi-system` 和 `ruoyi-common` 提供后台管理与公共能力。
 
 ## 更新记录
 参考：[UpdateHistory.md](UpdateHistory.md)
