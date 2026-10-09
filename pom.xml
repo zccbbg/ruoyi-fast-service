@@ -23,7 +23,6 @@
         <poi.version>5.2.3</poi.version>
         <easyexcel.version>3.3.4</easyexcel.version>
         <satoken.version>1.46.0</satoken.version>
-        <p6spy.version>3.9.1</p6spy.version>
         <hutool.version>5.8.27</hutool.version>
         <okhttp.version>4.10.0</okhttp.version>
         <jackson2.version>2.20.1</jackson2.version>
@@ -153,13 +152,6 @@
                 <groupId>com.baomidou</groupId>
                 <artifactId>mybatis-plus-jsqlparser-4.9</artifactId>
                 <version>${mybatis-plus.version}</version>
-            </dependency>
-
-            <!-- sql性能分析插件 -->
-            <dependency>
-                <groupId>p6spy</groupId>
-                <artifactId>p6spy</artifactId>
-                <version>${p6spy.version}</version>
             </dependency>
 
             <dependency>
