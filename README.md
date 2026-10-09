@@ -1,8 +1,8 @@
 ## 平台简介
 
 [![License](https://img.shields.io/badge/License-MIT-blue.svg)](https://gitee.com/zccbbg/ruoyi-fast-service/blob/master/LICENSE)
-[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.1-blue.svg)]()
-[![JDK-17](https://img.shields.io/badge/JDK-17-green.svg)]()
+[![Spring Boot](https://img.shields.io/badge/Spring%20Boot-4.1.1-blue.svg)]()
+[![JDK-21](https://img.shields.io/badge/JDK-21-green.svg)]()
 
 > 本项目继承自ruoyi-vue-plus,由于ruoyi-vue-plus 4.x版本不再开发，而5.x过于庞大，增加了flowable和多租户，本项目在4.x基础上适当增加一些5.x比较好的功能。
 
@@ -29,12 +29,12 @@
 | 维度 | 本框架 ruoyi-fast | 官方 RuoYi-Vue |
 |------|------------------|----------------|
 | 前端 | Vue3 + TypeScript + Element Plus（基于 vue3-element-admin 重写） | Vue2 + JavaScript |
-| JDK / Spring Boot | JDK 17 + Spring Boot 3.2.6 | JDK 8 + Spring Boot 2.x |
+| JDK / Spring Boot | JDK 21 + Spring Boot 4.1.1 | JDK 8 + Spring Boot 2.x |
 | 权限认证 | Sa-Token + JWT，注解支持 `AND`/`OR` 等复杂表达式 | Spring Security，仅支持是否匹配 |
 | ORM | MyBatis-Plus，基于对象几乎不写 SQL | 原生 MyBatis，需手写 XML SQL |
 | Web 容器 | Undertow（基于 XNIO 高性能容器） | Tomcat |
 | Redis 客户端 | Redisson，支持分布式限流/队列等 | Lettuce + RedisTemplate |
-| 对象转换 | MapStruct-Plus（编译期生成，规避 JDK17 下 BeanUtil 转换出错） | BeanUtils |
+| 对象转换 | MapStruct-Plus（编译期生成对象映射代码） | BeanUtils |
 | SQL 监控 | p6spy，输出完整 SQL 与执行耗时 | 日志拼接，需手动还原参数 |
 | 数据分页 | MyBatis-Plus 分页插件，支持多字段/复杂排序 | PageHelper，仅单查询单排序 |
 | 数据权限 | MyBatis-Plus 插件无感拼接 SQL | 注解 + AOP 手动拼接 |
@@ -46,12 +46,12 @@
 
 ### 与ruoyi-vue-plus对比
 
-> 本项目继承自 Plus 4.x，仅把 5.x 的现代技术底座（JDK17 + Spring Boot 3）搬过来，主动舍弃多租户、工作流等重型模块。下表与 Plus 4.x、Plus 5.x 三方对比。
+> 本项目继承自 Plus 4.x，持续升级技术底座，目前使用 JDK 21 和 Spring Boot 4.1.1，并舍弃多租户、工作流等重型模块。下表与 Plus 4.x、Plus 5.x 三方对比。
 
 | 维度 | 本项目 ruoyi-fast | RuoYi-Vue-Plus 4.x | RuoYi-Vue-Plus 5.x |
 |------|------------------|--------------------|--------------------|
-| JDK | 17 | 8 | 17（部分支持 21） |
-| Spring Boot | 3.2.6 | 2.7.x | 3.x |
+| JDK | 21 | 8 | 17（部分支持 21） |
+| Spring Boot | 4.1.1 | 2.7.x | 3.x |
 | Service 接口层 | 去除（system 用具体类） | ✅ I*Service + Impl | ✅ I*Service + Impl |
 | 逻辑删除约定 | 0=存在 / 1=删除 | 2=删除 | 2=删除 |
 | 状态约定 | 1=正常 / 0=停用 | 0=正常 / 1=停用 | 0=正常 / 1=停用 |
