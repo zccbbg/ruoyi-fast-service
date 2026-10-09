@@ -41,7 +41,7 @@
 
 ### 工程结构差异
 
-- 后端采用**插件化 + 扩展包**结构：`ruoyi-common`（satoken / redis / mybatis / oss / excel / sms / log / idempotent / ratelimiter / translation 等插件包）+ `ruoyi-modules`（system / generator / demo）+ `ruoyi-admin`，模块低耦合、易扩展。
+- 后端采用**插件化 + 扩展包**结构：`ruoyi-common`（satoken / redis / mybatis / oss / excel / sms / log / idempotent / ratelimiter / translation 等插件包）+ `ruoyi-system` + `ruoyi-admin`，模块低耦合、易扩展。
 - 官方为模块相互注入，耦合较重、扩展困难。
 
 ### 与ruoyi-vue-plus对比
