@@ -115,12 +115,6 @@
             <artifactId>redisson-spring-boot-starter</artifactId>
         </dependency>
 
-        <!-- 加密包引入 -->
-        <dependency>
-            <groupId>org.bouncycastle</groupId>
-            <artifactId>bcprov-jdk15to18</artifactId>
-        </dependency>
-
         <!-- 离线IP地址定位库 -->
         <dependency>
             <groupId>org.lionsoul</groupId>

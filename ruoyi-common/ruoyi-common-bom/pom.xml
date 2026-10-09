@@ -86,25 +86,7 @@
 
             <dependency>
                 <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common-ratelimiter</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common-encrypt</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.ruoyi</groupId>
                 <artifactId>ruoyi-common-sensitive</artifactId>
-                <version>${revision}</version>
-            </dependency>
-
-            <dependency>
-                <groupId>com.ruoyi</groupId>
-                <artifactId>ruoyi-common-idempotent</artifactId>
                 <version>${revision}</version>
             </dependency>
 
