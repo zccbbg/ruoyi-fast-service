@@ -18,6 +18,11 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-aspectj</artifactId>
+        </dependency>
+
+        <dependency>
             <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common-satoken</artifactId>
         </dependency>

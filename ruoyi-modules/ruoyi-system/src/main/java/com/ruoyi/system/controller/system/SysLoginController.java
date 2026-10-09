@@ -2,8 +2,10 @@ package com.ruoyi.system.controller.system;
 
 import cn.dev33.satoken.annotation.SaIgnore;
 import com.ruoyi.common.core.constant.Constants;
+import com.ruoyi.common.core.constant.HttpStatus;
 import com.ruoyi.common.core.domain.R;
 import com.ruoyi.common.core.domain.bo.LoginBody;
+import com.ruoyi.common.core.domain.bo.LoginUser;
 import com.ruoyi.common.satoken.utils.LoginHelper;
 import com.ruoyi.system.domain.vo.SysUserVo;
 import com.ruoyi.system.service.SysLoginService;
@@ -61,7 +63,14 @@ public class SysLoginController {
      */
     @GetMapping("getInfo")
     public R<Map<String, Object>> getInfo() {
-        SysUserVo user = userService.selectUserById(LoginHelper.getUserId());
+        LoginUser loginUser = LoginHelper.getLoginUser();
+        if (loginUser == null || loginUser.getUserId() == null) {
+            return R.fail(HttpStatus.UNAUTHORIZED, "登录状态已失效，请重新登录");
+        }
+        SysUserVo user = userService.selectUserById(loginUser.getUserId());
+        if (user == null) {
+            return R.fail(HttpStatus.UNAUTHORIZED, "登录用户不存在，请重新登录");
+        }
         return R.ok(Map.of(
                 "user", user
             )

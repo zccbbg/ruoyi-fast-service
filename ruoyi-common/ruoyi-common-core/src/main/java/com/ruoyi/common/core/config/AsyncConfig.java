@@ -5,6 +5,7 @@ import com.ruoyi.common.core.exception.ServiceException;
 import com.ruoyi.common.core.utils.SpringUtils;
 import org.springframework.aop.interceptor.AsyncUncaughtExceptionHandler;
 import org.springframework.boot.autoconfigure.AutoConfiguration;
+import org.springframework.boot.autoconfigure.task.TaskExecutionAutoConfiguration;
 import org.springframework.core.task.VirtualThreadTaskExecutor;
 import org.springframework.scheduling.annotation.AsyncConfigurer;
 
@@ -16,7 +17,7 @@ import java.util.concurrent.Executor;
  *
  * @author Lion Li
  */
-@AutoConfiguration
+@AutoConfiguration(before = TaskExecutionAutoConfiguration.class)
 public class AsyncConfig implements AsyncConfigurer {
 
     /**

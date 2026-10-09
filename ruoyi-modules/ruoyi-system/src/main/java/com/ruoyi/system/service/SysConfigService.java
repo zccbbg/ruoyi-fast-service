@@ -1,7 +1,6 @@
 package com.ruoyi.system.service;
 
 import cn.hutool.core.util.ObjectUtil;
-import com.baomidou.dynamic.datasource.annotation.DS;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -51,7 +50,6 @@ public class SysConfigService implements ConfigService {
      * @param configId 参数配置ID
      * @return 参数配置信息
      */
-    @DS("master")
     public SysConfigVo selectConfigById(Long configId) {
         return configMapper.selectVoById(configId);
     }
