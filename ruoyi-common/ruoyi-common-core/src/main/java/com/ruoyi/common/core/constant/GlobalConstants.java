@@ -8,6 +8,16 @@ public interface GlobalConstants {
     String GLOBAL_REDIS_KEY = "global:";
 
     /**
+     * 防重提交 redis key
+     */
+    String REPEAT_SUBMIT_KEY = GLOBAL_REDIS_KEY + "repeat_submit:";
+
+    /**
+     * 限流 redis key
+     */
+    String RATE_LIMIT_KEY = GLOBAL_REDIS_KEY + "rate_limit:";
+
+    /**
      * 登录账户密码错误次数 redis key
      */
     String PWD_ERR_CNT_KEY = GLOBAL_REDIS_KEY + "pwd_err_cnt:";
