@@ -56,11 +56,6 @@ spring:
       max-file-size: 15MB
       # 设置总上传的文件大小
       max-request-size: 16MB
-  # 服务模块
-  devtools:
-    restart:
-      # 热部署开关
-      enabled: true
   mvc:
     async:
       # 流式问答允许模型在较长时间内持续生成回答。
