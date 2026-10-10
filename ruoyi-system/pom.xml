@@ -51,6 +51,11 @@
 
         <dependency>
             <groupId>com.ruoyi</groupId>
+            <artifactId>ruoyi-common-idempotent</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.ruoyi</groupId>
             <artifactId>ruoyi-common-security</artifactId>
         </dependency>
 
